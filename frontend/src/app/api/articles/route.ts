@@ -24,7 +24,15 @@ export const GET = withErrorHandler(async (req: NextRequest) => {
   return NextResponse.json(
     {
       success: true,
-      data: result,
+      data: {
+        articles: result.articles,
+        pagination: {
+          page: result.page,
+          limit: limit,
+          total: result.total,
+          totalPages: result.totalPages,
+        },
+      },
     },
     {
       headers: getCacheHeaders('ARTICLE_LIST'),
