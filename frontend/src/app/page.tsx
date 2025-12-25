@@ -1,6 +1,27 @@
+import type { Metadata } from 'next';
 import ArticleList from '@/components/ArticleList';
 import Pagination from '@/components/Pagination';
 import { PaginatedArticles, ApiResponse } from '@/types/article';
+
+// 首页 SEO metadata
+export const metadata: Metadata = {
+  title: '个人博客 - 分享技术与生活',
+  description: '一个简洁优雅的个人博客，分享技术文章、学习笔记和生活感悟',
+  keywords: ['博客', '技术', '编程', '学习', '分享'],
+  authors: [{ name: '博主' }],
+  openGraph: {
+    title: '个人博客',
+    description: '分享技术与生活',
+    siteName: '个人博客',
+    locale: 'zh_CN',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary',
+    title: '个人博客',
+    description: '分享技术与生活',
+  },
+};
 
 async function getArticles(page: number = 1): Promise<PaginatedArticles> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';

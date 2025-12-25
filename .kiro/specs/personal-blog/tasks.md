@@ -138,15 +138,15 @@
     - 添加表单验证
     - _Requirements: 5.2, 5.3_
 
-  - [ ]* 7.4 为管理界面编写属性测试
+  - [ ] 7.4 为管理界面编写属性测试
     - **Property 9: Article Management Data Completeness**
     - **Validates: Requirements 7.2**
 
 - [ ] 8. SEO 和性能优化
-  - [ ] 8.1 实现 SEO meta 标签生成
-    - 为每个页面生成动态 title
-    - 添加 meta description 和关键词
-    - 实现 Open Graph 标签
+  - [x] 8.1 实现 SEO meta 标签生成
+    - 为每个页面生成动态 title 和 description
+    - 添加 Open Graph 和 Twitter Card 标签
+    - 实现 JSON-LD 结构化数据（文章、网站、面包屑）
     - 使用 Next.js Metadata API
     - _Requirements: 8.2_
 

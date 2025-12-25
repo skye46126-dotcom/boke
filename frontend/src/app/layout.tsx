@@ -4,8 +4,40 @@ import './globals.css';
 import 'highlight.js/styles/atom-one-dark.css';
 
 export const metadata: Metadata = {
-  title: 'Personal Blog',
-  description: 'A lightweight personal blog system',
+  title: {
+    default: '个人博客',
+    template: '%s | 个人博客',
+  },
+  description: '一个简洁优雅的个人博客系统，使用 Next.js 构建',
+  keywords: ['博客', '个人博客', 'Next.js', 'TypeScript', '技术分享'],
+  authors: [{ name: '博主' }],
+  creator: '博主',
+  publisher: '个人博客',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'),
+  openGraph: {
+    type: 'website',
+    locale: 'zh_CN',
+    siteName: '个人博客',
+  },
+  twitter: {
+    card: 'summary_large_image',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export default function RootLayout({
