@@ -1,0 +1,396 @@
+/**
+ * 文章布局样式
+ * Article Layout Styles
+ */
+
+/* ========================================
+ * 基础布局容器 (Base Layout Container)
+ * ======================================== */
+
+.article-layout {
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+.article-layout-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--space-md);
+}
+
+.article-layout-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+/* ========================================
+ * 桌面端布局 (Desktop Layout)
+ * ======================================== */
+
+@media (min-width: 1024px) {
+  .article-layout-content {
+    grid-template-columns: 1fr 280px;
+    gap: var(--space-xl);
+  }
+  
+  .article-layout-container {
+    padding: var(--space-lg) var(--space-md);
+  }
+}
+
+@media (min-width: 1200px) {
+  .article-layout-content {
+    grid-template-columns: 1fr 320px;
+    gap: calc(var(--space-xl) * 1.5);
+  }
+}
+
+/* ========================================
+ * 主要内容区域 (Main Content Area)
+ * ======================================== */
+
+.article-main {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  
+  /* 创造聚焦效果的留白 */
+  padding: 0 var(--space-md);
+  
+  /* 基线网格对齐 */
+  line-height: calc(var(--baseline) / var(--font-size-base));
+}
+
+@media (min-width: 1024px) {
+  .article-main {
+    /* 桌面端减少左右内边距，因为有侧边栏 */
+    padding: 0;
+    margin: 0;
+    max-width: none;
+  }
+}
+
+/* ========================================
+ * 移动端目录容器 (Mobile TOC Container)
+ * ======================================== */
+
+.mobile-toc-container {
+  margin-bottom: var(--space-md);
+}
+
+@media (min-width: 769px) {
+  .mobile-toc-container {
+    display: none;
+  }
+}
+
+/* ========================================
+ * 桌面端侧边栏 (Desktop Sidebar)
+ * ======================================== */
+
+.article-sidebar {
+  display: none;
+}
+
+@media (min-width: 769px) {
+  .article-sidebar {
+    display: block;
+    position: relative;
+  }
+}
+
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* ========================================
+ * 分享工具 (Share Tools)
+ * ======================================== */
+
+.share-tools {
+  padding: var(--space-md);
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.share-title {
+  font-size: calc(var(--font-size-base) * 1.1);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-sm);
+  padding-bottom: var(--baseline-half);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.share-buttons {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.share-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--color-background-subtle);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1.2rem;
+}
+
+.share-button:hover {
+  background: var(--color-link);
+  color: var(--color-background);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.2);
+}
+
+.share-button:focus {
+  outline: 2px solid var(--color-link);
+  outline-offset: 2px;
+}
+
+.share-button:active {
+  transform: translateY(0);
+}
+
+/* ========================================
+ * 破格布局支持 (Breakout Layout Support)
+ * ======================================== */
+
+/* 破格元素突破内容区域宽度 */
+.article-main .breakout {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  max-width: none;
+}
+
+/* 全宽元素 */
+.article-main .full-width {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  max-width: none;
+}
+
+@media (max-width: 768px) {
+  .article-main .breakout,
+  .article-main .full-width {
+    /* 移动端保持正常宽度 */
+    width: 100%;
+    margin-left: calc(-1 * var(--space-md));
+    margin-right: calc(-1 * var(--space-md));
+  }
+}
+
+@media (min-width: 1024px) {
+  /* 桌面端有侧边栏时的破格布局调整 */
+  .article-main .breakout {
+    width: calc(100vw - 320px - var(--space-xl) * 2);
+    margin-left: calc(-50vw + 50% + 160px + var(--space-xl));
+    margin-right: calc(-50vw + 50% - 160px - var(--space-xl));
+  }
+  
+  .article-main .full-width {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+  }
+}
+
+/* ========================================
+ * 响应式调整 (Responsive Adjustments)
+ * ======================================== */
+
+@media (max-width: 768px) {
+  .article-layout-container {
+    padding: var(--space-sm);
+  }
+  
+  .article-main {
+    padding: 0;
+  }
+  
+  .share-tools {
+    display: none; /* 移动端隐藏分享工具 */
+  }
+}
+
+/* 中等屏幕调整 */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .article-layout-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .article-sidebar {
+    display: none;
+  }
+  
+  .article-main {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: 0 var(--space-md);
+  }
+}
+
+/* ========================================
+ * 可访问性支持 (Accessibility Support)
+ * ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .share-button {
+    transition: none !important;
+  }
+  
+  .share-button:hover {
+    transform: none !important;
+  }
+}
+
+/* 高对比度模式 */
+@media (prefers-contrast: high) {
+  .share-tools,
+  .share-button {
+    border-width: 2px;
+  }
+}
+
+/* ========================================
+ * 打印样式 (Print Styles)
+ * ======================================== */
+
+@media print {
+  .article-sidebar,
+  .mobile-toc-container {
+    display: none;
+  }
+  
+  .article-layout-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .article-main {
+    max-width: none;
+    padding: 0;
+  }
+  
+  .article-main .breakout,
+  .article-main .full-width {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+/* ========================================
+ * 性能优化 (Performance Optimization)
+ * ======================================== */
+
+.article-layout-content {
+  /* 使用 CSS containment 优化性能 */
+  contain: layout style;
+}
+
+.article-sidebar {
+  /* 侧边栏独立渲染 */
+  contain: layout style;
+}
+
+.article-main {
+  /* 内容区域使用 content containment */
+  contain: content;
+}
+
+/* 优化动画性能 */
+.share-button,
+.magnetic-element,
+.heading-reveal {
+  /* 仅在动画时使用 will-change */
+  will-change: auto;
+}
+
+.share-button:hover,
+.magnetic-element:hover,
+.heading-reveal.animating {
+  will-change: transform;
+}
+
+/* 优化图片渲染 */
+img {
+  /* 使用 content-visibility 优化屏幕外图片 */
+  content-visibility: auto;
+  contain-intrinsic-size: 800px 600px;
+}
+
+/* ========================================
+ * 特殊效果 (Special Effects)
+ * ======================================== */
+
+/* 侧边栏进入动画 */
+@media (min-width: 769px) {
+  .article-sidebar {
+    opacity: 0;
+    animation: slideInRight 0.5s ease 0.3s forwards;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 内容区域进入动画 */
+.article-main {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 分享按钮磁吸效果 */
+.share-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.share-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.share-button:hover::before {
+  width: 100px;
+  height: 100px;
+}

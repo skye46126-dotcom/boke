@@ -72,6 +72,11 @@ export function withValidation<T extends any[]>(
 ) {
   return async (request: NextRequest, ...parameters: T): Promise<NextResponse> => {
     try {
+      // 只对有 body 的请求进行验证
+      if (request.method === 'GET' || request.method === 'DELETE') {
+        return await handler(request, ...parameters);
+      }
+
       const body = await request.json().catch(() => ({}));
       const url = new URL(request.url);
       const query = Object.fromEntries(url.searchParams);
@@ -91,7 +96,14 @@ export function withValidation<T extends any[]>(
         );
       }
       
-      return await handler(request, ...parameters);
+      // 创建一个新的 Request 对象，包含已解析的 body
+      const newRequest = new NextRequest(request.url, {
+        method: request.method,
+        headers: request.headers,
+        body: JSON.stringify(body),
+      });
+      
+      return await handler(newRequest, ...parameters);
     } catch (error) {
       console.error('Validation error:', error);
       return NextResponse.json(

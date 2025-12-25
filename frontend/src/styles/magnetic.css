@@ -1,0 +1,123 @@
+/**
+ * 磁吸 UI 元素样式
+ * Magnetic UI Elements Styles
+ */
+
+/* 磁吸链接基础样式 */
+.magnetic-link {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+/* 确保磁吸效果不影响布局 */
+.magnetic-link {
+  transform-origin: center center;
+}
+
+/* 磁吸按钮样式 */
+.magnetic-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* 磁吸效果的焦点样式（保持键盘导航可见性） */
+.magnetic-link:focus-visible,
+.magnetic-button:focus-visible {
+  outline: 2px solid var(--color-link);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* 禁用磁吸效果时的降级样式 */
+@media (prefers-reduced-motion: reduce) {
+  .magnetic-link,
+  .magnetic-button {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* 文章内容中的磁吸链接 */
+.markdown-content .magnetic-link {
+  color: var(--color-link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.markdown-content .magnetic-link:hover {
+  color: var(--color-link-hover);
+  text-decoration-color: var(--color-link-hover);
+}
+
+/* 返回链接的磁吸效果 */
+.back-link.magnetic {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.back-link.magnetic:hover {
+  background-color: rgba(0, 102, 204, 0.05);
+}
+
+/* 磁吸效果的性能优化 */
+.magnetic-link,
+.magnetic-button {
+  /* 使用 GPU 加速 */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* 确保磁吸元素不会影响文本选择 */
+.magnetic-link::selection,
+.magnetic-button::selection {
+  background-color: rgba(0, 102, 204, 0.2);
+}
+
+/* 磁吸效果的激活状态 */
+.magnetic-link:active,
+.magnetic-button:active {
+  transform: scale(0.98);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  /* 移动端减弱磁吸效果 */
+  .magnetic-link,
+  .magnetic-button {
+    /* 移动端触摸交互不需要磁吸效果 */
+    pointer-events: auto;
+  }
+}
+
+/* 辅助功能：确保键盘用户可以看到焦点 */
+.magnetic-link:focus,
+.magnetic-button:focus {
+  outline: none;
+}
+
+.magnetic-link:focus-visible,
+.magnetic-button:focus-visible {
+  outline: 2px solid var(--color-link);
+  outline-offset: 4px;
+}
+
+/* 打印样式：移除磁吸效果 */
+@media print {
+  .magnetic-link,
+  .magnetic-button {
+    transform: none !important;
+  }
+}

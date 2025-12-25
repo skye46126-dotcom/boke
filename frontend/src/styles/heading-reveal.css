@@ -1,0 +1,235 @@
+/**
+ * 标题揭示动画样式
+ * Heading Reveal Animation Styles
+ */
+
+/* CSS 变量 */
+:root {
+  --reveal-duration: 250ms;
+}
+
+/* 初始隐藏状态 */
+.heading-reveal-hidden {
+  opacity: 0;
+}
+
+/* ========================================
+ * 光标闪烁动画 (Cursor Blink Animation)
+ * ======================================== */
+
+.heading-reveal-cursor {
+  position: relative;
+  opacity: 1;
+  animation: fadeIn var(--reveal-duration) ease-out forwards;
+}
+
+/* 光标效果 */
+.heading-reveal-cursor::after {
+  content: '';
+  position: absolute;
+  right: -0.1em;
+  top: 0.1em;
+  bottom: 0.1em;
+  width: 0.1em;
+  background-color: currentColor;
+  animation: cursorBlink 0.8s ease-in-out;
+}
+
+@keyframes cursorBlink {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ========================================
+ * 蒙版揭示动画 (Mask Reveal Animation)
+ * ======================================== */
+
+.heading-reveal-mask {
+  position: relative;
+  opacity: 1;
+  animation: maskReveal var(--reveal-duration) cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* 蒙版效果 */
+.heading-reveal-mask::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-background, #fff) 50%,
+    transparent 100%
+  );
+  animation: maskSlide var(--reveal-duration) cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes maskReveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes maskSlide {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* ========================================
+ * 可访问性支持 (Accessibility Support)
+ * ======================================== */
+
+/* 禁用动画时的降级样式 */
+@media (prefers-reduced-motion: reduce) {
+  .heading-reveal-hidden {
+    opacity: 1 !important;
+  }
+
+  .heading-reveal-cursor,
+  .heading-reveal-mask {
+    animation: none !important;
+  }
+
+  .heading-reveal-cursor::after,
+  .heading-reveal-mask::before {
+    display: none !important;
+  }
+}
+
+/* ========================================
+ * 响应式调整 (Responsive Adjustments)
+ * ======================================== */
+
+@media (max-width: 768px) {
+  /* 移动端缩短动画时间 */
+  :root {
+    --reveal-duration: 200ms;
+  }
+}
+
+/* ========================================
+ * 性能优化 (Performance Optimization)
+ * ======================================== */
+
+.heading-reveal-cursor,
+.heading-reveal-mask {
+  /* 使用 GPU 加速 */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: opacity, transform;
+}
+
+/* 动画完成后移除 will-change */
+.heading-reveal-cursor:not(.heading-reveal-hidden),
+.heading-reveal-mask:not(.heading-reveal-hidden) {
+  will-change: auto;
+}
+
+/* ========================================
+ * 打印样式 (Print Styles)
+ * ======================================== */
+
+@media print {
+  .heading-reveal-hidden {
+    opacity: 1 !important;
+  }
+
+  .heading-reveal-cursor::after,
+  .heading-reveal-mask::before {
+    display: none !important;
+  }
+}
+
+/* ========================================
+ * 焦点样式 (Focus Styles)
+ * ======================================== */
+
+/* 确保标题可以接收焦点（用于锚点导航） */
+h1[id]:focus,
+h2[id]:focus,
+h3[id]:focus,
+h4[id]:focus,
+h5[id]:focus,
+h6[id]:focus {
+  outline: 2px solid var(--color-link, #0066cc);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* ========================================
+ * 特殊效果变体 (Special Effect Variants)
+ * ======================================== */
+
+/* 淡入 + 向上滑动 */
+.heading-reveal-fade-up {
+  animation: fadeInUp var(--reveal-duration) ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 淡入 + 缩放 */
+.heading-reveal-fade-scale {
+  animation: fadeInScale var(--reveal-duration) ease-out forwards;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 从左侧滑入 */
+.heading-reveal-slide-left {
+  animation: slideInLeft var(--reveal-duration) ease-out forwards;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

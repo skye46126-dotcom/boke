@@ -11,30 +11,33 @@
     "migrate": "node -r tsx/register lib/db/migrate.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.490.0",
+    "dompurify": "^3.0.8",
+    "highlight.js": "^11.9.0",
+    "isomorphic-dompurify": "^2.9.0",
+    "marked": "^11.1.1",
     "next": "^14.0.4",
+    "pg": "^8.11.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "marked": "^11.1.1",
-    "highlight.js": "^11.9.0",
-    "dompurify": "^3.0.8",
-    "isomorphic-dompurify": "^2.9.0",
-    "pg": "^8.11.3",
-    "@aws-sdk/client-s3": "^3.490.0"
+    "three": "^0.160.1"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/react": "^14.1.2",
+    "@types/dompurify": "^3.0.5",
     "@types/node": "^20.10.6",
+    "@types/pg": "^8.10.9",
     "@types/react": "^18.2.46",
     "@types/react-dom": "^18.2.18",
-    "@types/dompurify": "^3.0.5",
-    "@types/pg": "^8.10.9",
-    "typescript": "^5.3.3",
+    "@types/three": "^0.160.0",
     "eslint": "^8.56.0",
     "eslint-config-next": "^14.0.4",
-    "prettier": "^3.1.1",
-    "jest": "^29.7.0",
-    "@testing-library/react": "^14.1.2",
-    "@testing-library/jest-dom": "^6.1.5",
     "fast-check": "^3.15.0",
-    "tsx": "^4.7.0"
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^30.2.0",
+    "prettier": "^3.1.1",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
   }
 }

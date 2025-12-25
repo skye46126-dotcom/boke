@@ -1,3 +1,21 @@
+/* Import Typography System */
+@import '../styles/typography.css';
+
+/* Import Magnetic UI Styles */
+@import '../styles/magnetic.css';
+
+/* Import Heading Reveal Styles */
+@import '../styles/heading-reveal.css';
+
+/* Import Lazy Image Styles */
+@import '../styles/lazy-image.css';
+
+/* Import Table of Contents Styles */
+@import '../styles/table-of-contents.css';
+
+/* Import Article Layout Styles */
+@import '../styles/article-layout.css';
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -10,15 +28,7 @@ body {
   overflow-x: hidden;
 }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: 1.6;
-  color: #333;
-}
+/* Body styles are now handled by typography.css */
 
 a {
   color: inherit;
@@ -29,16 +39,16 @@ code {
   font-family: 'Courier New', Courier, monospace;
 }
 
-/* Container */
+/* Container - Updated for Typography System */
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: var(--space-md) var(--space-sm);
 }
 
 @media (max-width: 768px) {
   .container {
-    padding: 1rem;
+    padding: var(--space-sm);
   }
 }
 
@@ -217,184 +227,174 @@ code {
   }
 }
 
-/* Article Detail */
+/* Article Detail - Enhanced Typography System */
 .article-detail {
-  max-width: 800px;
+  max-width: var(--content-max-width);
   margin: 0 auto;
+  padding: 0 var(--content-padding);
 }
 
 .article-header {
-  margin-bottom: 3rem;
+  margin-bottom: var(--space-lg);
 }
 
 .back-link {
   display: inline-flex;
   align-items: center;
-  color: #0066cc;
-  font-size: 0.95rem;
-  margin-bottom: 2rem;
+  color: var(--color-link);
+  font-size: calc(var(--font-size-base) * 0.9);
+  margin-bottom: var(--space-md);
   transition: color 0.2s ease;
 }
 
 .back-link:hover {
-  color: #0052a3;
+  color: var(--color-link-hover);
 }
 
 .article-detail-title {
-  font-size: 2.5rem;
+  font-size: var(--font-size-h1);
   font-weight: 700;
-  line-height: 1.2;
-  margin-bottom: 1rem;
-  color: #1a1a1a;
+  line-height: calc(var(--baseline) * 3 / var(--font-size-h1));
+  margin-bottom: var(--space-sm);
+  color: var(--color-text-primary);
 }
 
 .article-detail-meta {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  font-size: 0.95rem;
-  color: #666;
-  padding-bottom: 2rem;
-  border-bottom: 1px solid #e0e0e0;
+  gap: var(--space-sm);
+  font-size: calc(var(--font-size-base) * 0.9);
+  color: var(--color-text-secondary);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-lg);
 }
 
 .updated-time {
-  color: #999;
+  color: var(--color-text-muted);
+}
+
+.reading-time {
+  color: var(--color-text-muted);
+  font-size: calc(var(--font-size-base) * 0.9);
 }
 
 @media (max-width: 768px) {
+  .article-detail {
+    padding: 0 var(--space-sm);
+  }
+  
   .article-detail-title {
-    font-size: 2rem;
+    font-size: calc(var(--font-size-base) * 2.5);
+    line-height: calc(var(--baseline) * 2 / (var(--font-size-base) * 2.5));
   }
   
   .article-detail-meta {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.5rem;
+    gap: var(--baseline-half);
   }
 }
 
-/* Markdown Content */
+/* Markdown Content - Enhanced Typography System */
 .markdown-content {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  color: #333;
+  /* Typography system handles font-size, line-height, and colors */
+  /* All spacing follows baseline grid */
 }
 
+/* Rich content specific styles */
+.rich-content {
+  /* 为富文本内容添加特殊样式 */
+}
+
+/* 富文本中的磁吸链接 */
+.rich-content a {
+  position: relative;
+  display: inline-block;
+  transition: color 0.2s ease;
+}
+
+/* Headings use typography system - remove duplicate styles */
 .markdown-content h1,
 .markdown-content h2,
 .markdown-content h3,
 .markdown-content h4,
 .markdown-content h5,
 .markdown-content h6 {
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-  font-weight: 600;
-  line-height: 1.3;
-  color: #1a1a1a;
+  /* Typography system handles all heading styles */
 }
 
+/* Special heading decorations */
 .markdown-content h1 {
-  font-size: 2rem;
-  border-bottom: 2px solid #e0e0e0;
-  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-border);
+  padding-bottom: var(--baseline-half);
 }
 
 .markdown-content h2 {
-  font-size: 1.75rem;
-  border-bottom: 1px solid #e0e0e0;
-  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--baseline-half);
 }
 
-.markdown-content h3 {
-  font-size: 1.5rem;
-}
-
-.markdown-content h4 {
-  font-size: 1.25rem;
-}
-
-.markdown-content h5 {
-  font-size: 1.1rem;
-}
-
-.markdown-content h6 {
-  font-size: 1rem;
-}
-
+/* Paragraphs use typography system */
 .markdown-content p {
-  margin-bottom: 1.5rem;
+  /* Typography system handles paragraph styles */
 }
 
+/* Links use typography system with underline */
 .markdown-content a {
-  color: #0066cc;
   text-decoration: underline;
-  transition: color 0.2s ease;
 }
 
-.markdown-content a:hover {
-  color: #0052a3;
-}
-
+/* Images with enhanced styling */
 .markdown-content img {
   max-width: 100%;
   height: auto;
-  border-radius: 4px;
-  margin: 1.5rem 0;
+  border-radius: 8px;
+  margin: var(--space-md) 0;
   display: block;
 }
 
+/* Lists use typography system */
 .markdown-content ul,
 .markdown-content ol {
-  margin-bottom: 1.5rem;
-  padding-left: 2rem;
+  /* Typography system handles list styles */
 }
 
 .markdown-content li {
-  margin-bottom: 0.5rem;
+  /* Typography system handles list item styles */
 }
 
+/* Blockquotes use enhanced academic style from typography system */
 .markdown-content blockquote {
-  margin: 1.5rem 0;
-  padding: 1rem 1.5rem;
-  border-left: 4px solid #0066cc;
-  background: #f5f5f5;
-  color: #666;
+  /* Typography system handles blockquote styles */
 }
 
+/* Remove old blockquote styles that conflict with academic style */
 .markdown-content blockquote p:last-child {
   margin-bottom: 0;
 }
 
+/* Code blocks use typography system */
 .markdown-content pre {
-  margin: 1.5rem 0;
-  padding: 1.5rem;
-  background: #282c34;
-  border-radius: 4px;
-  overflow-x: auto;
+  /* Typography system handles pre styles */
 }
 
 .markdown-content code {
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 0.9em;
+  /* Typography system handles code styles */
 }
 
 .markdown-content pre code {
-  color: #abb2bf;
-  background: none;
-  padding: 0;
+  /* Typography system handles pre code styles */
 }
 
 .markdown-content :not(pre) > code {
-  padding: 0.2em 0.4em;
-  background: #f5f5f5;
-  border-radius: 3px;
-  color: #e83e8c;
+  /* Typography system handles inline code styles */
 }
 
+/* Tables with baseline grid alignment */
 .markdown-content table {
   width: 100%;
-  margin: 1.5rem 0;
+  margin: var(--space-md) 0;
   border-collapse: collapse;
   overflow-x: auto;
   display: block;
@@ -402,59 +402,52 @@ code {
 
 .markdown-content th,
 .markdown-content td {
-  padding: 0.75rem;
-  border: 1px solid #e0e0e0;
+  padding: var(--baseline-half) var(--space-sm);
+  border: 1px solid var(--color-border);
   text-align: left;
+  line-height: calc(var(--baseline) / var(--font-size-base));
 }
 
 .markdown-content th {
-  background: #f5f5f5;
+  background: var(--color-background-subtle);
   font-weight: 600;
 }
 
+/* Horizontal rules */
 .markdown-content hr {
-  margin: 2rem 0;
+  margin: var(--space-lg) 0;
   border: none;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid var(--color-border);
 }
 
-.markdown-content iframe {
+/* Media elements */
+.markdown-content iframe,
+.markdown-content video {
   max-width: 100%;
-  margin: 1.5rem 0;
-  border-radius: 4px;
+  margin: var(--space-md) 0;
+  border-radius: 8px;
 }
 
 .markdown-content video {
-  max-width: 100%;
   height: auto;
-  margin: 1.5rem 0;
-  border-radius: 4px;
+}
+
+/* Breakout layout support for images and code blocks */
+.markdown-content .breakout {
+  /* Typography system handles breakout styles */
+}
+
+.markdown-content .full-width {
+  /* Typography system handles full-width styles */
 }
 
 @media (max-width: 768px) {
-  .markdown-content {
-    font-size: 1rem;
-  }
-  
-  .markdown-content h1 {
-    font-size: 1.75rem;
-  }
-  
-  .markdown-content h2 {
-    font-size: 1.5rem;
-  }
-  
-  .markdown-content h3 {
-    font-size: 1.25rem;
+  .markdown-content table {
+    font-size: calc(var(--font-size-base) * 0.9);
   }
   
   .markdown-content pre {
-    padding: 1rem;
-    font-size: 0.85rem;
-  }
-  
-  .markdown-content table {
-    font-size: 0.9rem;
+    font-size: calc(var(--font-size-base) * 0.85);
   }
 }
 

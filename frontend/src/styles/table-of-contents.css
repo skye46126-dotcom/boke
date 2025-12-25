@@ -1,0 +1,322 @@
+/**
+ * 目录组件样式
+ * Table of Contents Styles
+ */
+
+/* ========================================
+ * 桌面端侧边栏布局 (Desktop Sidebar Layout)
+ * ======================================== */
+
+.table-of-contents.desktop {
+  position: sticky;
+  top: 2rem;
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  padding: var(--space-md);
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.table-of-contents.desktop .toc-title {
+  font-size: calc(var(--font-size-base) * 1.1);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-sm);
+  padding-bottom: var(--baseline-half);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ========================================
+ * 移动端折叠布局 (Mobile Collapsible Layout)
+ * ======================================== */
+
+.table-of-contents.mobile {
+  margin: var(--space-md) 0;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-background);
+}
+
+.toc-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  transition: background-color 0.2s ease;
+}
+
+.toc-toggle:hover {
+  background: var(--color-background-subtle);
+}
+
+.toc-toggle:focus {
+  outline: 2px solid var(--color-link);
+  outline-offset: -2px;
+}
+
+.toc-toggle-icon {
+  font-size: calc(var(--font-size-base) * 0.8);
+  transition: transform 0.2s ease;
+}
+
+.table-of-contents.mobile.open .toc-toggle-icon {
+  transform: rotate(180deg);
+}
+
+.toc-toggle-text {
+  font-weight: 600;
+  flex: 1;
+  text-align: left;
+  margin-left: var(--space-sm);
+}
+
+.toc-count {
+  font-size: calc(var(--font-size-base) * 0.9);
+  color: var(--color-text-secondary);
+}
+
+/* 移动端内容区域 */
+.table-of-contents.mobile .toc-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.table-of-contents.mobile.open .toc-content {
+  max-height: 400px;
+  border-top: 1px solid var(--color-border);
+}
+
+/* ========================================
+ * 目录列表样式 (TOC List Styles)
+ * ======================================== */
+
+.toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.toc-item {
+  margin: 0;
+  line-height: calc(var(--baseline) / var(--font-size-base));
+}
+
+.toc-link {
+  display: block;
+  padding: var(--baseline-half) var(--space-sm);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  font-size: calc(var(--font-size-base) * 0.9);
+  line-height: calc(var(--baseline) / (var(--font-size-base) * 0.9));
+}
+
+.toc-link:hover {
+  color: var(--color-link);
+  background: var(--color-background-subtle);
+}
+
+.toc-link:focus {
+  outline: 2px solid var(--color-link);
+  outline-offset: -2px;
+}
+
+/* 激活状态 */
+.toc-item.active .toc-link {
+  color: var(--color-link);
+  background: rgba(0, 102, 204, 0.1);
+  font-weight: 500;
+}
+
+/* ========================================
+ * 层级缩进 (Hierarchical Indentation)
+ * ======================================== */
+
+.toc-item.level-1 .toc-link {
+  padding-left: var(--space-sm);
+  font-weight: 500;
+}
+
+.toc-item.level-2 .toc-link {
+  padding-left: calc(var(--space-sm) + var(--space-xs));
+  font-size: calc(var(--font-size-base) * 0.85);
+}
+
+.toc-item.level-3 .toc-link {
+  padding-left: calc(var(--space-sm) + var(--space-xs) * 2);
+  font-size: calc(var(--font-size-base) * 0.8);
+}
+
+.toc-item.level-4 .toc-link,
+.toc-item.level-5 .toc-link,
+.toc-item.level-6 .toc-link {
+  padding-left: calc(var(--space-sm) + var(--space-xs) * 3);
+  font-size: calc(var(--font-size-base) * 0.75);
+  color: var(--color-text-muted);
+}
+
+/* ========================================
+ * 响应式调整 (Responsive Adjustments)
+ * ======================================== */
+
+@media (max-width: 768px) {
+  .table-of-contents.desktop {
+    display: none;
+  }
+  
+  .table-of-contents.mobile .toc-content {
+    padding: var(--space-sm) 0;
+  }
+  
+  .toc-link {
+    padding: var(--baseline-half) var(--space-md);
+  }
+  
+  .toc-item.level-1 .toc-link {
+    padding-left: var(--space-md);
+  }
+  
+  .toc-item.level-2 .toc-link {
+    padding-left: calc(var(--space-md) + var(--space-sm));
+  }
+  
+  .toc-item.level-3 .toc-link {
+    padding-left: calc(var(--space-md) + var(--space-sm) * 1.5);
+  }
+  
+  .toc-item.level-4 .toc-link,
+  .toc-item.level-5 .toc-link,
+  .toc-item.level-6 .toc-link {
+    padding-left: calc(var(--space-md) + var(--space-sm) * 2);
+  }
+}
+
+@media (min-width: 769px) {
+  .table-of-contents.mobile {
+    display: none;
+  }
+}
+
+/* ========================================
+ * 滚动条样式 (Scrollbar Styles)
+ * ======================================== */
+
+.table-of-contents.desktop::-webkit-scrollbar {
+  width: 4px;
+}
+
+.table-of-contents.desktop::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.table-of-contents.desktop::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 2px;
+}
+
+.table-of-contents.desktop::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* ========================================
+ * 可访问性支持 (Accessibility Support)
+ * ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .toc-toggle-icon,
+  .toc-content,
+  .toc-link {
+    transition: none !important;
+  }
+}
+
+/* 高对比度模式 */
+@media (prefers-contrast: high) {
+  .table-of-contents {
+    border-width: 2px;
+  }
+  
+  .toc-item.active .toc-link {
+    background: var(--color-link);
+    color: var(--color-background);
+  }
+}
+
+/* ========================================
+ * 打印样式 (Print Styles)
+ * ======================================== */
+
+@media print {
+  .table-of-contents {
+    display: none;
+  }
+}
+
+/* ========================================
+ * 性能优化 (Performance Optimization)
+ * ======================================== */
+
+.toc-link {
+  /* 使用 GPU 加速 */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* 减少重绘 */
+.toc-content {
+  contain: layout style;
+}
+
+/* ========================================
+ * 特殊效果 (Special Effects)
+ * ======================================== */
+
+/* 目录项进入动画 */
+.toc-item {
+  opacity: 0;
+  animation: fadeInUp 0.3s ease forwards;
+}
+
+.toc-item:nth-child(1) { animation-delay: 0.05s; }
+.toc-item:nth-child(2) { animation-delay: 0.1s; }
+.toc-item:nth-child(3) { animation-delay: 0.15s; }
+.toc-item:nth-child(4) { animation-delay: 0.2s; }
+.toc-item:nth-child(5) { animation-delay: 0.25s; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 激活项的指示器 */
+.toc-item.active .toc-link::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background: var(--color-link);
+  border-radius: 0 2px 2px 0;
+}
+
+.toc-link {
+  position: relative;
+}

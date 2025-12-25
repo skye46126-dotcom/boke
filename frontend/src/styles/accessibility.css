@@ -1,0 +1,343 @@
+/**
+ * Accessibility Styles
+ * 可访问性样式
+ * 
+ * Feature: article-typography-enhancement
+ * Requirements: 10.4, 10.5 - Focus styles, keyboard navigation, screen reader support
+ */
+
+/* ========================================
+ * Screen Reader Only
+ * ======================================== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.sr-only-focusable:focus,
+.sr-only-focusable:active {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* ========================================
+ * Focus Styles (WCAG AA Compliant)
+ * ======================================== */
+
+/* Default focus outline for all interactive elements */
+a:focus,
+button:focus,
+input:focus,
+textarea:focus,
+select:focus,
+[tabindex]:focus {
+  outline: 2px solid var(--color-link, #0066cc);
+  outline-offset: 2px;
+}
+
+/* Focus-visible for keyboard navigation only */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--color-link, #0066cc);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.2);
+}
+
+/* Remove focus outline for mouse users */
+a:focus:not(:focus-visible),
+button:focus:not(:focus-visible),
+input:focus:not(:focus-visible),
+textarea:focus:not(:focus-visible),
+select:focus:not(:focus-visible),
+[tabindex]:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Enhanced focus for magnetic elements */
+.magnetic-element:focus-visible {
+  outline: 3px solid var(--color-link, #0066cc);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 6px rgba(0, 102, 204, 0.15);
+  /* Ensure magnetic effect doesn't interfere with focus */
+  z-index: 10;
+}
+
+/* Focus for table of contents links */
+.toc-link:focus-visible {
+  background: rgba(0, 102, 204, 0.1);
+  outline: 2px solid var(--color-link, #0066cc);
+  outline-offset: 2px;
+}
+
+/* ========================================
+ * Skip Links
+ * ======================================== */
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #000;
+  color: #fff;
+  padding: 8px 16px;
+  text-decoration: none;
+  z-index: 100;
+  font-weight: 600;
+  border-radius: 0 0 4px 0;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
+/* ========================================
+ * High Contrast Mode Support
+ * ======================================== */
+
+@media (prefers-contrast: high) {
+  /* Increase border widths */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline-width: 4px;
+  }
+
+  /* Increase text contrast */
+  body {
+    color: #000;
+    background: #fff;
+  }
+
+  /* Ensure borders are visible */
+  button,
+  input,
+  textarea,
+  select {
+    border: 2px solid currentColor;
+  }
+}
+
+/* ========================================
+ * Reduced Motion Support
+ * ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  /* Disable all animations and transitions */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Disable magnetic effects */
+  .magnetic-element {
+    transform: none !important;
+  }
+
+  /* Disable heading reveal animations */
+  .heading-reveal {
+    animation: none !important;
+  }
+
+  /* Disable Three.js animations */
+  .signature-icon canvas {
+    animation: none !important;
+  }
+}
+
+/* ========================================
+ * Keyboard Navigation Indicators
+ * ======================================== */
+
+/* Show keyboard navigation mode */
+body.keyboard-navigation *:focus {
+  outline: 3px solid var(--color-link, #0066cc);
+  outline-offset: 3px;
+}
+
+/* Tab order indicator (for debugging) */
+[tabindex]:not([tabindex="-1"])::before {
+  /* Only show in development mode */
+  content: attr(tabindex);
+  position: absolute;
+  top: -20px;
+  left: 0;
+  background: #000;
+  color: #fff;
+  padding: 2px 6px;
+  font-size: 10px;
+  border-radius: 3px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+[tabindex]:not([tabindex="-1"]):focus::before {
+  opacity: 1;
+}
+
+/* ========================================
+ * ARIA Live Regions
+ * ======================================== */
+
+[role="status"],
+[role="alert"],
+[aria-live] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ========================================
+ * Color Contrast (WCAG AA)
+ * ======================================== */
+
+/* Ensure minimum 4.5:1 contrast ratio for normal text */
+:root {
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #4a4a4a;
+  --color-background: #ffffff;
+  --color-background-subtle: #f5f5f5;
+  --color-link: #0066cc;
+  --color-link-hover: #0052a3;
+  --color-border: #d1d1d1;
+}
+
+/* Dark mode with proper contrast */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text-primary: #e5e5e5;
+    --color-text-secondary: #b5b5b5;
+    --color-background: #1a1a1a;
+    --color-background-subtle: #2a2a2a;
+    --color-link: #4d9fff;
+    --color-link-hover: #80b3ff;
+    --color-border: #3a3a3a;
+  }
+}
+
+/* ========================================
+ * Touch Target Size (Minimum 44x44px)
+ * ======================================== */
+
+button,
+a,
+input[type="checkbox"],
+input[type="radio"],
+select {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Exception for inline links in text */
+p a,
+li a {
+  min-width: auto;
+  min-height: auto;
+  display: inline;
+}
+
+/* ========================================
+ * Focus Trap (for modals/dialogs)
+ * ======================================== */
+
+.focus-trap {
+  position: relative;
+}
+
+.focus-trap::before,
+.focus-trap::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+/* ========================================
+ * Accessible Form Labels
+ * ======================================== */
+
+label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+input:required + label::after,
+select:required + label::after,
+textarea:required + label::after {
+  content: ' *';
+  color: #d32f2f;
+}
+
+/* Error states */
+input:invalid,
+select:invalid,
+textarea:invalid {
+  border-color: #d32f2f;
+}
+
+input:invalid:focus,
+select:invalid:focus,
+textarea:invalid:focus {
+  outline-color: #d32f2f;
+  box-shadow: 0 0 0 4px rgba(211, 47, 47, 0.2);
+}
+
+/* ========================================
+ * Print Accessibility
+ * ======================================== */
+
+@media print {
+  /* Ensure focus indicators are visible in print */
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #666;
+  }
+
+  /* Hide decorative elements */
+  .magnetic-element,
+  .signature-icon,
+  .heading-reveal {
+    display: none !important;
+  }
+
+  /* Ensure text is readable */
+  body {
+    color: #000;
+    background: #fff;
+  }
+}
