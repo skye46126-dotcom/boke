@@ -32,22 +32,10 @@ export const CACHE_STRATEGIES = {
 };
 
 /**
- * 为 Response 添加缓存头
+ * 获取缓存头配置
  */
-export function withCacheHeaders(
-  response: Response,
+export function getCacheHeaders(
   strategy: keyof typeof CACHE_STRATEGIES
-): Response {
-  const headers = new Headers(response.headers);
-  const cacheHeaders = CACHE_STRATEGIES[strategy];
-  
-  Object.entries(cacheHeaders).forEach(([key, value]) => {
-    headers.set(key, value);
-  });
-  
-  return new Response(response.body, {
-    status: response.status,
-    statusText: response.statusText,
-    headers,
-  });
+): Record<string, string> {
+  return CACHE_STRATEGIES[strategy];
 }

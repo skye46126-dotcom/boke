@@ -150,11 +150,12 @@
     - 使用 Next.js Metadata API
     - _Requirements: 8.2_
 
-  - [ ] 8.2 配置 CDN 和性能优化
-    - 配置图片 CDN 加速（CloudFront 或其他）
-    - 实现静态资源优化
-    - 使用 Next.js Image 组件优化图片
-    - 添加页面缓存策略
+  - [x] 8.2 配置 CDN 和性能优化
+    - 配置 Next.js Image 组件（AVIF/WebP 格式、响应式尺寸）
+    - 实现 API 缓存策略（文章列表、详情页）
+    - 自动生成 sitemap.xml 和 robots.txt
+    - 添加性能监控工具
+    - 创建性能优化文档（PERFORMANCE.md）
     - _Requirements: 8.3_
 
   - [ ]* 8.3 为 SEO 功能编写属性测试
@@ -174,9 +175,15 @@
     - 验证组件集成点
     - _Requirements: All_
 
-  - [ ] 9.3 配置生产环境部署
-    - 配置 Vercel 部署（推荐）
-    - 设置环境变量
+  - [x] 9.3 配置生产环境部署
+    - 创建完整部署指南（DEPLOYMENT.md）
+    - 包含 Vercel 部署步骤（推荐）
+    - 包含 Docker 部署方案
+    - 包含其他平台部署选项（Railway、Netlify）
+    - 配置环境变量清单
+    - 部署后检查清单
+    - 监控和维护指南
+    - _Requirements: 8.4_
     - 配置数据库连接（生产环境）
     - 配置自定义域名
     - _Requirements: 8.4_
