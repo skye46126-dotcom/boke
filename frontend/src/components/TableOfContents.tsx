@@ -33,31 +33,42 @@ export default function TableOfContents({
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // 监听滚动，高亮当前标题
+  // 使用 IntersectionObserver 监听标题，高亮当前标题
   useEffect(() => {
-    const handleScroll = () => {
-      const headings = items.map(item => document.getElementById(item.id)).filter(Boolean);
-      
-      if (headings.length === 0) return;
+    if (items.length === 0) return;
 
-      // 找到当前视口中的标题
-      let currentId = '';
-      const scrollY = window.scrollY + 100; // 偏移量
+    const headingElements = items
+      .map(item => document.getElementById(item.id))
+      .filter((el): el is HTMLElement => el !== null);
 
-      for (let i = headings.length - 1; i >= 0; i--) {
-        const heading = headings[i];
-        if (heading && heading.offsetTop <= scrollY) {
-          currentId = heading.id;
-          break;
+    if (headingElements.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // 找到所有可见的标题
+        const visibleEntries = entries
+          .filter(entry => entry.isIntersecting)
+          .sort((a, b) => {
+            return a.target.getBoundingClientRect().top - b.target.getBoundingClientRect().top;
+          });
+
+        // 高亮最顶部的可见标题
+        if (visibleEntries.length > 0) {
+          const topEntry = visibleEntries[0];
+          setActiveId(topEntry.target.id);
         }
+      },
+      {
+        rootMargin: '0px 0px -70% 0px', // 当标题在视口顶部 30% 时激活
+        threshold: 0,
       }
+    );
 
-      setActiveId(currentId);
+    headingElements.forEach(element => observer.observe(element));
+
+    return () => {
+      headingElements.forEach(element => observer.unobserve(element));
     };
-
-    handleScroll(); // 初始调用
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
   }, [items]);
 
   // 平滑滚动到目标标题
@@ -113,7 +124,7 @@ export default function TableOfContents({
         )}
         
         <ul className="toc-list">
-          {items.map((item) => (
+          {items.map((item, index) => (
             <li
               key={item.id}
               className={`toc-item level-${item.level} ${
@@ -129,7 +140,10 @@ export default function TableOfContents({
                   scrollToHeading(item.id);
                 }}
               >
-                <span className="toc-text">{item.text}</span>
+                <span className="toc-item-number">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <span className="toc-item-text">{item.text}</span>
               </MagneticLink>
             </li>
           ))}
