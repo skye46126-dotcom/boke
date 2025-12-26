@@ -83,12 +83,16 @@ export function runWhenIdle(
   callback: () => void,
   options?: IdleRequestOptions
 ): number {
-  if ('requestIdleCallback' in window) {
-    return window.requestIdleCallback(callback, options);
-  } else {
-    // Fallback for browsers without requestIdleCallback
-    return window.setTimeout(callback, 1) as unknown as number;
+  if (typeof window !== 'undefined') {
+    const win = window as any;
+    if ('requestIdleCallback' in win) {
+      return win.requestIdleCallback(callback, options);
+    } else {
+      // Fallback for browsers without requestIdleCallback
+      return win.setTimeout(callback, 1) as number;
+    }
   }
+  return 0;
 }
 
 /**
@@ -96,10 +100,13 @@ export function runWhenIdle(
  * 取消空闲回调
  */
 export function cancelIdle(id: number): void {
-  if ('cancelIdleCallback' in window) {
-    window.cancelIdleCallback(id);
-  } else {
-    window.clearTimeout(id);
+  if (typeof window !== 'undefined') {
+    const win = window as any;
+    if ('cancelIdleCallback' in win) {
+      win.cancelIdleCallback(id);
+    } else {
+      win.clearTimeout(id);
+    }
   }
 }
 

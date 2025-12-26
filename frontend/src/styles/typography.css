@@ -14,15 +14,15 @@
    * 模块化比例 (Modular Scale - Perfect Fourth 1.333)
    * ======================================== */
   --modular-scale: 1.333;
-  --font-size-base: 18px;
+  --font-size-base: 16px;
   
-  /* 计算字体大小层级 */
-  --font-size-h6: calc(var(--font-size-base) * 1);      /* 18px */
-  --font-size-h5: calc(var(--font-size-base) * 1.333);  /* 24px */
-  --font-size-h4: calc(var(--font-size-base) * 1.777);  /* 32px */
-  --font-size-h3: calc(var(--font-size-base) * 2.369);  /* 43px */
-  --font-size-h2: calc(var(--font-size-base) * 3.157);  /* 57px */
-  --font-size-h1: calc(var(--font-size-base) * 4.209);  /* 76px */
+  /* 计算字体大小层级 - 调整为更合理的大小 */
+  --font-size-h6: calc(var(--font-size-base) * 1);      /* 16px */
+  --font-size-h5: calc(var(--font-size-base) * 1.125);  /* 18px */
+  --font-size-h4: calc(var(--font-size-base) * 1.25);   /* 20px */
+  --font-size-h3: calc(var(--font-size-base) * 1.5);    /* 24px */
+  --font-size-h2: calc(var(--font-size-base) * 1.875);  /* 30px */
+  --font-size-h1: calc(var(--font-size-base) * 2.25);   /* 36px */
   
   /* ========================================
    * 内容区域约束 (Content Area Constraints)
@@ -90,7 +90,7 @@
 /* 全局字体设置 */
 html {
   font-size: var(--font-size-base);
-  line-height: calc(var(--baseline) / var(--font-size-base)); /* 1.556 */
+  line-height: 1.6; /* 更舒适的行高 */
 }
 
 body {
@@ -113,8 +113,8 @@ body {
 
 h1, .h1 {
   font-size: var(--font-size-h1);
-  line-height: calc(var(--baseline) * 3 / var(--font-size-h1)); /* 84px / 76px = 1.105 */
-  margin-top: var(--space-lg);
+  line-height: 1.3;
+  margin-top: var(--space-md);
   margin-bottom: var(--space-sm);
   font-weight: 700;
   color: var(--color-text-primary);
@@ -122,7 +122,7 @@ h1, .h1 {
 
 h2, .h2 {
   font-size: var(--font-size-h2);
-  line-height: calc(var(--baseline) * 2.5 / var(--font-size-h2)); /* 70px / 57px = 1.228 */
+  line-height: 1.4;
   margin-top: var(--space-md);
   margin-bottom: var(--space-sm);
   font-weight: 600;
@@ -131,16 +131,16 @@ h2, .h2 {
 
 h3, .h3 {
   font-size: var(--font-size-h3);
-  line-height: calc(var(--baseline) * 2 / var(--font-size-h3)); /* 56px / 43px = 1.302 */
-  margin-top: var(--space-md);
-  margin-bottom: var(--space-sm);
+  line-height: 1.4;
+  margin-top: var(--space-sm);
+  margin-bottom: var(--baseline-half);
   font-weight: 600;
   color: var(--color-text-primary);
 }
 
 h4, .h4 {
   font-size: var(--font-size-h4);
-  line-height: calc(var(--baseline) * 1.5 / var(--font-size-h4)); /* 42px / 32px = 1.313 */
+  line-height: 1.5;
   margin-top: var(--space-sm);
   margin-bottom: var(--baseline-half);
   font-weight: 600;
@@ -149,7 +149,7 @@ h4, .h4 {
 
 h5, .h5 {
   font-size: var(--font-size-h5);
-  line-height: calc(var(--baseline) / var(--font-size-h5)); /* 28px / 24px = 1.167 */
+  line-height: 1.5;
   margin-top: var(--space-sm);
   margin-bottom: var(--baseline-half);
   font-weight: 600;
@@ -158,7 +158,7 @@ h5, .h5 {
 
 h6, .h6 {
   font-size: var(--font-size-h6);
-  line-height: calc(var(--baseline) / var(--font-size-h6)); /* 28px / 18px = 1.556 */
+  line-height: 1.6;
   margin-top: var(--space-sm);
   margin-bottom: var(--baseline-half);
   font-weight: 600;
@@ -181,7 +181,7 @@ h6:first-child {
 
 p {
   margin-bottom: var(--space-sm);
-  line-height: calc(var(--baseline) / var(--font-size-base)); /* 1.556 */
+  line-height: 1.7;
   color: var(--color-text-primary);
 }
 
@@ -220,7 +220,7 @@ ul, ol {
 
 li {
   margin-bottom: var(--baseline-half);
-  line-height: calc(var(--baseline) / var(--font-size-base));
+  line-height: 1.6;
 }
 
 li:last-child {
@@ -352,6 +352,50 @@ blockquote blockquote::after {
 }
 
 /* ========================================
+ * 图片样式 (Image Styles)
+ * ======================================== */
+
+/* 文章内容中的图片 */
+.markdown-content img,
+.rich-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: var(--space-md) auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 带有 width 属性的图片 - 尊重指定的宽度 */
+.markdown-content img[width],
+.rich-content img[width] {
+  width: auto; /* 让 HTML width 属性生效 */
+  max-width: 100%; /* 但不超过容器宽度 */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 图片容器 */
+.markdown-content figure,
+.rich-content figure {
+  margin: var(--space-md) 0;
+  text-align: center;
+}
+
+.markdown-content figure img,
+.rich-content figure img {
+  margin: 0 auto var(--baseline-half);
+}
+
+.markdown-content figcaption,
+.rich-content figcaption {
+  font-size: calc(var(--font-size-base) * 0.9);
+  color: var(--color-text-muted);
+  font-style: italic;
+  margin-top: var(--baseline-half);
+}
+
+/* ========================================
  * 代码块系统 (Code Block System)
  * ======================================== */
 
@@ -452,6 +496,13 @@ pre code {
   pre {
     margin: var(--space-sm) 0;
     padding: var(--space-sm);
+  }
+  
+  /* 移动端图片调整 */
+  .markdown-content img,
+  .rich-content img {
+    margin: var(--space-sm) auto;
+    border-radius: 4px;
   }
 }
 

@@ -48,13 +48,22 @@ export class MarkdownProcessor {
    * 处理自定义语法
    * 支持：
    * - 图片破格布局：![alt](url){.breakout} 或 ![alt](url){.full-width}
+   * - 图片宽度：![alt](url){width="600"}
    * - 代码块标题：```language{title="标题"}
    * - 图片标题：![alt](url "caption")
    */
   processCustomSyntax(markdown: string): string {
     let processed = markdown;
 
-    // 处理图片自定义语法：![alt](url){.breakout}
+    // 处理图片宽度：![alt](url){width="600"}
+    processed = processed.replace(
+      /!\[([^\]]*)\]\(([^)]+)\)\{width="(\d+)"\}/g,
+      (match, alt, url, width) => {
+        return `<img src="${url}" alt="${alt}" width="${width}" loading="lazy" />`;
+      }
+    );
+
+    // 处理图片破格布局：![alt](url){.breakout}
     processed = processed.replace(
       /!\[([^\]]*)\]\(([^)]+)\)\{\.breakout\}/g,
       (match, alt, url) => {
@@ -62,7 +71,7 @@ export class MarkdownProcessor {
       }
     );
 
-    // 处理图片自定义语法：![alt](url){.full-width}
+    // 处理图片破格布局：![alt](url){.full-width}
     processed = processed.replace(
       /!\[([^\]]*)\]\(([^)]+)\)\{\.full-width\}/g,
       (match, alt, url) => {
@@ -155,7 +164,7 @@ export class MarkdownProcessor {
           const titleAttr = safeTitle ? ` title="${safeTitle}"` : '';
           return `<img src="${safeHref}" alt="${safeText}"${titleAttr} loading="lazy" />`;
         },
-        link(href: string, title: string | null, text: string) {
+        link(href: string, title: string | null | undefined, text: string) {
           const safeHref = href || '';
           const safeTitle = title || '';
           const safeText = text || '';

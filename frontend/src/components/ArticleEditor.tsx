@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 'use client';
 
-import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import { useState, useEffect, ChangeEvent, FormEvent, useRef } from 'react';
 import MarkdownContent from './MarkdownContent';
 
 interface ArticleEditorProps {
@@ -38,6 +38,8 @@ export default function ArticleEditor({
   const [status, setStatus] = useState<'draft' | 'published'>(initialStatus);
   const [showPreview, setShowPreview] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [imageSize, setImageSize] = useState<'tiny' | 'small' | 'medium' | 'full'>('medium');
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     // 自动生成 slug
@@ -78,9 +80,41 @@ export default function ArticleEditor({
 
       const data = await res.json();
       
-      // 插入 Markdown 图片语法到光标位置
-      const markdown = data.data.markdown;
-      setContent((prev) => prev + '\n\n' + markdown + '\n\n');
+      // 根据选择的大小生成不同的 Markdown 语法
+      let markdown = data.data.markdown;
+      
+      // 添加大小类
+      if (imageSize === 'tiny') {
+        markdown = markdown.replace('![', '![') + '{width="100"}';
+      } else if (imageSize === 'small') {
+        markdown = markdown.replace('![', '![') + '{width="200"}';
+      } else if (imageSize === 'medium') {
+        markdown = markdown.replace('![', '![') + '{width="400"}';
+      }
+      // full 不添加宽度限制
+      
+      // 获取光标位置
+      const textarea = textareaRef.current;
+      if (textarea) {
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const before = content.substring(0, start);
+        const after = content.substring(end);
+        
+        // 在光标位置插入图片
+        const newContent = before + '\n\n' + markdown + '\n\n' + after;
+        setContent(newContent);
+        
+        // 设置新的光标位置
+        setTimeout(() => {
+          const newPosition = start + markdown.length + 4;
+          textarea.setSelectionRange(newPosition, newPosition);
+          textarea.focus();
+        }, 0);
+      } else {
+        // 如果无法获取 textarea，追加到末尾
+        setContent((prev) => prev + '\n\n' + markdown + '\n\n');
+      }
       
       alert('图片上传成功！');
     } catch (err) {
@@ -126,16 +160,30 @@ export default function ArticleEditor({
             {showPreview ? '编辑' : '预览'}
           </button>
           
-          <label className="btn btn-secondary upload-btn">
-            {uploading ? '上传中...' : '上传图片'}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
+          <div className="image-upload-group">
+            <label className="btn btn-secondary upload-btn">
+              {uploading ? '上传中...' : '上传图片'}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                disabled={uploading}
+                style={{ display: 'none' }}
+              />
+            </label>
+            
+            <select
+              value={imageSize}
+              onChange={(e) => setImageSize(e.target.value as 'tiny' | 'small' | 'medium' | 'full')}
+              className="image-size-select"
               disabled={uploading}
-              style={{ display: 'none' }}
-            />
-          </label>
+            >
+              <option value="tiny">极小 (100px)</option>
+              <option value="small">小图 (200px)</option>
+              <option value="medium">中图 (400px)</option>
+              <option value="full">原始大小</option>
+            </select>
+          </div>
         </div>
 
         <div className="toolbar-right">
@@ -220,6 +268,7 @@ export default function ArticleEditor({
           <div className="form-group">
             <label htmlFor="content">内容 * (Markdown)</label>
             <textarea
+              ref={textareaRef}
               id="content"
               value={content}
               onChange={(e) => setContent(e.target.value)}

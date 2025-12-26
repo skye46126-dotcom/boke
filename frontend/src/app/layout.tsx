@@ -2,6 +2,12 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import './globals.css';
 import 'highlight.js/styles/atom-one-dark.css';
+import '@/styles/typography.css';
+import '@/styles/article-layout.css';
+import '@/styles/table-of-contents.css';
+import '@/styles/magnetic.css';
+import '@/styles/heading-reveal.css';
+import '@/styles/accessibility.css';
 
 export const metadata: Metadata = {
   title: {

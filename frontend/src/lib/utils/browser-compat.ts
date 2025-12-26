@@ -49,7 +49,8 @@ function checkES2020Support(): boolean {
     const test = obj?.prop?.nested;
 
     // Check for nullish coalescing
-    const nullish = null ?? 'default';
+    const maybeNull: string | null = Math.random() > 2 ? null : 'value';
+    const nullish: string = maybeNull ?? 'default';
 
     // Check for BigInt
     const bigInt = BigInt(9007199254740991);
