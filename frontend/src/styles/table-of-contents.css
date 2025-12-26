@@ -117,8 +117,13 @@
   text-decoration: none;
   border-radius: 4px;
   transition: all 0.2s ease;
-  font-size: calc(var(--font-size-base) * 0.9);
-  line-height: calc(var(--baseline) / (var(--font-size-base) * 0.9));
+  font-size: calc(var(--font-size-base) * 0.85);
+  line-height: 1.4;
+  
+  /* 优化文本换行 */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .toc-link:hover {
@@ -149,19 +154,19 @@
 
 .toc-item.level-2 .toc-link {
   padding-left: calc(var(--space-sm) + var(--space-xs));
-  font-size: calc(var(--font-size-base) * 0.85);
+  font-size: calc(var(--font-size-base) * 0.8);
 }
 
 .toc-item.level-3 .toc-link {
   padding-left: calc(var(--space-sm) + var(--space-xs) * 2);
-  font-size: calc(var(--font-size-base) * 0.8);
+  font-size: calc(var(--font-size-base) * 0.75);
 }
 
 .toc-item.level-4 .toc-link,
 .toc-item.level-5 .toc-link,
 .toc-item.level-6 .toc-link {
   padding-left: calc(var(--space-sm) + var(--space-xs) * 3);
-  font-size: calc(var(--font-size-base) * 0.75);
+  font-size: calc(var(--font-size-base) * 0.7);
   color: var(--color-text-muted);
 }
 

@@ -10,6 +10,7 @@
 .article-layout {
   min-height: 100vh;
   background: var(--color-background);
+  position: relative;
 }
 
 .article-layout-container {
@@ -26,13 +27,136 @@
 }
 
 /* ========================================
+ * 左侧触发热区 (Left Trigger Zone)
+ * ======================================== */
+
+.sidebar-trigger-zone {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 100vh;
+  z-index: 999;
+  cursor: pointer;
+  background: transparent;
+}
+
+/* 可选：添加视觉提示 */
+.sidebar-trigger-zone::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60px;
+  background: linear-gradient(
+    to right,
+    rgba(0, 102, 204, 0.3),
+    transparent
+  );
+  border-radius: 0 3px 3px 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar-trigger-zone:hover::after {
+  opacity: 1;
+}
+
+/* ========================================
+ * 滑出侧边栏 (Flyout Sidebar)
+ * ======================================== */
+
+.article-sidebar-flyout {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 320px;
+  height: 100vh;
+  background: var(--color-background);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  
+  /* 使用 Flexbox 实现固定页首/页脚布局 */
+  display: flex;
+  flex-direction: column;
+  
+  /* 默认隐藏在左侧 */
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.article-sidebar-flyout.visible {
+  transform: translateX(0);
+}
+
+/* 固定页首：目录标题 */
+.sidebar-header {
+  flex-shrink: 0;
+  padding: var(--space-lg) var(--space-md) var(--space-sm);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.sidebar-title {
+  font-size: calc(var(--font-size-base) * 1.25);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+/* 可滚动内容区域：目录列表 */
+.sidebar-scrollable {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--space-md);
+  
+  /* 隐藏滚动条但保留滚动功能 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.sidebar-scrollable::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* 固定页脚：分享工具 */
+.sidebar-footer {
+  flex-shrink: 0;
+  padding: var(--space-sm) var(--space-md) var(--space-lg);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-background);
+}
+
+/* 遮罩层 */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+/* ========================================
  * 桌面端布局 (Desktop Layout)
  * ======================================== */
 
 @media (min-width: 1024px) {
   .article-layout-content {
-    grid-template-columns: 1fr 280px;
-    gap: var(--space-xl);
+    /* 桌面端不再使用网格布局，因为侧边栏是浮层 */
+    grid-template-columns: 1fr;
+    gap: 0;
   }
   
   .article-layout-container {
@@ -42,8 +166,7 @@
 
 @media (min-width: 1200px) {
   .article-layout-content {
-    grid-template-columns: 1fr 320px;
-    gap: calc(var(--space-xl) * 1.5);
+    grid-template-columns: 1fr;
   }
 }
 
@@ -64,10 +187,9 @@
 
 @media (min-width: 1024px) {
   .article-main {
-    /* 桌面端减少左右内边距，因为有侧边栏 */
-    padding: 0;
-    margin: 0;
-    max-width: none;
+    /* 桌面端居中显示，最大化阅读空间 */
+    padding: 0 var(--space-md);
+    max-width: 800px;
   }
 }
 
@@ -89,15 +211,15 @@
  * 桌面端侧边栏 (Desktop Sidebar)
  * ======================================== */
 
+/* 旧的静态侧边栏样式已被滑出侧边栏替代 */
 .article-sidebar {
   display: none;
 }
 
-@media (min-width: 769px) {
-  .article-sidebar {
-    display: block;
-    position: relative;
-  }
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
 }
 
 .sidebar-content {
@@ -111,33 +233,32 @@
  * ======================================== */
 
 .share-tools {
-  padding: var(--space-md);
-  background: var(--color-background);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .share-title {
-  font-size: calc(var(--font-size-base) * 1.1);
+  font-size: calc(var(--font-size-base) * 0.95);
   font-weight: 600;
   color: var(--color-text-primary);
   margin-bottom: var(--space-sm);
-  padding-bottom: var(--baseline-half);
-  border-bottom: 1px solid var(--color-border);
 }
 
 .share-buttons {
   display: flex;
   gap: var(--space-sm);
+  justify-content: flex-start;
 }
 
 .share-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   background: var(--color-background-subtle);
   border: 1px solid var(--color-border);
   border-radius: 8px;
@@ -254,6 +375,14 @@
   .share-button:hover {
     transform: none !important;
   }
+  
+  .article-sidebar-flyout {
+    transition: none !important;
+  }
+  
+  .sidebar-overlay {
+    animation: none !important;
+  }
 }
 
 /* 高对比度模式 */
@@ -262,6 +391,16 @@
   .share-button {
     border-width: 2px;
   }
+  
+  .article-sidebar-flyout {
+    border-right: 3px solid var(--color-border);
+  }
+}
+
+/* 键盘导航支持 */
+.sidebar-trigger-zone:focus-visible {
+  outline: 2px solid var(--color-link);
+  outline-offset: 2px;
 }
 
 /* ========================================
@@ -300,9 +439,16 @@
   contain: layout style;
 }
 
-.article-sidebar {
+.article-sidebar-flyout {
   /* 侧边栏独立渲染 */
   contain: layout style;
+  /* 使用 GPU 加速 */
+  will-change: transform;
+}
+
+.article-sidebar-flyout:not(.visible) {
+  /* 隐藏时移除 will-change */
+  will-change: auto;
 }
 
 .article-main {
@@ -334,25 +480,6 @@ img {
 /* ========================================
  * 特殊效果 (Special Effects)
  * ======================================== */
-
-/* 侧边栏进入动画 */
-@media (min-width: 769px) {
-  .article-sidebar {
-    opacity: 0;
-    animation: slideInRight 0.5s ease 0.3s forwards;
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
 
 /* 内容区域进入动画 */
 .article-main {
