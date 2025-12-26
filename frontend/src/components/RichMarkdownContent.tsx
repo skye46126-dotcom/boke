@@ -25,6 +25,8 @@ export default function RichMarkdownContent({
   useEffect(() => {
     if (!contentRef.current) return;
 
+    console.log('[RichMarkdownContent] Initializing heading reveal and magnetic effects');
+
     // 初始化标题揭示动画
     revealRef.current = new HeadingReveal({
       animationType: 'mask-reveal',
@@ -37,6 +39,8 @@ export default function RichMarkdownContent({
       contentRef.current.querySelectorAll<HTMLElement>('h1, h2, h3, h4, h5, h6')
     );
 
+    console.log(`[RichMarkdownContent] Found ${headings.length} headings`);
+
     if (headings.length > 0) {
       revealRef.current.observe(headings);
     }
@@ -45,6 +49,8 @@ export default function RichMarkdownContent({
     const links = Array.from(
       contentRef.current.querySelectorAll<HTMLElement>('a')
     );
+
+    console.log(`[RichMarkdownContent] Found ${links.length} links for magnetic effect`);
 
     links.forEach((link) => {
       const magneticInstance = new MagneticElement(link, {

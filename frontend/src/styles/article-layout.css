@@ -394,3 +394,23 @@ img {
   width: 100px;
   height: 100px;
 }
+
+/* ========================================
+ * 文章页脚 (Article Footer)
+ * ======================================== */
+
+.article-footer {
+  margin-top: var(--space-xxl);
+  padding: var(--space-lg) 0;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .article-footer {
+    margin-top: var(--space-lg);
+    padding: var(--space-md) 0;
+  }
+}

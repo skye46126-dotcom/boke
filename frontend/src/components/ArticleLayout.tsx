@@ -8,6 +8,7 @@
 import React from 'react';
 import { TocItem } from '@/types/rich-article';
 import TableOfContents from './TableOfContents';
+import SignatureIcon from './SignatureIcon';
 
 interface ArticleLayoutProps {
   children: React.ReactNode;
@@ -81,6 +82,11 @@ export default function ArticleLayout({
           )}
         </div>
       </div>
+      
+      {/* 页脚签名图标 */}
+      <footer className="article-footer">
+        <SignatureIcon />
+      </footer>
     </div>
   );
 }
