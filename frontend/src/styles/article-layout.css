@@ -74,7 +74,8 @@
   top: 0;
   width: 320px;
   height: 100vh;
-  background: var(--color-background);
+  /* 完全不透明的背景色，防止内容穿透 */
+  background: #ffffff;
   box-shadow: 4px 0 24px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   
@@ -91,18 +92,41 @@
   transform: translateX(0);
 }
 
-/* 固定页首：目录标题 */
-.sidebar-header {
+/* 侧边栏导航区域：返回首页按钮 */
+.sidebar-nav {
   flex-shrink: 0;
   padding: var(--space-lg) var(--space-md) var(--space-sm);
   border-bottom: 1px solid var(--color-border);
 }
 
-.sidebar-title {
-  font-size: calc(var(--font-size-base) * 1.25);
-  font-weight: 600;
+.sidebar-nav .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-background-subtle);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
   color: var(--color-text-primary);
-  margin: 0;
+  text-decoration: none;
+  font-size: calc(var(--font-size-base) * 0.95);
+  font-weight: 500;
+  transition: all 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: center;
+}
+
+.sidebar-nav .back-link:hover {
+  background: var(--color-link);
+  color: var(--color-background);
+  border-color: var(--color-link);
+  transform: translateX(-2px);
+}
+
+.sidebar-nav .back-link:focus {
+  outline: 2px solid var(--color-link);
+  outline-offset: 2px;
 }
 
 /* 可滚动内容区域：目录列表 */
@@ -110,6 +134,7 @@
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
+  /* 调整顶部间距，因为现在有导航区域 */
   padding: var(--space-md);
   
   /* 隐藏滚动条但保留滚动功能 */

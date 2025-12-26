@@ -10,6 +10,7 @@ import React, { useState, useEffect } from 'react';
 import { TocItem } from '@/types/rich-article';
 import TableOfContents from './TableOfContents';
 import SignatureIcon from './SignatureIcon';
+import MagneticLink from './MagneticLink';
 
 interface ArticleLayoutProps {
   children: React.ReactNode;
@@ -81,9 +82,15 @@ export default function ArticleLayout({
             className={`article-sidebar-flyout ${sidebarVisible ? 'visible' : ''}`}
             onMouseLeave={() => setSidebarVisible(false)}
           >
-            {/* 固定页首：目录标题 */}
-            <div className="sidebar-header">
-              <h3 className="sidebar-title">目录</h3>
+            {/* 返回首页按钮 */}
+            <div className="sidebar-nav">
+              <MagneticLink 
+                href="/" 
+                className="back-link"
+                config={{ strength: 0.2, radius: 80 }}
+              >
+                ← 返回首页
+              </MagneticLink>
             </div>
 
             {/* 可滚动内容区域：目录列表 */}

@@ -27,11 +27,11 @@ export default function RichMarkdownContent({
 
     console.log('[RichMarkdownContent] Initializing heading reveal and magnetic effects');
 
-    // 初始化标题揭示动画
+    // 初始化标题揭示动画 - 使用 clip-path 蒙版效果
     revealRef.current = new HeadingReveal({
-      animationType: 'mask-reveal',
-      duration: 250,
-      threshold: 0.5,
+      duration: 400,
+      threshold: 0.3,
+      rootMargin: '0px 0px -10% 0px',
     });
 
     // 查找所有标题并应用揭示效果

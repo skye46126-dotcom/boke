@@ -1,12 +1,13 @@
 /**
  * 标题揭示动画系统
  * 使用 IntersectionObserver 检测标题进入视口，触发揭示动画
+ * 使用 clip-path 蒙版和光标伪元素实现打字机效果
  */
 
 export interface RevealConfig {
-  animationType: 'cursor-blink' | 'mask-reveal';
   duration: number;
   threshold: number;
+  rootMargin: string;
   reducedMotion?: boolean;
 }
 
@@ -17,14 +18,15 @@ export class HeadingReveal {
 
   constructor(config: Partial<RevealConfig> = {}) {
     this.config = {
-      animationType: 'mask-reveal',
-      duration: 250,
-      threshold: 0.5,
+      duration: 400,
+      threshold: 0.3,
+      rootMargin: '0px 0px -10% 0px',
       reducedMotion: this.checkReducedMotion(),
       ...config,
     };
 
     if (this.config.reducedMotion) {
+      console.log('[HeadingReveal] Reduced motion detected, animations disabled');
       return;
     }
 
@@ -32,6 +34,7 @@ export class HeadingReveal {
   }
 
   private checkReducedMotion(): boolean {
+    if (typeof window === 'undefined') return false;
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }
 
@@ -39,25 +42,41 @@ export class HeadingReveal {
     this.observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && !this.revealed.has(entry.target as HTMLElement)) {
-            this.reveal(entry.target as HTMLElement);
+          const target = entry.target as HTMLElement;
+          
+          // 只在元素进入视口且未被揭示过时触发
+          if (entry.isIntersecting && !this.revealed.has(target)) {
+            this.reveal(target);
           }
         });
       },
       {
         threshold: this.config.threshold,
-        rootMargin: '0px 0px -10% 0px',
+        rootMargin: this.config.rootMargin,
       }
     );
   }
 
   public observe(headings: HTMLElement[]): void {
     if (this.config.reducedMotion || !this.observer) {
+      // 如果禁用动画，直接显示所有标题
+      console.log('[HeadingReveal] Reduced motion enabled, showing all headings immediately');
+      headings.forEach((heading) => {
+        heading.classList.add('heading-revealed');
+      });
       return;
     }
 
-    headings.forEach((heading) => {
+    console.log(`[HeadingReveal] Starting to observe ${headings.length} headings`);
+    headings.forEach((heading, index) => {
+      // 添加初始隐藏类
       heading.classList.add('heading-reveal-hidden');
+      console.log(`[HeadingReveal] Added .heading-reveal-hidden to heading ${index}: "${heading.textContent?.substring(0, 30)}..."`);
+      
+      // 设置自定义动画时长
+      heading.style.setProperty('--reveal-duration', `${this.config.duration}ms`);
+      
+      // 开始观察
       this.observer!.observe(heading);
     });
   }
@@ -67,21 +86,27 @@ export class HeadingReveal {
       return;
     }
 
+    console.log(`[HeadingReveal] Revealing heading: "${heading.textContent?.substring(0, 30)}..."`);
+
+    // 标记为已揭示，防止重复触发
     this.revealed.add(heading);
-    heading.classList.remove('heading-reveal-hidden');
 
-    if (this.config.animationType === 'cursor-blink') {
-      heading.classList.add('heading-reveal-cursor');
-    } else {
-      heading.classList.add('heading-reveal-mask');
-    }
+    // 添加揭示类，触发 CSS 动画
+    heading.classList.add('is-revealing');
+    console.log(`[HeadingReveal] Added .is-revealing class`);
 
-    heading.style.setProperty('--reveal-duration', `${this.config.duration}ms`);
-
+    // 动画完成后清理类名
     setTimeout(() => {
-      heading.classList.remove('heading-reveal-cursor', 'heading-reveal-mask');
+      heading.classList.remove('heading-reveal-hidden', 'is-revealing');
+      heading.classList.add('heading-revealed');
       heading.style.removeProperty('--reveal-duration');
-    }, this.config.duration);
+      console.log(`[HeadingReveal] Animation complete, added .heading-revealed class`);
+      
+      // 停止观察已揭示的元素
+      if (this.observer) {
+        this.observer.unobserve(heading);
+      }
+    }, this.config.duration + 200); // 额外 200ms 确保光标淡出完成
   }
 
   public disconnect(): void {
@@ -107,8 +132,15 @@ export class HeadingReveal {
   public isRevealed(heading: HTMLElement): boolean {
     return this.revealed.has(heading);
   }
+
+  public getRevealedCount(): number {
+    return this.revealed.size;
+  }
 }
 
+/**
+ * 便捷初始化函数
+ */
 export function initHeadingReveal(
   container: HTMLElement | Document = document,
   config?: Partial<RevealConfig>
@@ -119,7 +151,10 @@ export function initHeadingReveal(
     container.querySelectorAll<HTMLElement>('h1, h2, h3, h4, h5, h6')
   );
   
-  headingReveal.observe(headings);
+  if (headings.length > 0) {
+    console.log(`[HeadingReveal] Observing ${headings.length} headings`);
+    headingReveal.observe(headings);
+  }
   
   return headingReveal;
 }

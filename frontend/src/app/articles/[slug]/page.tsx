@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { RichArticle } from '@/types/rich-article';
 import RichMarkdownContent from '@/components/RichMarkdownContent';
-import MagneticLink from '@/components/MagneticLink';
 import ArticleLayout from '@/components/ArticleLayout';
 import { generateArticleJsonLd, generateBreadcrumbJsonLd } from '@/lib/seo';
 
@@ -116,14 +115,6 @@ export default async function ArticlePage({
         <ArticleLayout tableOfContents={article.tableOfContents}>
           <article className="article-detail">
             <header className="article-header">
-              <MagneticLink 
-                href="/" 
-                className="back-link"
-                config={{ strength: 0.2, radius: 80 }}
-              >
-                ← 返回首页
-              </MagneticLink>
-              
               <h1 className="article-detail-title">{article.title}</h1>
               
               <div className="article-detail-meta">

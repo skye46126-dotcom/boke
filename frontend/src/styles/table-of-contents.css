@@ -103,15 +103,22 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  /* 确保列表占据全部可用宽度 */
+  width: 100%;
 }
 
 .toc-item {
   margin: 0;
   line-height: calc(var(--baseline) / var(--font-size-base));
+  /* 确保列表项占据全部可用宽度 */
+  width: 100%;
 }
 
 .toc-link {
   display: block;
+  /* 强制链接占据全部可用宽度 */
+  width: 100%;
+  box-sizing: border-box;
   padding: var(--baseline-half) var(--space-sm);
   color: var(--color-text-secondary);
   text-decoration: none;
@@ -120,10 +127,13 @@
   font-size: calc(var(--font-size-base) * 0.85);
   line-height: 1.4;
   
-  /* 优化文本换行 */
+  /* 优化文本换行 - 确保正确的水平文本流 */
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
+  white-space: normal;
+  /* 防止文本溢出 */
+  overflow: hidden;
 }
 
 .toc-link:hover {

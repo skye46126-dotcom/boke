@@ -1,104 +1,83 @@
 /**
  * 标题揭示动画样式
  * Heading Reveal Animation Styles
+ * 使用简单的淡入+位移效果，配合打字光标
  */
 
 /* CSS 变量 */
 :root {
-  --reveal-duration: 250ms;
-}
-
-/* 初始隐藏状态 */
-.heading-reveal-hidden {
-  opacity: 0;
+  --reveal-duration: 400ms;
+  --cursor-blink-duration: 0.8s;
 }
 
 /* ========================================
- * 光标闪烁动画 (Cursor Blink Animation)
+ * 初始隐藏状态 (Initial Hidden State)
  * ======================================== */
 
-.heading-reveal-cursor {
+.heading-reveal-hidden {
   position: relative;
-  opacity: 1;
-  animation: fadeIn var(--reveal-duration) ease-out forwards;
+  display: block;
+  /* 初始状态：透明且略微向左偏移 */
+  opacity: 0;
+  transform: translateX(-20px);
 }
 
-/* 光标效果 */
-.heading-reveal-cursor::after {
+/* 光标伪元素 - 初始可见并闪烁 */
+.heading-reveal-hidden::before {
   content: '';
   position: absolute;
-  right: -0.1em;
+  left: -0.5em;
   top: 0.1em;
   bottom: 0.1em;
-  width: 0.1em;
+  width: 0.15em;
   background-color: currentColor;
-  animation: cursorBlink 0.8s ease-in-out;
+  opacity: 0.8;
+  animation: cursorBlink var(--cursor-blink-duration) ease-in-out infinite;
 }
 
+/* 光标闪烁动画 */
 @keyframes cursorBlink {
   0%, 100% {
-    opacity: 0;
+    opacity: 1;
   }
   50% {
-    opacity: 1;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
+    opacity: 0.3;
   }
 }
 
 /* ========================================
- * 蒙版揭示动画 (Mask Reveal Animation)
+ * 揭示动画 (Revealing Animation)
  * ======================================== */
 
-.heading-reveal-mask {
-  position: relative;
+.heading-reveal-hidden.is-revealing {
+  /* 淡入并移动到原位 */
   opacity: 1;
-  animation: maskReveal var(--reveal-duration) cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  transform: translateX(0);
+  transition: opacity var(--reveal-duration) cubic-bezier(0.4, 0, 0.2, 1),
+              transform var(--reveal-duration) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* 蒙版效果 */
-.heading-reveal-mask::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--color-background, #fff) 50%,
-    transparent 100%
-  );
-  animation: maskSlide var(--reveal-duration) cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  pointer-events: none;
+/* 光标在揭示完成后淡出 */
+.heading-reveal-hidden.is-revealing::before {
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+  transition-delay: calc(var(--reveal-duration) * 0.6);
 }
 
-@keyframes maskReveal {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* ========================================
+ * 揭示完成状态 (Revealed State)
+ * ======================================== */
+
+.heading-revealed {
+  /* 恢复正常显示 */
+  position: static;
+  display: block;
+  opacity: 1;
+  transform: none;
 }
 
-@keyframes maskSlide {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(100%);
-  }
+.heading-revealed::before {
+  display: none;
 }
 
 /* ========================================
@@ -109,16 +88,15 @@
 @media (prefers-reduced-motion: reduce) {
   .heading-reveal-hidden {
     opacity: 1 !important;
+    transform: none !important;
   }
 
-  .heading-reveal-cursor,
-  .heading-reveal-mask {
-    animation: none !important;
-  }
-
-  .heading-reveal-cursor::after,
-  .heading-reveal-mask::before {
+  .heading-reveal-hidden::before {
     display: none !important;
+  }
+
+  .heading-reveal-hidden.is-revealing {
+    transition: none !important;
   }
 }
 
@@ -129,7 +107,12 @@
 @media (max-width: 768px) {
   /* 移动端缩短动画时间 */
   :root {
-    --reveal-duration: 200ms;
+    --reveal-duration: 300ms;
+  }
+  
+  /* 移动端减小位移距离 */
+  .heading-reveal-hidden {
+    transform: translateX(-10px);
   }
 }
 
@@ -137,17 +120,14 @@
  * 性能优化 (Performance Optimization)
  * ======================================== */
 
-.heading-reveal-cursor,
-.heading-reveal-mask {
+.heading-reveal-hidden,
+.heading-reveal-hidden.is-revealing {
   /* 使用 GPU 加速 */
-  transform: translateZ(0);
-  backface-visibility: hidden;
   will-change: opacity, transform;
 }
 
 /* 动画完成后移除 will-change */
-.heading-reveal-cursor:not(.heading-reveal-hidden),
-.heading-reveal-mask:not(.heading-reveal-hidden) {
+.heading-revealed {
   will-change: auto;
 }
 
@@ -158,10 +138,10 @@
 @media print {
   .heading-reveal-hidden {
     opacity: 1 !important;
+    transform: none !important;
   }
 
-  .heading-reveal-cursor::after,
-  .heading-reveal-mask::before {
+  .heading-reveal-hidden::before {
     display: none !important;
   }
 }
@@ -180,56 +160,4 @@ h6[id]:focus {
   outline: 2px solid var(--color-link, #0066cc);
   outline-offset: 4px;
   border-radius: 2px;
-}
-
-/* ========================================
- * 特殊效果变体 (Special Effect Variants)
- * ======================================== */
-
-/* 淡入 + 向上滑动 */
-.heading-reveal-fade-up {
-  animation: fadeInUp var(--reveal-duration) ease-out forwards;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* 淡入 + 缩放 */
-.heading-reveal-fade-scale {
-  animation: fadeInScale var(--reveal-duration) ease-out forwards;
-}
-
-@keyframes fadeInScale {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* 从左侧滑入 */
-.heading-reveal-slide-left {
-  animation: slideInLeft var(--reveal-duration) ease-out forwards;
-}
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
 }
