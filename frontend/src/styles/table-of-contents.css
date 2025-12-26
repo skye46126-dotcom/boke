@@ -8,24 +8,19 @@
  * ======================================== */
 
 .table-of-contents.desktop {
-  position: sticky;
-  top: 2rem;
-  max-height: calc(100vh - 4rem);
-  overflow-y: auto;
-  padding: var(--space-md);
-  background: var(--color-background);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  /* 移除所有"框"的样式，直接融入侧边栏 */
+  position: static;
+  max-height: none;
+  overflow-y: visible;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .table-of-contents.desktop .toc-title {
-  font-size: calc(var(--font-size-base) * 1.1);
-  font-weight: 600;
-  color: var(--color-text-primary);
-  margin-bottom: var(--space-sm);
-  padding-bottom: var(--baseline-half);
-  border-bottom: 1px solid var(--color-border);
+  display: none; /* 隐藏桌面端的标题 */
 }
 
 /* ========================================
@@ -210,27 +205,6 @@
   .table-of-contents.mobile {
     display: none;
   }
-}
-
-/* ========================================
- * 滚动条样式 (Scrollbar Styles)
- * ======================================== */
-
-.table-of-contents.desktop::-webkit-scrollbar {
-  width: 4px;
-}
-
-.table-of-contents.desktop::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.table-of-contents.desktop::-webkit-scrollbar-thumb {
-  background: var(--color-border);
-  border-radius: 2px;
-}
-
-.table-of-contents.desktop::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-muted);
 }
 
 /* ========================================
