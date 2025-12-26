@@ -1,3 +1,8 @@
+/**
+ * 标题揭示动画系统
+ * 使用 IntersectionObserver 检测标题进入视口，触发揭示动画
+ */
+
 export interface RevealConfig {
   animationType: 'cursor-blink' | 'mask-reveal';
   duration: number;
