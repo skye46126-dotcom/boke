@@ -70,8 +70,7 @@ export class MagneticElement {
     this.currentX = 0;
     this.currentY = 0;
 
-    // 设置元素样式
-    this.element.style.transition = 'none';
+    // 设置元素样式 - 不覆盖原有 transition，只设置 will-change
     this.element.style.willChange = 'transform';
 
     // 添加事件监听
@@ -210,9 +209,7 @@ export class MagneticElement {
     this.element.removeEventListener('mousemove', this.boundMouseMove);
     this.element.removeEventListener('mouseleave', this.boundMouseLeave);
 
-    // 重置样式
-    this.element.style.transform = '';
-    this.element.style.transition = '';
+    // 重置样式 - 只清除 will-change，不影响其他样式
     this.element.style.willChange = '';
 
     this.isActive = false;

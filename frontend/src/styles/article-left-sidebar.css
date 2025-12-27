@@ -2,6 +2,12 @@
  * 左侧侧边栏样式
  * Article Left Sidebar Styles
  * 像素风格，hover展开，适配日夜模式
+ * 
+ * 字号优化版本：
+ * - 返回按钮文字：16px，图标：18px
+ * - 目录标题：16px
+ * - 目录项文字：15px，序号：14px
+ * - 主题标签：15px，按钮：16px
  */
 
 /* ========================================
@@ -36,7 +42,6 @@
  * 触发区 - 左侧20px隐形区域
  * ======================================== */
 
-/* 侧边栏容器 - 包裹触发区和侧边栏 */
 .left-sidebar-container {
   position: fixed;
   left: 0;
@@ -58,22 +63,21 @@
   z-index: 9992;
 }
 
+
 .left-sidebar-trigger .trigger-indicator {
   font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
-  font-size: 16px;
+  /* 【字号】触发指示器：18px */
+  font-size: 18px;
   color: var(--color-text-tertiary, #999);
   opacity: 0.3;
-  /* 微观动力：过渡时长0.2s */
   transition: opacity 0.2s ease, transform 0.2s ease;
   -webkit-font-smoothing: none;
 }
 
 .left-sidebar-trigger:hover .trigger-indicator {
   opacity: 0.8;
-  /* 微观动力：hover时右移1px提示展开方向 */
   transform: translateX(1px);
 }
-
 
 /* ========================================
  * 侧边栏主体
@@ -82,11 +86,12 @@
 .left-sidebar {
   position: relative;
   height: 100vh;
-  width: 200px;
+  /* 【宽度】加宽以适配更大字号：220px */
+  width: 220px;
   background: var(--color-surface) !important;
   border-right: 2px solid var(--color-pixel-border);
   z-index: 9991;
-  transform: translateX(-200px);
+  transform: translateX(-220px);
   transition: transform 0.3s ease-out;
   overflow: hidden;
 }
@@ -101,11 +106,13 @@
 }
 
 .left-sidebar-content {
-  padding: 20px 16px;
+  /* 【间距】内边距从24px 20px改为28px 24px */
+  padding: 28px 24px;
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  /* 【间距】元素间距加大：24px */
+  gap: 24px;
   overflow-y: auto;
 }
 
@@ -116,36 +123,32 @@
 .left-sidebar-back {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
+  /* 【间距】图标与文字间距：10px */
+  gap: 10px;
+  /* 【间距】内边距从8px 12px改为12px 18px */
+  padding: 12px 18px;
   background: var(--color-pixel-card-bg, #fff);
   border: 1px solid var(--color-pixel-border, #666);
   text-decoration: none;
   color: var(--color-text-primary, #222);
   font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
-  font-size: 12px;
+  /* 【字号】返回按钮文字：16px */
+  font-size: 16px;
   -webkit-font-smoothing: none;
-  /* 微观动力：基础阴影 */
   box-shadow: 2px 2px 0 var(--color-pixel-shadow, #333);
-  /* 微观动力：过渡时长0.2s */
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-  /* 确保transform不影响布局 */
   will-change: transform, box-shadow;
 }
 
-/* 微观动力：hover时微缩放+阴影偏移 */
 .left-sidebar-back:hover {
   background: var(--color-pixel-accent, #4a7a96);
   color: #fff;
   border-color: var(--color-pixel-accent, #4a7a96);
-  /* 微观动力：向上浮起1px + 阴影增加1px */
   transform: translateY(-1px);
   box-shadow: 3px 3px 0 var(--color-pixel-shadow, #333);
 }
 
-/* 微观动力：点击时下压反馈 */
 .left-sidebar-back:active {
-  /* 微观动力：下压1px + 阴影减少 */
   transform: translateY(1px);
   box-shadow: 1px 1px 0 var(--color-pixel-shadow, #333);
 }
@@ -163,133 +166,142 @@
 }
 
 .back-icon {
-  font-size: 14px;
-  /* 微观动力：图标微动 */
+  /* 【字号】返回图标：18px */
+  font-size: 18px;
   transition: transform 0.2s ease;
 }
 
 .left-sidebar-back:hover .back-icon {
-  /* 微观动力：hover时箭头左移1px */
-  transform: translateX(-1px);
+  transform: translateX(-2px);
 }
 
-
 /* ========================================
- * 目录样式 - 微观动力交互
+ * 目录区域 - TOC
  * ======================================== */
 
 .left-sidebar-toc {
   flex: 1;
   overflow-y: auto;
+  /* 【间距】目录区域内边距 */
+  padding: 4px 0;
 }
 
-.left-sidebar-toc .toc-title {
+.toc-title {
   font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
-  font-size: 11px;
+  /* 【字号】目录标题：16px */
+  font-size: 16px;
+  font-weight: normal;
   color: var(--color-text-secondary, #666);
-  margin: 0 0 12px 0;
-  padding-bottom: 8px;
-  border-bottom: 1px dashed var(--color-pixel-border, #999);
+  /* 【间距】标题下边距：14px */
+  margin: 0 0 14px 0;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--color-pixel-border, #666);
   -webkit-font-smoothing: none;
 }
 
-[data-theme="dark"] .left-sidebar-toc .toc-title {
+[data-theme="dark"] .toc-title {
   color: var(--color-text-secondary, #aaa);
+  border-color: var(--color-pixel-border, #555);
 }
 
-.left-sidebar-toc .toc-list {
+.toc-list {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  /* 【间距】目录项间距从6px改为8px */
+  gap: 8px;
 }
 
-.left-sidebar-toc .toc-item {
+.toc-item {
   margin: 0;
+  padding: 0;
 }
 
-.left-sidebar-toc .toc-item.level-2 { padding-left: 12px; }
-.left-sidebar-toc .toc-item.level-3 { padding-left: 24px; }
-.left-sidebar-toc .toc-item.level-4 { padding-left: 36px; }
+/* 目录层级缩进 */
+.toc-item.level-2 { padding-left: 12px; }
+.toc-item.level-3 { padding-left: 24px; }
+.toc-item.level-4 { padding-left: 36px; }
+.toc-item.level-5 { padding-left: 48px; }
+.toc-item.level-6 { padding-left: 60px; }
 
-.left-sidebar-toc .toc-link {
+.toc-link {
   display: flex;
-  align-items: flex-start;
-  gap: 6px;
-  padding: 4px 8px;
+  align-items: center;
+  /* 【间距】链接内边距从6px 10px改为8px 12px */
+  padding: 8px 12px;
+  gap: 10px;
   text-decoration: none;
-  color: var(--color-text-secondary, #555);
-  font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
-  font-size: 10px;
-  line-height: 1.4;
-  -webkit-font-smoothing: none;
-  /* 微观动力：左侧边框作为指示器 */
-  border-left: 2px solid transparent;
-  /* 微观动力：过渡时长0.2s */
-  transition: transform 0.2s ease, color 0.2s ease, background 0.2s ease, border-color 0.2s ease, padding-left 0.2s ease;
-  will-change: transform;
-}
-
-/* 微观动力：hover时微位移+边框显示 */
-.left-sidebar-toc .toc-link:hover {
   color: var(--color-text-primary, #222);
+  font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
+  /* 【字号】目录项文字：15px */
+  font-size: 15px;
+  -webkit-font-smoothing: none;
+  background: transparent;
+  border: 1px solid transparent;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  will-change: transform, box-shadow;
+}
+
+.toc-link:hover {
   background: var(--color-surface-raised, rgba(0,0,0,0.03));
-  border-left-color: var(--color-pixel-accent, #4a7a96);
-  /* 微观动力：右移1px */
-  transform: translateX(1px);
-  padding-left: 10px;
+  border-color: var(--color-pixel-border, #666);
+  transform: translateY(-1px);
+  box-shadow: 1px 1px 0 var(--color-pixel-shadow, #333);
 }
 
-/* 微观动力：点击时下压 */
-.left-sidebar-toc .toc-link:active {
-  transform: translateX(1px) translateY(1px);
+.toc-link:active {
+  transform: translateY(1px);
+  box-shadow: none;
 }
 
-.left-sidebar-toc .toc-item.active .toc-link {
-  color: var(--color-pixel-accent, #4a7a96);
-  border-left-color: var(--color-pixel-accent, #4a7a96);
-  background: var(--color-surface-raised, rgba(74,122,150,0.1));
-  padding-left: 10px;
-}
-
-[data-theme="dark"] .left-sidebar-toc .toc-link {
-  color: var(--color-text-secondary, #999);
-}
-
-[data-theme="dark"] .left-sidebar-toc .toc-link:hover {
+[data-theme="dark"] .toc-link {
   color: var(--color-text-primary, #e0e0e0);
-  background: rgba(255,255,255,0.05);
 }
 
-[data-theme="dark"] .left-sidebar-toc .toc-item.active .toc-link {
-  color: var(--color-pixel-accent, #cc9966);
-  border-left-color: var(--color-pixel-accent, #cc9966);
-  background: rgba(204,153,102,0.1);
+[data-theme="dark"] .toc-link:hover {
+  background: var(--color-surface-raised, rgba(255,255,255,0.05));
+  border-color: var(--color-pixel-border, #555);
 }
 
-.left-sidebar-toc .toc-number {
+/* 目录项激活状态 */
+.toc-item.active .toc-link {
+  background: var(--color-pixel-accent, #4a7a96);
+  color: #fff;
+  border-color: var(--color-pixel-accent, #4a7a96);
+  box-shadow: 2px 2px 0 var(--color-pixel-shadow, #333);
+}
+
+[data-theme="dark"] .toc-item.active .toc-link {
+  background: var(--color-pixel-accent, #cc9966);
+  color: #1a1a1a;
+  border-color: var(--color-pixel-accent, #cc9966);
+}
+
+.toc-number {
+  font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
+  /* 【字号】目录序号：14px */
+  font-size: 14px;
   color: var(--color-text-tertiary, #999);
-  font-size: 9px;
-  min-width: 16px;
-  /* 微观动力：序号微动 */
-  transition: color 0.2s ease;
+  min-width: 24px;
+  -webkit-font-smoothing: none;
 }
 
-.left-sidebar-toc .toc-link:hover .toc-number {
-  color: var(--color-pixel-accent, #4a7a96);
+.toc-item.active .toc-number {
+  color: rgba(255, 255, 255, 0.8);
 }
 
-[data-theme="dark"] .left-sidebar-toc .toc-link:hover .toc-number {
-  color: var(--color-pixel-accent, #cc9966);
+[data-theme="dark"] .toc-item.active .toc-number {
+  color: rgba(26, 26, 26, 0.7);
 }
 
-.left-sidebar-toc .toc-text {
+.toc-text {
   flex: 1;
-  word-break: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-
 
 /* ========================================
  * 主题切换区域
@@ -299,26 +311,67 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px;
-  background: var(--color-pixel-card-bg, #fff);
-  border: 1px solid var(--color-pixel-border, #666);
-  box-shadow: 2px 2px 0 var(--color-pixel-shadow, #333);
+  /* 【间距】主题区域内边距：14px */
+  padding-top: 14px;
+  border-top: 1px dashed var(--color-pixel-border, #666);
+  margin-top: auto;
 }
 
 [data-theme="dark"] .left-sidebar-theme {
-  background: var(--color-pixel-card-bg, #2a2a2a);
   border-color: var(--color-pixel-border, #555);
 }
 
-.left-sidebar-theme .theme-label {
+.theme-label {
   font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
-  font-size: 10px;
+  /* 【字号】主题标签：15px */
+  font-size: 15px;
   color: var(--color-text-secondary, #666);
   -webkit-font-smoothing: none;
 }
 
-[data-theme="dark"] .left-sidebar-theme .theme-label {
+[data-theme="dark"] .theme-label {
   color: var(--color-text-secondary, #aaa);
+}
+
+.theme-toggle-btn {
+  font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
+  /* 【字号】主题按钮：16px */
+  font-size: 16px;
+  /* 【间距】按钮内边距：8px 12px */
+  padding: 8px 12px;
+  background: var(--color-pixel-card-bg, #fff);
+  border: 1px solid var(--color-pixel-border, #666);
+  color: var(--color-text-primary, #222);
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--color-pixel-shadow, #333);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  -webkit-font-smoothing: none;
+  will-change: transform, box-shadow;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--color-pixel-accent, #4a7a96);
+  color: #fff;
+  border-color: var(--color-pixel-accent, #4a7a96);
+  transform: translateY(-1px);
+  box-shadow: 3px 3px 0 var(--color-pixel-shadow, #333);
+}
+
+.theme-toggle-btn:active {
+  transform: translateY(1px);
+  box-shadow: 1px 1px 0 var(--color-pixel-shadow, #333);
+}
+
+[data-theme="dark"] .theme-toggle-btn {
+  background: var(--color-pixel-card-bg, #2a2a2a);
+  color: var(--color-text-primary, #e0e0e0);
+  border-color: var(--color-pixel-border, #555);
+}
+
+[data-theme="dark"] .theme-toggle-btn:hover {
+  background: var(--color-pixel-accent, #cc9966);
+  color: #1a1a1a;
+  border-color: var(--color-pixel-accent, #cc9966);
 }
 
 /* ========================================
@@ -331,151 +384,101 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 9989;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* ========================================
- * 移动端适配
+ * 移动端响应式样式
  * ======================================== */
 
 @media (max-width: 767px) {
   .left-sidebar-trigger {
     width: 30px;
   }
-  
-  .left-sidebar-trigger .trigger-indicator {
-    opacity: 0.5;
-    font-size: 20px;
-  }
-  
+
   .left-sidebar {
     width: 260px;
     transform: translateX(-260px);
   }
-  
+
   .left-sidebar.expanded {
     transform: translateX(0);
-    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .left-sidebar-content {
+    /* 【间距】移动端内边距同步加大 */
+    padding: 24px 20px;
+    gap: 20px;
+  }
+
+  /* 移动端字号保持与桌面端一致 */
+  .left-sidebar-back {
+    font-size: 16px;
+    padding: 12px 16px;
+  }
+
+  .back-icon {
+    font-size: 18px;
+  }
+
+  .toc-title {
+    font-size: 16px;
+  }
+
+  .toc-link {
+    font-size: 15px;
+    padding: 8px 10px;
+  }
+
+  .toc-number {
+    font-size: 14px;
+  }
+
+  .theme-label {
+    font-size: 15px;
+  }
+
+  .theme-toggle-btn {
+    font-size: 16px;
+    padding: 8px 12px;
   }
 }
 
 /* ========================================
- * 减少动画模式
+ * 减少动画偏好
  * ======================================== */
 
 @media (prefers-reduced-motion: reduce) {
   .left-sidebar,
   .left-sidebar-back,
-  .left-sidebar-toc .toc-link {
+  .toc-link,
+  .theme-toggle-btn,
+  .trigger-indicator,
+  .back-icon {
     transition: none;
+  }
+
+  .left-sidebar-overlay {
+    animation: none;
   }
 }
 
-
 /* ========================================
- * 主题切换按钮 - 微观动力交互
- * ======================================== */
-
-.theme-toggle-btn {
-  font-family: 'Zpix', monospace;
-  font-size: 10px;
-  padding: 4px 8px;
-  border: 1px solid var(--color-pixel-border);
-  background: var(--color-pixel-card-bg);
-  color: var(--color-text-primary);
-  cursor: pointer;
-  /* 微观动力：基础阴影 */
-  box-shadow: 2px 2px 0 var(--color-pixel-shadow);
-  -webkit-font-smoothing: none;
-  /* 微观动力：过渡时长0.2s */
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-  will-change: transform, box-shadow;
-}
-
-/* 微观动力：hover时微浮起+阴影增加 */
-.theme-toggle-btn:hover {
-  background: var(--color-pixel-accent);
-  color: #fff;
-  border-color: var(--color-pixel-accent);
-  /* 微观动力：向上浮起1px */
-  transform: translateY(-1px);
-  box-shadow: 3px 3px 0 var(--color-pixel-shadow);
-}
-
-/* 微观动力：点击时下压反馈 */
-.theme-toggle-btn:active {
-  /* 微观动力：下压1px + 阴影减少 */
-  transform: translateY(1px);
-  box-shadow: 1px 1px 0 var(--color-pixel-shadow);
-}
-
-[data-theme="dark"] .theme-toggle-btn {
-  background: var(--color-pixel-card-bg);
-  color: var(--color-text-primary);
-  border-color: var(--color-pixel-border);
-}
-
-[data-theme="dark"] .theme-toggle-btn:hover {
-  background: var(--color-pixel-accent);
-  color: #1a1a1a;
-  border-color: var(--color-pixel-accent);
-}
-
-/* ========================================
- * 触发区指示器 - 微观动力交互
- * ======================================== */
-
-.left-sidebar-trigger .trigger-indicator {
-  font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
-  font-size: 16px;
-  color: var(--color-text-tertiary, #999);
-  opacity: 0.3;
-  /* 微观动力：过渡时长0.2s */
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  -webkit-font-smoothing: none;
-}
-
-.left-sidebar-trigger:hover .trigger-indicator {
-  opacity: 0.8;
-  /* 微观动力：hover时右移1px提示展开方向 */
-  transform: translateX(1px);
-}
-
-/* ========================================
- * 移动端触摸反馈适配
+ * 触摸反馈 - 移动端
  * ======================================== */
 
 @media (hover: none) and (pointer: coarse) {
-  /* 移动端：使用:active替代:hover */
-  .left-sidebar-back:active {
-    background: var(--color-pixel-accent, #4a7a96);
-    color: #fff;
+  .left-sidebar-back:active,
+  .toc-link:active,
+  .theme-toggle-btn:active {
     transform: translateY(1px);
     box-shadow: 1px 1px 0 var(--color-pixel-shadow, #333);
-  }
-  
-  .left-sidebar-toc .toc-link:active {
-    color: var(--color-text-primary, #222);
-    background: var(--color-surface-raised, rgba(0,0,0,0.03));
-    border-left-color: var(--color-pixel-accent, #4a7a96);
-    transform: translateX(1px) translateY(1px);
-  }
-  
-  .theme-toggle-btn:active {
-    background: var(--color-pixel-accent);
-    color: #fff;
-    transform: translateY(1px);
-    box-shadow: 1px 1px 0 var(--color-pixel-shadow);
-  }
-  
-  [data-theme="dark"] .left-sidebar-back:active {
-    background: var(--color-pixel-accent, #cc9966);
-    color: #1a1a1a;
-  }
-  
-  [data-theme="dark"] .theme-toggle-btn:active {
-    background: var(--color-pixel-accent);
-    color: #1a1a1a;
   }
 }

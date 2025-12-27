@@ -952,13 +952,18 @@
   z-index: inherit;
 }
 
-/* 展开状态的过渡动画 - 从头像中心展开，0.5s */
+/* 展开状态的过渡动画 - 从头像中心展开
+ * 【核心修改点】
+ * - 动画时长：0.55s → 0.85s（1.5倍延长，更明显的减速缓冲）
+ * - 缓动函数：cubic-bezier(0.22, 0.61, 0.36, 1)
+ *   强减速曲线，前70%快速移动，后30%明显减速
+ */
 .function-cards-grid:not(.cards-collapsed) .poker-card {
   opacity: 1;
   transition: 
-    left 0.5s ease-out, 
-    top 0.5s ease-out, 
-    transform 0.5s ease-out, 
+    left 1.2s cubic-bezier(0.22, 0.61, 0.36, 1), 
+    top 1.2s cubic-bezier(0.22, 0.61, 0.36, 1), 
+    transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1), 
     opacity 0.5s ease-out;
 }
 

@@ -121,3 +121,62 @@
     transform: none !important;
   }
 }
+
+
+/* ========================================
+ * 小卡牌磁吸效果 - 仅小尺寸卡牌生效
+ * ======================================== */
+
+.magnetic-small-card,
+.magnetic-nav-card {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  transition: transform 0.2s ease-out;
+  will-change: transform;
+  transform-origin: center center;
+}
+
+/* 大卡片排除磁吸 */
+.poker-card.no-magnetic {
+  transform: none !important;
+}
+
+.poker-card.no-magnetic:hover {
+  transform: translateY(-2px) !important;
+}
+
+/* 小卡牌点击反馈 */
+.magnetic-small-card:active,
+.magnetic-nav-card:active {
+  transform: scale(0.98) !important;
+  transition: transform 0.1s ease;
+}
+
+/* 移动端禁用磁吸 */
+@media (hover: none) and (pointer: coarse) {
+  .magnetic-small-card,
+  .magnetic-nav-card {
+    transform: none;
+  }
+  .magnetic-small-card:active,
+  .magnetic-nav-card:active {
+    transform: scale(0.96) !important;
+  }
+}
+
+/* 减少动画模式 */
+@media (prefers-reduced-motion: reduce) {
+  .magnetic-small-card,
+  .magnetic-nav-card {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* 焦点样式 */
+.magnetic-small-card:focus-visible,
+.magnetic-nav-card:focus-visible {
+  outline: 2px solid var(--color-pixel-accent, #4a7a96);
+  outline-offset: 2px;
+}
