@@ -66,7 +66,8 @@
 .nav-trigger .trigger-icon {
   color: #f5f2ef;
   font-size: 16px;
-  font-family: 'Courier New', monospace;
+  /* 【修改】字体：改为系统默认字体 */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   line-height: 1;
 }
 
@@ -147,18 +148,17 @@
 
 /* 说明文字样式 - 极小、近黑、清晰可见 */
 .nav-card-description {
-  /* 字体：像素字体优先，系统等宽字体兜底 */
-  font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
-  /* 尺寸：8px（像素字体清晰下限，极小不抢镜） */
-  font-size: 8px;
+  /* 【修改】字体：改为系统默认字体，移除像素字体 */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  /* 尺寸：10px（系统字体需稍大以保持清晰） */
+  font-size: 10px;
   /* 颜色：近黑色，清晰可见 */
   color: #222222;
   /* 水平居中对齐 */
   text-align: center;
-  /* 像素字体无抗锯齿 - 保持清晰 */
-  -webkit-font-smoothing: none;
-  -moz-osx-font-smoothing: unset;
-  font-smooth: never;
+  /* 【修改】系统字体使用默认抗锯齿 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   /* 确保可见 */
   visibility: visible;
   opacity: 1;
@@ -173,6 +173,8 @@
   white-space: nowrap;
   /* 过渡效果 */
   transition: color 0.3s ease;
+  /* 【新增】字重：medium，增强可读性 */
+  font-weight: 500;
 }
 
 [data-theme="dark"] .nav-card {
@@ -262,7 +264,8 @@
   
   .nav-card-description {
     margin-top: 1px;
-    font-size: 8px;
+    /* 【修改】平板端字号：9px */
+    font-size: 9px;
   }
 }
 
@@ -305,7 +308,8 @@
   
   .nav-card-description {
     margin-top: 1px;
-    font-size: 8px;
+    /* 【修改】移动端字号：9px */
+    font-size: 9px;
   }
   
   .nav-card:hover {
