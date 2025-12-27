@@ -1,0 +1,279 @@
+/**
+ * 核心锚点模块样式
+ * Core Anchor Module Styles
+ * 
+ * 包含头像容器和打字机效果的样式
+ * 使用相对定位，配合 Grid 布局
+ */
+
+/* ========================================
+ * 核心锚点布局 (Core Anchor Layout)
+ * 作为页面中心锚点，卡牌围绕它定位
+ * ======================================== */
+
+.core-anchor {
+  /* 作为中心锚点，相对定位 */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 100; /* 确保头像在所有卡牌上层 */
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* ========================================
+ * 头像容器样式 (Avatar Container Styles)
+ * ======================================== */
+
+.avatar-container {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+/* 圆形像素头像样式 - 200x200px */
+.avatar-circle {
+  width: 200px;
+  height: 200px;
+  border: 3px solid #4a7a96;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #f5f2ef;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .avatar-circle {
+  background: #2c2c2c;
+  border-color: #cc9966;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.4);
+}
+
+.avatar-circle .avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 像素电视机框样式 */
+.avatar-tv {
+  width: 200px;
+  height: 200px;
+}
+
+.tv-frame {
+  width: 100%;
+  height: 100%;
+  background: #666;
+  border: 4px solid #666;
+  border-radius: 4px;
+  padding: 12px;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+[data-theme="dark"] .tv-frame {
+  background: #888;
+  border-color: #888;
+}
+
+.tv-screen {
+  width: 100%;
+  height: calc(100% - 24px);
+  background: #1a1a1a;
+  border: 2px solid #333;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.tv-screen .avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tv-buttons {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+}
+
+.tv-button {
+  width: 12px;
+  height: 12px;
+  background: #8c6b48;
+  border: 2px solid #333;
+  border-radius: 2px;
+}
+
+[data-theme="dark"] .tv-button {
+  background: #4a7a96;
+  border-color: #666;
+}
+
+/* ========================================
+ * 打字机效果样式 (Typewriter Effect Styles)
+ * ======================================== */
+
+.typewriter-container {
+  width: 280px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.typewriter-box {
+  /* 无对话框样式 - 仅文字+光标 */
+  width: 100%;
+  min-height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.typewriter-text {
+  /* 文字样式 - 石青色，强制可见 */
+  /* !important 用于覆盖全局样式，确保文字可见 */
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace !important;
+  font-size: 14px !important;
+  color: #4a7a96 !important; /* 强制石青色 */
+  white-space: nowrap !important;
+  line-height: 1.5 !important;
+  display: inline !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  background: transparent !important;
+  min-height: 21px; /* 确保有高度 */
+}
+
+[data-theme="dark"] .typewriter-text {
+  color: #6a9ab6 !important;
+}
+
+.typewriter-cursor {
+  /* 光标样式 - 赭石色闪烁 */
+  display: inline-block;
+  width: 2px;
+  height: 16px;
+  background: #8c6b48;
+  margin-left: 2px;
+  animation: cursor-blink 0.5s infinite alternate;
+  vertical-align: middle;
+}
+
+[data-theme="dark"] .typewriter-cursor {
+  background: #cc9966;
+}
+
+@keyframes cursor-blink {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ========================================
+ * 响应式适配 (Responsive Adaptations)
+ * ======================================== */
+
+/* 平板端适配 */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .avatar-circle,
+  .avatar-tv {
+    width: 160px;
+    height: 160px;
+  }
+  
+  .typewriter-container {
+    width: 220px;
+  }
+  
+  .typewriter-text {
+    font-size: 13px;
+  }
+  
+  .typewriter-cursor {
+    height: 14px;
+  }
+}
+
+/* 移动端适配 */
+@media (max-width: 767px) {
+  .avatar-circle,
+  .avatar-tv {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .typewriter-container {
+    width: 180px;
+  }
+  
+  .typewriter-text {
+    font-size: 12px;
+  }
+  
+  .typewriter-cursor {
+    height: 12px;
+  }
+  
+  .tv-frame {
+    padding: 8px;
+  }
+  
+  .tv-buttons {
+    bottom: 2px;
+    gap: 6px;
+  }
+  
+  .tv-button {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+/* ========================================
+ * 交互效果 (Interactive Effects)
+ * ======================================== */
+
+.avatar-container:hover .avatar-circle,
+.avatar-container:hover .tv-frame {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+/* ========================================
+ * 无障碍支持 (Accessibility Support)
+ * ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .typewriter-cursor {
+    animation: none;
+    opacity: 1;
+  }
+  
+  .avatar-container:hover .avatar-circle,
+  .avatar-container:hover .tv-frame {
+    transform: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .avatar-circle,
+  .tv-frame {
+    border-width: 4px;
+  }
+  
+  .typewriter-text {
+    font-weight: bold;
+  }
+}
+
+.avatar-container:focus-within {
+  outline: 2px solid #4a7a96;
+  outline-offset: 4px;
+}

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Article, ApiResponse } from '@/types/article';
+import ThemeToggle from '@/components/ThemeToggle';
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -99,6 +100,7 @@ export default function AdminDashboard() {
       <header className="admin-header">
         <h1>文章管理</h1>
         <div className="admin-actions">
+          <ThemeToggle variant="segmented" size="sm" />
           <Link href="/admin/articles/new" className="btn btn-primary">
             新建文章
           </Link>

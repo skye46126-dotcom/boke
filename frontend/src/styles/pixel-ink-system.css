@@ -1,0 +1,338 @@
+/**
+ * 像素水墨风样式系统
+ * Pixel Ink Style System
+ * 
+ * 包含像素肌理规范、水墨底色纹理、扑克牌样式等核心样式
+ */
+
+/* ========================================
+ * 像素肌理规范 (Pixel Texture Standards)
+ * ======================================== */
+
+/* 像素化渲染 */
+.pixel-render {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* 像素边框 */
+.pixel-border-thin {
+  border: var(--pixel-border-width-thin) solid var(--color-pixel-ink-gray);
+  border-radius: var(--pixel-border-radius);
+}
+
+.pixel-border-thick {
+  border: var(--pixel-border-width-thick) solid var(--color-pixel-ink-gray);
+  border-radius: var(--pixel-border-radius);
+}
+
+/* 像素阴影 - 无模糊，仅偏移 */
+.pixel-shadow {
+  box-shadow: 
+    var(--pixel-shadow-offset) var(--pixel-shadow-offset) 0 var(--color-pixel-ink-gray);
+}
+
+.pixel-shadow-dark {
+  box-shadow: 
+    var(--pixel-shadow-offset) var(--pixel-shadow-offset) 0 var(--color-pixel-ink-black);
+}
+
+/* 像素字体 */
+.pixel-font {
+  font-family: var(--pixel-font-family);
+  font-weight: normal;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ========================================
+ * 水墨底色纹理系统 (Ink Texture System)
+ * ======================================== */
+
+/* 基础水墨背景 */
+.ink-background {
+  background-color: var(--color-background);
+  background-image: var(--pixel-grid-bg);
+  background-size: var(--pixel-grid-size);
+  position: relative;
+}
+
+/* 深色模式水墨背景 */
+[data-theme="dark"] .ink-background {
+  background-color: var(--color-pixel-ink-black);
+}
+
+/* 浅色模式淡墨弥散纹理 */
+.ink-texture-light::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: var(--ink-texture-bg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: var(--ink-texture-light-opacity);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* 深色模式像素水墨纹理 */
+[data-theme="dark"] .ink-texture-dark::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: var(--ink-texture-bg);
+  background-size: 40px 40px;
+  opacity: var(--ink-texture-dark-opacity);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ========================================
+ * 扑克牌样式系统 (Poker Card Style System)
+ * ======================================== */
+
+/* 扑克牌基础样式 */
+.poker-card {
+  position: relative;
+  background: var(--color-pixel-ink-paper);
+  border: var(--pixel-border-width-thick) solid var(--color-pixel-ink-gray);
+  border-radius: var(--pixel-border-radius);
+  box-shadow: var(--pixel-shadow-offset) var(--pixel-shadow-offset) 0 var(--color-pixel-ink-gray);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .poker-card {
+  background: var(--color-pixel-ink-gray);
+  border-color: var(--color-pixel-ink-light-gray);
+  box-shadow: var(--pixel-shadow-offset) var(--pixel-shadow-offset) 0 var(--color-pixel-ink-black);
+}
+
+/* 扑克牌尺寸变体 */
+.poker-card-nav {
+  width: var(--card-size-nav);
+  height: calc(var(--card-size-nav) / var(--card-ratio));
+}
+
+.poker-card-small {
+  width: var(--card-size-small);
+  height: calc(var(--card-size-small) / var(--card-ratio));
+}
+
+.poker-card-medium {
+  width: var(--card-size-medium);
+  height: calc(var(--card-size-medium) / var(--card-ratio));
+}
+
+.poker-card-large {
+  width: var(--card-size-large);
+  height: calc(var(--card-size-large) / var(--card-ratio));
+}
+
+/* 扑克牌悬停效果 */
+.poker-card:hover {
+  transform: translateY(var(--anim-hover-lift)) rotate(var(--anim-hover-rotate));
+  box-shadow: 0 0 8px var(--color-pixel-ink-stone-blue);
+  border-color: var(--color-pixel-ink-ochre);
+}
+
+/* 扑克牌点击效果 */
+.poker-card:active {
+  transform: translateY(var(--anim-click-sink)) rotate(0deg);
+}
+
+/* 扑克牌内容区域 */
+.poker-card-content {
+  padding: 16px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+
+/* 扑克牌花色图标位置 */
+.poker-card-suit {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 16px;
+  height: 16px;
+  opacity: 0.6;
+}
+
+/* ========================================
+ * 导航卡牌特殊样式 (Navigation Card Styles)
+ * ======================================== */
+
+.nav-card {
+  cursor: pointer;
+  user-select: none;
+}
+
+/* 导航卡牌抖动动画 */
+@keyframes pixel-shake {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-2px); }
+}
+
+.nav-card:hover {
+  animation: pixel-shake 0.3s infinite alternate;
+  box-shadow: 0 0 4px var(--color-pixel-ink-stone-blue);
+  width: 85px;
+  height: 115px;
+}
+
+/* 导航卡牌点击闪烁动画 */
+@keyframes pixel-flash {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.nav-card:active {
+  top: 2px;
+  box-shadow: none;
+  animation: pixel-flash 0.1s linear;
+}
+
+/* ========================================
+ * 功能卡片特殊效果 (Function Card Effects)
+ * ======================================== */
+
+/* 花色闪烁动画 */
+@keyframes poker-flash {
+  0% { 
+    opacity: 1; 
+    transform: translate(-50%, -50%) scale(1); 
+  }
+  50% { 
+    opacity: 0.5; 
+    transform: translate(-50%, -50%) scale(1.2); 
+  }
+  100% { 
+    opacity: 0; 
+    transform: translate(-50%, -50%) scale(1.5); 
+  }
+}
+
+.poker-card:active::after {
+  animation: poker-flash 0.2s linear;
+}
+
+/* 卡片堆叠效果 */
+.card-stack {
+  position: relative;
+}
+
+.card-stack .poker-card:nth-child(1) { z-index: 3; }
+.card-stack .poker-card:nth-child(2) { 
+  z-index: 2; 
+  transform: translateX(-4px) translateY(-2px) rotate(-1deg);
+}
+.card-stack .poker-card:nth-child(3) { 
+  z-index: 1; 
+  transform: translateX(-8px) translateY(-4px) rotate(-2deg);
+}
+
+/* ========================================
+ * 响应式适配 (Responsive Adaptations)
+ * ======================================== */
+
+/* 平板端适配 */
+@media (max-width: 1199px) {
+  .poker-card-nav {
+    width: 60px;
+    height: 80px;
+  }
+  
+  .nav-card:hover {
+    width: 65px;
+    height: 85px;
+  }
+}
+
+/* 移动端适配 */
+@media (max-width: 767px) {
+  .poker-card {
+    box-shadow: 1px 1px 0 var(--color-pixel-ink-gray);
+  }
+  
+  .poker-card:hover {
+    transform: translateY(-3px) rotate(0deg);
+  }
+  
+  .poker-card-content {
+    padding: 12px;
+  }
+}
+
+/* ========================================
+ * 工具类 (Utility Classes)
+ * ======================================== */
+
+/* 像素完美对齐 */
+.pixel-perfect {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* 禁用选择 */
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* 像素图标 */
+.pixel-icon {
+  width: 16px;
+  height: 16px;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* 像素按钮 */
+.pixel-button {
+  background: var(--color-pixel-ink-gray);
+  border: var(--pixel-border-width-thin) solid var(--color-pixel-ink-light-gray);
+  border-radius: var(--pixel-border-radius);
+  color: var(--color-text-primary);
+  font-family: var(--pixel-font-family);
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pixel-button:hover {
+  background: var(--color-pixel-ink-ochre);
+  color: var(--color-pixel-ink-paper);
+  border-color: var(--color-pixel-ink-ochre);
+}
+
+.pixel-button:active {
+  transform: translateY(1px);
+}
+
+/* 像素装饰线 */
+.pixel-divider {
+  height: 2px;
+  background: var(--color-pixel-ink-stone-blue);
+  background-image: 
+    linear-gradient(90deg, 
+      var(--color-pixel-ink-stone-blue) 0px, var(--color-pixel-ink-stone-blue) 2px,
+      transparent 2px, transparent 4px
+    );
+  background-size: 4px 2px;
+  background-repeat: repeat-x;
+}

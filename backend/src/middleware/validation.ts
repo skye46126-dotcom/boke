@@ -90,7 +90,7 @@ export const xssProtection = (req: Request, res: Response, next: NextFunction) =
 
   // 对于 Markdown 内容，我们允许某些 HTML 标签
   // 但仍然要检查危险的脚本
-  const isMarkdownContent = req.body.content && req.path.includes('articles');
+  const isMarkdownContent = req.body && req.body.content && req.path.includes('articles');
   
   if (!isMarkdownContent) {
     const suspicious = 

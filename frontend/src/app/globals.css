@@ -511,30 +511,32 @@ code {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--color-pixel-background);
   padding: 2rem;
+  transition: var(--transition-theme);
 }
 
 .login-card {
-  background: #fff;
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 3rem;
   max-width: 450px;
   width: 100%;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-lg);
 }
 
 .login-card h1 {
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
-  color: #1a1a1a;
+  color: var(--color-text-primary);
   text-align: center;
 }
 
 .login-description {
   text-align: center;
-  color: #666;
+  color: var(--color-text-secondary);
   margin-bottom: 2rem;
 }
 
@@ -549,6 +551,10 @@ code {
   max-width: 1400px;
   margin: 0 auto;
   padding: 2rem;
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  min-height: 100vh;
+  transition: var(--transition-theme);
 }
 
 .admin-header {
@@ -557,13 +563,13 @@ code {
   align-items: center;
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
-  border-bottom: 2px solid #e0e0e0;
+  border-bottom: 2px solid var(--color-border);
 }
 
 .admin-header h1 {
   font-size: 2rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--color-text-primary);
 }
 
 .admin-actions {
@@ -580,29 +586,30 @@ code {
 }
 
 .stat-card {
-  background: #fff;
-  border: 1px solid #e0e0e0;
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 1.5rem;
   text-align: center;
+  transition: var(--transition-theme);
 }
 
 .stat-value {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #0066cc;
+  color: var(--color-accent);
   margin-bottom: 0.5rem;
 }
 
 .stat-label {
   font-size: 0.95rem;
-  color: #666;
+  color: var(--color-text-secondary);
 }
 
 /* Articles Table */
 .articles-table-container {
-  background: #fff;
-  border: 1px solid #e0e0e0;
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -613,34 +620,36 @@ code {
 }
 
 .articles-table thead {
-  background: #f5f5f5;
+  background: var(--color-surface-sunken);
 }
 
 .articles-table th {
   padding: 1rem;
   text-align: left;
   font-weight: 600;
-  color: #333;
-  border-bottom: 2px solid #e0e0e0;
+  color: var(--color-text-primary);
+  border-bottom: 2px solid var(--color-border);
 }
 
 .articles-table td {
   padding: 1rem;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-primary);
 }
 
 .articles-table tbody tr:hover {
-  background: #f9f9f9;
+  background: var(--color-surface-hover);
 }
 
 .article-title-cell a {
-  color: #0066cc;
+  color: var(--color-accent);
   font-weight: 500;
   text-decoration: none;
 }
 
 .article-title-cell a:hover {
   text-decoration: underline;
+  color: var(--color-accent-hover);
 }
 
 .status-badge {
@@ -652,17 +661,17 @@ code {
 }
 
 .status-published {
-  background: #d4edda;
-  color: #155724;
+  background: var(--color-success-light);
+  color: var(--color-success);
 }
 
 .status-draft {
-  background: #fff3cd;
-  color: #856404;
+  background: var(--color-warning-light);
+  color: var(--color-warning);
 }
 
 .date-cell {
-  color: #666;
+  color: var(--color-text-secondary);
   font-size: 0.9rem;
 }
 
@@ -673,7 +682,7 @@ code {
 
 .empty-row {
   text-align: center;
-  color: #999;
+  color: var(--color-text-muted);
   padding: 3rem !important;
 }
 
@@ -686,26 +695,26 @@ code {
   font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-fast);
   text-decoration: none;
 }
 
 .btn-primary {
-  background: #0066cc;
-  color: #fff;
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
 }
 
 .btn-primary:hover {
-  background: #0052a3;
+  background: var(--color-accent-hover);
 }
 
 .btn-secondary {
-  background: #6c757d;
-  color: #fff;
+  background: var(--color-text-secondary);
+  color: var(--color-text-inverse);
 }
 
 .btn-secondary:hover {
-  background: #5a6268;
+  background: var(--color-text-primary);
 }
 
 .btn-block {
@@ -715,7 +724,7 @@ code {
 .btn-link {
   background: none;
   border: none;
-  color: #0066cc;
+  color: var(--color-accent);
   cursor: pointer;
   font-size: 0.9rem;
   padding: 0;
@@ -724,18 +733,19 @@ code {
 
 .btn-link:hover {
   text-decoration: underline;
+  color: var(--color-accent-hover);
 }
 
 .btn-edit {
-  color: #0066cc;
+  color: var(--color-accent);
 }
 
 .btn-delete {
-  color: #dc3545;
+  color: var(--color-error);
 }
 
 .btn-delete:hover {
-  color: #c82333;
+  color: var(--color-error-hover);
 }
 
 /* Form Elements */
@@ -747,25 +757,28 @@ code {
 
 .form-group label {
   font-weight: 500;
-  color: #333;
+  color: var(--color-text-primary);
 }
 
 .form-input,
 .form-textarea,
 .form-select {
   padding: 0.75rem;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--color-border);
   border-radius: 4px;
   font-size: 1rem;
   font-family: inherit;
   transition: border-color 0.2s ease;
+  background: var(--color-background);
+  color: var(--color-text-primary);
 }
 
 .form-input:focus,
 .form-textarea:focus,
 .form-select:focus {
   outline: none;
-  border-color: #0066cc;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px var(--color-accent-light);
 }
 
 .form-textarea {
@@ -776,29 +789,29 @@ code {
 
 .form-hint {
   font-size: 0.85rem;
-  color: #666;
+  color: var(--color-text-secondary);
 }
 
 .error-message {
   padding: 1rem;
-  background: #f8d7da;
-  border: 1px solid #f5c6cb;
+  background: var(--color-error-light);
+  border: 1px solid var(--color-error);
   border-radius: 4px;
-  color: #721c24;
+  color: var(--color-error);
 }
 
 .success-message {
   padding: 1rem;
-  background: #d4edda;
-  border: 1px solid #c3e6cb;
+  background: var(--color-success-light);
+  border: 1px solid var(--color-success);
   border-radius: 4px;
-  color: #155724;
+  color: var(--color-success);
 }
 
 .loading {
   text-align: center;
   padding: 3rem;
-  color: #666;
+  color: var(--color-text-secondary);
   font-size: 1.1rem;
 }
 

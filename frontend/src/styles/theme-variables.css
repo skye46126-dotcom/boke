@@ -1,0 +1,384 @@
+/**
+ * 主题系统 CSS 自定义属性
+ * Theme System CSS Custom Properties
+ * 
+ * 支持浅色和深色主题的完整颜色系统
+ * Complete color system supporting light and dark themes
+ */
+
+/* ========================================
+ * 浅色主题 (Light Theme) - 默认
+ * ======================================== */
+
+:root {
+  /* 背景颜色 (Background Colors) */
+  --color-background: #ffffff;
+  --color-background-secondary: #fafafa;
+  --color-background-tertiary: #f5f5f5;
+  --color-background-subtle: #f8f9fa;
+  --color-background-overlay: rgba(255, 255, 255, 0.95);
+  
+  /* 文本颜色 (Text Colors) */
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #666666;
+  --color-text-muted: #999999;
+  --color-text-inverse: #ffffff;
+  --color-text-placeholder: #a0a0a0;
+  
+  /* 边框颜色 (Border Colors) */
+  --color-border: #e0e0e0;
+  --color-border-light: #f0f0f0;
+  --color-border-strong: #d0d0d0;
+  --color-border-focus: #0066cc;
+  
+  /* 强调色 (Accent Colors) */
+  --color-accent: #0066cc;
+  --color-accent-hover: #0052a3;
+  --color-accent-active: #004080;
+  --color-accent-light: #e6f3ff;
+  --color-accent-muted: #b3d9ff;
+  
+  /* 语义颜色 (Semantic Colors) */
+  --color-success: #10b981;
+  --color-success-hover: #059669;
+  --color-success-light: #d1fae5;
+  
+  --color-warning: #f59e0b;
+  --color-warning-hover: #d97706;
+  --color-warning-light: #fef3c7;
+  
+  --color-error: #ef4444;
+  --color-error-hover: #dc2626;
+  --color-error-light: #fee2e2;
+  
+  --color-info: #3b82f6;
+  --color-info-hover: #2563eb;
+  --color-info-light: #dbeafe;
+  
+  /* 表面颜色 (Surface Colors) */
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: #f5f5f5;
+  --color-surface-hover: #f8f9fa;
+  --color-surface-active: #e9ecef;
+  
+  /* 阴影 (Shadows) */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  /* 代码块颜色 (Code Block Colors) */
+  --color-code-background: #f8f9fa;
+  --color-code-text: #e83e8c;
+  --color-code-border: #e9ecef;
+  --color-pre-background: #282c34;
+  --color-pre-text: #abb2bf;
+  
+  /* 引用块颜色 (Blockquote Colors) */
+  --color-blockquote-background: #f8f9fa;
+  --color-blockquote-border: #0066cc;
+  --color-blockquote-text: #666666;
+  
+  /* 表格颜色 (Table Colors) */
+  --color-table-header-background: #f8f9fa;
+  --color-table-border: #e0e0e0;
+  --color-table-stripe: #f8f9fa;
+  
+  /* 像素作品集颜色 (Pixel Portfolio Colors) */
+  --color-pixel-background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --color-pixel-card-background: #ffffff;
+  --color-pixel-card-border: #e0e0e0;
+  --color-pixel-button: #4c51bf;
+  --color-pixel-button-hover: #434190;
+  
+  /* 像素水墨风个人主页色彩体系 (Pixel Ink Homepage Color System) */
+  --color-pixel-ink-stone-blue: #4a7a96;    /* 主色-石青：导航卡牌高亮、引用块侧边条、滚动字幕文字 */
+  --color-pixel-ink-ochre: #8c6b48;         /* 主色-赭石：按钮/卡片hover边框、电视机框按钮、扑克牌花色 */
+  --color-pixel-ink-black: #181818;         /* 中性色-墨黑：深色模式主背景 */
+  --color-pixel-ink-gray: #2c2c2c;          /* 中性色-墨灰：卡片底色、像素边框、电视机框主体 */
+  --color-pixel-ink-paper: #f5f2ef;         /* 中性色-宣纸白：浅色模式主背景、浅色模式文字 */
+  --color-pixel-ink-light-gray: #e8e4e0;    /* 中性色-浅灰：辅助文字、浅色模式卡片底色 */
+  
+  /* 像素肌理规范变量 (Pixel Texture Standards) */
+  --pixel-border-width-thin: 1px;           /* 细边框 */
+  --pixel-border-width-thick: 2px;          /* 粗边框 */
+  --pixel-border-radius: 2px;               /* 像素圆角（模拟像素锯齿） */
+  --pixel-shadow-offset: 2px;               /* 像素阴影偏移 */
+  --pixel-font-family: "Pixel Font", "Courier New", monospace; /* 像素字体降级 */
+  
+  /* 水墨底色纹理系统 (Ink Texture System) - 浅色模式 */
+  --ink-texture-light-opacity: 0.1;         /* 淡墨弥散纹理透明度 */
+  --ink-grid-size: 8px;                     /* 像素网格尺寸 */
+  --ink-grid-color-light: #f0f0f0;          /* 浅色模式网格颜色 */
+  --ink-grid-opacity-light: 0.3;            /* 浅色模式网格透明度 */
+  --ink-grid-color-dark: #333333;           /* 深色模式网格颜色 */
+  --ink-grid-opacity-dark: 0.15;            /* 深色模式网格透明度 */
+  --ink-texture-dark-opacity: 0.2;          /* 深色模式水墨纹理透明度 */
+  
+  /* 扑克牌素材适配变量 (Poker Card Material Variables) */
+  --card-ratio: 0.75;                       /* 扑克牌3:4比例 */
+  --card-size-nav: 80px;                    /* 导航卡牌宽度 */
+  --card-size-small: 150px;                 /* 小卡片宽度 */
+  --card-size-medium: 225px;                /* 中卡片宽度 */
+  --card-size-large: 300px;                 /* 大卡片宽度 */
+  --card-texture-overlay: rgba(44,44,44,0.8); /* 卡背纹理叠加 */
+  
+  /* 响应式断点变量 (Responsive Breakpoint Variables) */
+  --breakpoint-mobile: 767px;               /* 移动端断点 */
+  --breakpoint-tablet: 1199px;              /* 平板端断点 */
+  --breakpoint-desktop: 1200px;             /* 桌面端断点 */
+  
+  /* 布局间距系统 (Layout Spacing System) */
+  --spacing-anchor-top-desktop: 120px;      /* 核心锚点距顶部距离-桌面 */
+  --spacing-anchor-top-tablet: 80px;        /* 核心锚点距顶部距离-平板 */
+  --spacing-anchor-top-mobile: 60px;        /* 核心锚点距顶部距离-移动 */
+  --spacing-card-gap: 30px;                 /* 卡片与核心锚点间距 */
+  --spacing-card-internal: 20px;            /* 卡片间间距 */
+  
+  /* 动画参数 (Animation Parameters) */
+  --anim-scroll-duration-desktop: 8s;       /* 滚动字幕动画时长-桌面 */
+  --anim-scroll-duration-tablet: 6s;        /* 滚动字幕动画时长-平板 */
+  --anim-scroll-duration-mobile: 5s;        /* 滚动字幕动画时长-移动 */
+  --anim-hover-lift: -6px;                  /* 悬停上移距离 */
+  --anim-hover-rotate: 1deg;                /* 悬停旋转角度 */
+  --anim-click-sink: 2px;                   /* 点击下沉距离 */
+  
+  /* 像素风格文章布局颜色 (Pixel Article Layout Colors) */
+  --color-pixel-card-bg: #faf9f7; /* 浅米白 */
+  --color-pixel-border: #d4d1cc; /* 深一点的像素锯齿线 */
+  --color-pixel-shadow: #e8e6e1; /* 像素化阴影 */
+  --color-pixel-accent: #8b7355; /* 淡赭石色装饰线 */
+  --color-pixel-image-bg: #f5f4f2; /* 图片背景 */
+  
+  /* 像素边框图案 */
+  --pixel-border-pattern: url("data:image/svg+xml,%3csvg width='4' height='4' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M0,0 L4,0 L4,4 L0,4 Z' fill='%23d4d1cc'/%3e%3c/svg%3e");
+  
+  /* 像素网格背景 - 浅色模式 */
+  --pixel-grid-bg: 
+    linear-gradient(var(--ink-grid-color-light) 1px, transparent 1px),
+    linear-gradient(90deg, var(--ink-grid-color-light) 1px, transparent 1px);
+  --pixel-grid-size: var(--ink-grid-size) var(--ink-grid-size);
+  --pixel-grid-opacity: var(--ink-grid-opacity-light);
+  
+  /* 淡墨弥散纹理背景 - 浅色模式 */
+  --ink-texture-bg: url("data:image/svg+xml,%3csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3e%3cdefs%3e%3cfilter id='noise'%3e%3cfeTurbulence baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3e%3c/filter%3e%3c/defs%3e%3crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.1'/%3e%3c/svg%3e");
+  
+  /* 卡片类别颜色 (Card Category Colors) */
+  --color-category-about: #3b82f6;
+  --color-category-skill: #10b981;
+  --color-category-featured: #8b5cf6;
+  --color-category-album: #f59e0b;
+  
+  /* 过渡动画 (Transitions) */
+  --transition-theme: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 0.15s ease-out;
+  --transition-normal: all 0.25s ease-out;
+  --transition-slow: all 0.35s ease-out;
+}
+
+/* ========================================
+ * 深色主题 (Dark Theme)
+ * ======================================== */
+
+[data-theme="dark"] {
+  /* 背景颜色 (Background Colors) */
+  --color-background: #0a0a0a;
+  --color-background-secondary: #1a1a1a;
+  --color-background-tertiary: #2a2a2a;
+  --color-background-subtle: #1f1f1f;
+  --color-background-overlay: rgba(10, 10, 10, 0.95);
+  
+  /* 文本颜色 (Text Colors) */
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #e5e5e5;
+  --color-text-muted: #a0a0a0;
+  --color-text-inverse: #1a1a1a;
+  --color-text-placeholder: #666666;
+  
+  /* 边框颜色 (Border Colors) */
+  --color-border: #333333;
+  --color-border-light: #404040;
+  --color-border-strong: #555555;
+  --color-border-focus: #3b82f6;
+  
+  /* 强调色 (Accent Colors) */
+  --color-accent: #3b82f6;
+  --color-accent-hover: #2563eb;
+  --color-accent-active: #1d4ed8;
+  --color-accent-light: #1e3a8a;
+  --color-accent-muted: #3730a3;
+  
+  /* 语义颜色 (Semantic Colors) - 深色模式调整 */
+  --color-success: #059669;
+  --color-success-hover: #047857;
+  --color-success-light: #064e3b;
+  
+  --color-warning: #d97706;
+  --color-warning-hover: #b45309;
+  --color-warning-light: #92400e;
+  
+  --color-error: #dc2626;
+  --color-error-hover: #b91c1c;
+  --color-error-light: #991b1b;
+  
+  --color-info: #2563eb;
+  --color-info-hover: #1d4ed8;
+  --color-info-light: #1e40af;
+  
+  /* 表面颜色 (Surface Colors) */
+  --color-surface-raised: #1a1a1a;
+  --color-surface-sunken: #0f0f0f;
+  --color-surface-hover: #2a2a2a;
+  --color-surface-active: #3a3a3a;
+  
+  /* 阴影 (Shadows) - 深色模式使用更深的阴影 */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+  
+  /* 代码块颜色 (Code Block Colors) */
+  --color-code-background: #2a2a2a;
+  --color-code-text: #ff6b9d;
+  --color-code-border: #404040;
+  --color-pre-background: #1e1e1e;
+  --color-pre-text: #d4d4d4;
+  
+  /* 引用块颜色 (Blockquote Colors) */
+  --color-blockquote-background: #1f1f1f;
+  --color-blockquote-border: #3b82f6;
+  --color-blockquote-text: #e5e5e5;
+  
+  /* 表格颜色 (Table Colors) */
+  --color-table-header-background: #2a2a2a;
+  --color-table-border: #404040;
+  --color-table-stripe: #1f1f1f;
+  
+  /* 像素作品集颜色 (Pixel Portfolio Colors) */
+  --color-pixel-background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  --color-pixel-card-background: #1a1a1a;
+  --color-pixel-card-border: #333333;
+  --color-pixel-button: #3b82f6;
+  --color-pixel-button-hover: #2563eb;
+  
+  /* 像素风格文章布局颜色 (Pixel Article Layout Colors) - 深色模式 */
+  --color-pixel-card-bg: #1f1e1c; /* 深色水墨底 */
+  --color-pixel-border: #3a3835; /* 浅灰蓝边框 */
+  --color-pixel-shadow: #141312; /* 深色阴影 */
+  --color-pixel-accent: #6b8db5; /* 浅灰蓝装饰线 */
+  --color-pixel-image-bg: #252422; /* 深色图片背景 */
+  
+  /* 像素边框图案 - 深色模式 */
+  --pixel-border-pattern: url("data:image/svg+xml,%3csvg width='4' height='4' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M0,0 L4,0 L4,4 L0,4 Z' fill='%233a3835'/%3e%3c/svg%3e");
+  
+  /* 像素网格背景 - 深色模式 */
+  --pixel-grid-bg: 
+    linear-gradient(var(--ink-grid-color-dark) 1px, transparent 1px),
+    linear-gradient(90deg, var(--ink-grid-color-dark) 1px, transparent 1px);
+  --pixel-grid-size: var(--ink-grid-size) var(--ink-grid-size);
+  --pixel-grid-opacity: var(--ink-grid-opacity-dark);
+  
+  /* 像素水墨纹理背景 - 深色模式 */
+  --ink-texture-bg: url("data:image/svg+xml,%3csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3e%3cdefs%3e%3cpattern id='ink' width='40' height='40' patternUnits='userSpaceOnUse'%3e%3ccircle cx='8' cy='8' r='1' fill='%23333' opacity='0.1'/%3e%3ccircle cx='24' cy='16' r='1.5' fill='%23333' opacity='0.08'/%3e%3ccircle cx='16' cy='32' r='1' fill='%23333' opacity='0.12'/%3e%3c/pattern%3e%3c/defs%3e%3crect width='100%25' height='100%25' fill='url(%23ink)'/%3e%3c/svg%3e");
+  
+  /* 卡片类别颜色 (Card Category Colors) - 深色模式调整 */
+  --color-category-about: #60a5fa;
+  --color-category-skill: #34d399;
+  --color-category-featured: #a78bfa;
+  --color-category-album: #fbbf24;
+}
+
+/* ========================================
+ * 高对比度模式支持 (High Contrast Mode)
+ * ======================================== */
+
+@media (prefers-contrast: high) {
+  :root {
+    --color-border: #000000;
+    --color-border-light: #333333;
+    --color-text-secondary: #000000;
+  }
+  
+  [data-theme="dark"] {
+    --color-border: #ffffff;
+    --color-border-light: #cccccc;
+    --color-text-secondary: #ffffff;
+  }
+}
+
+/* ========================================
+ * 减少动画模式支持 (Reduced Motion)
+ * ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-theme: none;
+    --transition-fast: none;
+    --transition-normal: none;
+    --transition-slow: none;
+  }
+}
+
+/* ========================================
+ * 主题过渡动画 (Theme Transition)
+ * ======================================== */
+
+* {
+  transition: 
+    background-color var(--transition-theme),
+    border-color var(--transition-theme),
+    color var(--transition-theme),
+    box-shadow var(--transition-theme);
+}
+
+/* 防止某些元素的过渡动画 */
+*:before,
+*:after,
+img,
+video,
+iframe,
+canvas,
+svg {
+  transition: none !important;
+}
+
+/* ========================================
+ * 主题初始化防闪烁 (FOUC Prevention)
+ * ======================================== */
+
+/* 在主题初始化之前隐藏内容 */
+.theme-loading {
+  visibility: hidden;
+}
+
+/* 主题初始化完成后显示内容 */
+.theme-loaded {
+  visibility: visible;
+}
+
+/* ========================================
+ * 工具类 (Utility Classes)
+ * ======================================== */
+
+/* 主题感知的文本颜色 */
+.text-primary { color: var(--color-text-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-muted { color: var(--color-text-muted); }
+.text-inverse { color: var(--color-text-inverse); }
+
+/* 主题感知的背景颜色 */
+.bg-primary { background-color: var(--color-background); }
+.bg-secondary { background-color: var(--color-background-secondary); }
+.bg-tertiary { background-color: var(--color-background-tertiary); }
+.bg-subtle { background-color: var(--color-background-subtle); }
+
+/* 主题感知的边框 */
+.border-default { border-color: var(--color-border); }
+.border-light { border-color: var(--color-border-light); }
+.border-strong { border-color: var(--color-border-strong); }
+
+/* 主题感知的阴影 */
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+.shadow-xl { box-shadow: var(--shadow-xl); }

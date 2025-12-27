@@ -1,4 +1,5 @@
 import { query } from '../db/connection';
+import { TagModel, Tag } from './Tag';
 
 export interface Article {
   id: string;
@@ -10,6 +11,7 @@ export interface Article {
   created_at: Date;
   updated_at: Date;
   published_at: Date | null;
+  tags?: Tag[]; // 可选的标签数组
 }
 
 export interface CreateArticleData {
@@ -65,7 +67,7 @@ export class ArticleModel {
   }
 
   // 获取已发布的文章（前台用）
-  static async findPublished(page: number = 1, limit: number = 10): Promise<{
+  static async findPublished(page: number = 1, limit: number = 10, tagSlug?: string): Promise<{
     articles: Article[];
     total: number;
     page: number;
@@ -73,23 +75,52 @@ export class ArticleModel {
   }> {
     const offset = (page - 1) * limit;
 
+    let countQuery = "SELECT COUNT(DISTINCT a.id) FROM articles a WHERE a.status = 'published'";
+    let articlesQuery = `
+      SELECT DISTINCT a.* FROM articles a 
+      WHERE a.status = 'published'
+    `;
+    const countParams: any[] = [];
+    const articlesParams: any[] = [];
+
+    // 如果指定了标签，添加 JOIN 和 WHERE 条件
+    if (tagSlug) {
+      countQuery = `
+        SELECT COUNT(DISTINCT a.id) FROM articles a
+        INNER JOIN article_tags at ON a.id = at.article_id
+        INNER JOIN tags t ON at.tag_id = t.id
+        WHERE a.status = 'published' AND t.slug = $1
+      `;
+      articlesQuery = `
+        SELECT DISTINCT a.* FROM articles a
+        INNER JOIN article_tags at ON a.id = at.article_id
+        INNER JOIN tags t ON at.tag_id = t.id
+        WHERE a.status = 'published' AND t.slug = $1
+      `;
+      countParams.push(tagSlug);
+      articlesParams.push(tagSlug);
+    }
+
     // 获取总数
-    const countResult = await query(
-      "SELECT COUNT(*) FROM articles WHERE status = 'published'"
-    );
+    const countResult = await query(countQuery, countParams);
     const total = parseInt(countResult.rows[0].count, 10);
 
     // 获取文章列表
-    const result = await query(
-      `SELECT * FROM articles 
-       WHERE status = 'published' 
-       ORDER BY published_at DESC 
-       LIMIT $1 OFFSET $2`,
-      [limit, offset]
+    articlesQuery += ` ORDER BY a.published_at DESC LIMIT $${articlesParams.length + 1} OFFSET $${articlesParams.length + 2}`;
+    articlesParams.push(limit, offset);
+    
+    const result = await query(articlesQuery, articlesParams);
+
+    // 为每篇文章加载标签
+    const articles = await Promise.all(
+      result.rows.map(async (article: Article) => ({
+        ...article,
+        tags: await TagModel.findByArticleId(article.id),
+      }))
     );
 
     return {
-      articles: result.rows,
+      articles,
       total,
       page,
       totalPages: Math.ceil(total / limit),
@@ -146,6 +177,12 @@ export class ArticleModel {
   static async delete(id: string): Promise<boolean> {
     const result = await query('DELETE FROM articles WHERE id = $1', [id]);
     return (result.rowCount || 0) > 0;
+  }
+
+  // 获取文章总数
+  static async count(): Promise<number> {
+    const result = await query('SELECT COUNT(*) FROM articles WHERE status = $1', ['published']);
+    return parseInt(result.rows[0].count, 10);
   }
 
   // 检查 slug 是否已存在

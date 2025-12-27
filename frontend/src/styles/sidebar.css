@@ -1,0 +1,441 @@
+/**
+ * 侧边栏样式
+ * Sidebar Styles
+ * 
+ * 侧边栏模块样式和响应式适配
+ */
+
+/* ========================================
+ * 侧边栏基础布局 (Sidebar Base Layout)
+ * ======================================== */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 100vh;
+  background: var(--color-background-secondary);
+  border-right: var(--pixel-border-width-thin) solid var(--color-pixel-ink-gray);
+  z-index: 998;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: transform 0.3s ease;
+}
+
+[data-theme="dark"] .sidebar {
+  background: var(--color-pixel-ink-gray);
+  border-color: var(--color-pixel-ink-light-gray);
+}
+
+.sidebar-content {
+  padding: 20px 16px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ========================================
+ * 侧边栏模块基础样式 (Sidebar Module Base)
+ * ======================================== */
+
+.sidebar-module {
+  background: var(--color-background);
+  border: var(--pixel-border-width-thin) solid var(--color-border);
+  border-radius: var(--pixel-border-radius);
+  padding: 12px;
+  box-shadow: var(--pixel-shadow-offset) var(--pixel-shadow-offset) 0 var(--color-border);
+}
+
+[data-theme="dark"] .sidebar-module {
+  background: var(--color-pixel-ink-black);
+  border-color: var(--color-pixel-ink-light-gray);
+  box-shadow: var(--pixel-shadow-offset) var(--pixel-shadow-offset) 0 var(--color-pixel-ink-black);
+}
+
+.module-title {
+  font-size: 14px;
+  color: var(--color-pixel-ink-stone-blue);
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+/* ========================================
+ * 个人信息卡样式 (Personal Info Card)
+ * ======================================== */
+
+.personal-info-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar-small {
+  width: 60px;
+  height: 60px;
+  border: var(--pixel-border-width-thin) solid var(--color-pixel-ink-gray);
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+[data-theme="dark"] .avatar-small {
+  border-color: var(--color-pixel-ink-light-gray);
+}
+
+.avatar-image-small {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.personal-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.nickname {
+  font-size: 16px;
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+
+.signature {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  line-height: 1.3;
+  word-wrap: break-word;
+}
+
+/* ========================================
+ * 主题设置模块样式 (Theme Settings)
+ * ======================================== */
+
+.theme-settings {
+  text-align: center;
+}
+
+.theme-toggle-container {
+  display: flex;
+  justify-content: center;
+}
+
+/* ========================================
+ * 标签云样式 (Tag Cloud)
+ * ======================================== */
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag-item {
+  background: var(--color-pixel-ink-gray);
+  color: var(--color-text-primary);
+  border: var(--pixel-border-width-thin) solid var(--color-pixel-ink-light-gray);
+  border-radius: var(--pixel-border-radius);
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+[data-theme="dark"] .tag-item {
+  background: var(--color-pixel-ink-light-gray);
+  border-color: var(--color-pixel-ink-ochre);
+}
+
+.tag-item:hover {
+  background: var(--color-pixel-ink-stone-blue);
+  color: var(--color-pixel-ink-paper);
+  border-color: var(--color-pixel-ink-stone-blue);
+}
+
+[data-theme="dark"] .tag-item:hover {
+  background: var(--color-pixel-ink-ochre);
+  color: var(--color-pixel-ink-black);
+  border-color: var(--color-pixel-ink-ochre);
+}
+
+.tag-count {
+  opacity: 0.7;
+  font-size: 10px;
+}
+
+.tags-placeholder .tag-item {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.tags-placeholder .tag-item:hover {
+  background: var(--color-pixel-ink-gray);
+  color: var(--color-text-primary);
+  border-color: var(--color-pixel-ink-light-gray);
+}
+
+/* ========================================
+ * 阅读统计样式 (Reading Stats)
+ * ======================================== */
+
+.stats-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat-icon {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+.stat-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 16px;
+  color: var(--color-pixel-ink-stone-blue);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  line-height: 1;
+}
+
+/* ========================================
+ * 快速链接样式 (Quick Links)
+ * ======================================== */
+
+.links-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.quick-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: transparent;
+  border: var(--pixel-border-width-thin) solid transparent;
+  border-radius: var(--pixel-border-radius);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.quick-link:hover {
+  background: var(--color-pixel-ink-stone-blue);
+  color: var(--color-pixel-ink-paper);
+  border-color: var(--color-pixel-ink-stone-blue);
+}
+
+.link-icon {
+  font-size: 14px;
+  width: 16px;
+  text-align: center;
+}
+
+/* ========================================
+ * 移动端适配 (Mobile Adaptations)
+ * ======================================== */
+
+/* 移动端隐藏侧边栏 */
+@media (max-width: 767px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .sidebar-open {
+    transform: translateX(0);
+  }
+}
+
+/* 侧边栏遮罩 */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 997;
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .sidebar-overlay {
+    display: block;
+  }
+}
+
+/* 移动端侧边栏显示按钮 */
+.sidebar-toggle-mobile {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  width: 32px;
+  height: 32px;
+  background: var(--color-pixel-ink-gray);
+  border: var(--pixel-border-width-thin) solid var(--color-pixel-ink-light-gray);
+  border-radius: var(--pixel-border-radius);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  z-index: 1001;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+[data-theme="dark"] .sidebar-toggle-mobile {
+  background: var(--color-pixel-ink-light-gray);
+  border-color: var(--color-pixel-ink-ochre);
+}
+
+.sidebar-toggle-mobile:hover {
+  background: var(--color-pixel-ink-stone-blue);
+  color: var(--color-pixel-ink-paper);
+  border-color: var(--color-pixel-ink-stone-blue);
+}
+
+.sidebar-toggle-mobile .pixel-icon {
+  font-size: 16px;
+}
+
+@media (max-width: 767px) {
+  .sidebar-toggle-mobile {
+    display: flex;
+  }
+}
+
+/* ========================================
+ * 平板端适配 (Tablet Adaptations)
+ * ======================================== */
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .sidebar {
+    width: 200px;
+  }
+  
+  .sidebar-content {
+    padding: 16px 12px;
+    gap: 16px;
+  }
+  
+  .sidebar-module {
+    padding: 10px;
+  }
+  
+  .module-title {
+    font-size: 13px;
+  }
+  
+  .nickname {
+    font-size: 15px;
+  }
+  
+  .signature {
+    font-size: 10px;
+  }
+  
+  .tag-item {
+    font-size: 11px;
+    padding: 3px 6px;
+  }
+  
+  .quick-link {
+    font-size: 11px;
+    padding: 5px 6px;
+  }
+}
+
+/* ========================================
+ * 滚动条样式 (Scrollbar Styles)
+ * ======================================== */
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: var(--color-background-secondary);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--color-pixel-ink-gray);
+  border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--color-pixel-ink-stone-blue);
+}
+
+[data-theme="dark"] .sidebar::-webkit-scrollbar-track {
+  background: var(--color-pixel-ink-black);
+}
+
+[data-theme="dark"] .sidebar::-webkit-scrollbar-thumb {
+  background: var(--color-pixel-ink-light-gray);
+}
+
+/* ========================================
+ * 无障碍支持 (Accessibility Support)
+ * ======================================== */
+
+/* 键盘导航支持 */
+.tag-item:focus,
+.quick-link:focus,
+.sidebar-toggle-mobile:focus {
+  outline: 2px solid var(--color-pixel-ink-stone-blue);
+  outline-offset: 2px;
+}
+
+/* 减少动画模式支持 */
+@media (prefers-reduced-motion: reduce) {
+  .sidebar {
+    transition: none;
+  }
+  
+  .tag-item,
+  .quick-link,
+  .sidebar-toggle-mobile {
+    transition: none;
+  }
+}
+
+/* 高对比度模式支持 */
+@media (prefers-contrast: high) {
+  .sidebar-module {
+    border-width: 2px;
+  }
+  
+  .tag-item,
+  .quick-link {
+    border-width: 2px;
+  }
+  
+  .module-title,
+  .nickname,
+  .stat-value {
+    font-weight: bold;
+  }
+}

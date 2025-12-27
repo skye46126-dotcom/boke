@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import ThemeToggle from '@/components/ThemeToggle';
 
 export default function AdminLogin() {
   const router = useRouter();
@@ -36,6 +37,11 @@ export default function AdminLogin() {
 
   return (
     <div className="login-container">
+      {/* 主题切换器 - 右上角 */}
+      <div style={{ position: 'fixed', top: '20px', right: '20px', zIndex: 100 }}>
+        <ThemeToggle variant="icon" size="md" />
+      </div>
+      
       <div className="login-card">
         <h1>管理后台登录</h1>
         <p className="login-description">

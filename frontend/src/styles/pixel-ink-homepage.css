@@ -1,0 +1,825 @@
+/**
+ * 像素水墨风个人主页样式
+ * Pixel Ink Homepage Styles
+ * 
+ * 严格遵循"像素水墨+扑克牌"风格规范
+ * 实现"乱中有序的便当盒布局"
+ */
+
+/* ========================================
+ * 主页基础布局 (Homepage Base Layout)
+ * ======================================== */
+
+.pixel-ink-homepage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: var(--pixel-font-family);
+  background-color: #f5f2ef; /* 浅色水墨纸张色 */
+  background-image: 
+    radial-gradient(circle at 25% 25%, rgba(74, 122, 150, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(204, 153, 102, 0.08) 0%, transparent 50%);
+}
+
+[data-theme="dark"] .pixel-ink-homepage {
+  background-color: #181818; /* 深色水墨黑色 */
+  background-image: 
+    radial-gradient(circle at 25% 25%, rgba(74, 122, 150, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(204, 153, 102, 0.15) 0%, transparent 50%);
+}
+
+/* 主要内容区域 */
+.homepage-main {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* 无侧边栏时的全宽布局 */
+.homepage-main-full {
+  padding-left: 0;
+}
+
+/* ========================================
+ * 中心布局容器 (Center Layout Container)
+ * 头像居中，卡牌围绕头像绝对定位
+ * ======================================== */
+
+.center-layout-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 核心锚点包装器 - 已移除，改用 center-layout-container */
+
+/* 移动端布局 */
+@media (max-width: 767px) {
+  .homepage-main {
+    padding-left: 0;
+    padding-top: 100px;
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+    display: block;
+  }
+  
+  .center-layout-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    padding-bottom: 100px; /* 为底部导航留空间 */
+  }
+}
+
+/* ========================================
+ * Z-Index 层级管理 (Z-Index Layer Management)
+ * 严格按照规范：侧边栏(998) < 导航(999) < 弹窗(1000) < 核心锚点(100)
+ * ======================================== */
+
+.sidebar {
+  z-index: 998;
+}
+
+.navigation-cards {
+  z-index: 999;
+}
+
+.draw-card-modal {
+  z-index: 1000;
+}
+
+.core-anchor {
+  z-index: 100;
+}
+
+.sidebar-toggle-mobile {
+  z-index: 1001;
+}
+
+/* ========================================
+ * 核心锚点定位 (Core Anchor Positioning)
+ * 作为视觉中心的像素环头像+打字机文字
+ * 注意：具体样式在 core-anchor.css 中定义
+ * 已改为相对定位，配合 flex 布局居中
+ * ======================================== */
+
+/* 主页中核心锚点 - 不再使用绝对定位 */
+/* .pixel-ink-homepage .core-anchor 样式已移至 core-anchor.css */
+
+/* ========================================
+ * 迷你扑克牌导航 (Mini Poker Card Navigation)
+ * 80×110px 迷你扑克牌样式
+ * ======================================== */
+
+.navigation-cards {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  display: flex;
+  gap: 8px;
+}
+
+.nav-card {
+  width: 80px;
+  height: 110px;
+  background: #f5f2ef;
+  border: 2px solid #666;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .nav-card {
+  background: #2c2c2c;
+  border-color: #999;
+}
+
+.nav-card:hover {
+  transform: translateY(-3px) rotate(1deg);
+  border-color: #4a7a96;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.nav-card .poker-card-content {
+  padding: 8px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-card .poker-card-suit {
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.nav-card-text {
+  font-size: 12px;
+  color: #333;
+  text-align: center;
+}
+
+[data-theme="dark"] .nav-card-text {
+  color: #ccc;
+}
+
+/* ========================================
+ * 四象限功能卡片布局 (Four-Quadrant Function Cards)
+ * 乱中有序的便当盒布局
+ * ======================================== */
+
+.function-cards {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  padding: 0 40px;
+}
+
+/* 象限基础定位 */
+.quadrant {
+  position: absolute;
+  display: flex;
+  gap: 16px;
+}
+
+/* 左上象限 - 关于我 + 技能 */
+.quadrant-top-left {
+  top: 50%;
+  left: 50%;
+  transform: translate(-100%, -100%);
+  margin-top: -40px;
+  margin-left: -40px;
+  flex-direction: column;
+}
+
+/* 右上象限 - 抽卡机 */
+.quadrant-top-right {
+  top: 50%;
+  left: 50%;
+  transform: translate(0%, -100%);
+  margin-top: -40px;
+  margin-left: 40px;
+}
+
+/* 左下象限 - 最新文章 */
+.quadrant-bottom-left {
+  top: 50%;
+  left: 50%;
+  transform: translate(-100%, 0%);
+  margin-top: 40px;
+  margin-left: -40px;
+}
+
+/* 右下象限 - 作品集 + 联系 */
+.quadrant-bottom-right {
+  top: 50%;
+  left: 50%;
+  transform: translate(0%, 0%);
+  margin-top: 40px;
+  margin-left: 40px;
+  flex-direction: column;
+}
+
+/* ========================================
+ * 扑克牌尺寸规范 (Poker Card Size Standards)
+ * ======================================== */
+
+.poker-card-small {
+  width: 150px;
+  height: 200px;
+}
+
+.poker-card-medium {
+  width: 225px;
+  height: 300px;
+}
+
+.poker-card-large {
+  width: 300px;
+  height: 400px;
+}
+
+/* 扑克牌基础样式 */
+.poker-card {
+  background: #f5f2ef;
+  border: 2px solid #666;
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .poker-card {
+  background: #2c2c2c;
+  border-color: #999;
+}
+
+.poker-card:hover {
+  transform: translateY(-4px) rotate(2deg);
+  border-color: #4a7a96;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.poker-card-content {
+  padding: 16px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+/* 花色图标 */
+.poker-card-suit {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 16px;
+  opacity: 0.7;
+}
+
+/* ========================================
+ * 乱序效果 (Disorder Effects)
+ * PC端卡片轻微错落排列
+ * ======================================== */
+
+@media (min-width: 1200px) {
+  .card-offset-1 { transform: rotate(2deg) translateX(4px); }
+  .card-offset-2 { transform: rotate(-1deg) translateY(-2px); }
+  .card-offset-3 { transform: rotate(-2deg) translateY(3px); }
+  .card-offset-4 { transform: rotate(1deg) translateX(-3px); }
+  .card-offset-5 { transform: rotate(3deg) translateY(-4px); }
+  .card-offset-6 { transform: rotate(-1deg) translateX(2px); }
+}
+
+/* ========================================
+ * 侧边栏样式 (Sidebar Styles) - 已移除
+ * 以下样式保留但不再使用，如需恢复侧边栏可取消注释
+ * ======================================== */
+
+/*
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 100vh;
+  background: rgba(245, 242, 239, 0.95);
+  backdrop-filter: blur(10px);
+  border-right: 2px solid #666;
+  z-index: 998;
+  overflow-y: auto;
+  padding: 20px 16px;
+}
+
+[data-theme="dark"] .sidebar {
+  background: rgba(24, 24, 24, 0.95);
+  border-color: #999;
+}
+
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidebar-module {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+[data-theme="dark"] .sidebar-module {
+  background: rgba(44, 44, 44, 0.8);
+  border-color: #666;
+}
+
+.personal-info-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar-small {
+  width: 60px;
+  height: 60px;
+  border: 2px solid #4a7a96;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.nickname {
+  font-size: 16px;
+  color: #4a7a96;
+  margin-bottom: 4px;
+}
+
+.signature {
+  font-size: 12px;
+  color: #666;
+}
+
+.tag-item {
+  background: #4a7a96;
+  color: #f5f2ef;
+  border: 1px solid #4a7a96;
+  border-radius: 2px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  margin: 2px;
+  display: inline-block;
+}
+
+.tag-item:hover {
+  background: #cc9966;
+  border-color: #cc9966;
+}
+
+.stat-value {
+  font-size: 18px;
+  color: #4a7a96;
+  font-weight: bold;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #666;
+}
+*/
+
+/* ========================================
+ * 移动端侧边栏切换 (Mobile Sidebar Toggle) - 已移除
+ * ======================================== */
+
+/*
+.sidebar-toggle-mobile {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 40px;
+  height: 40px;
+  background: #4a7a96;
+  border: 2px solid #4a7a96;
+  border-radius: 2px;
+  color: #f5f2ef;
+  cursor: pointer;
+  z-index: 1001;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 997;
+}
+*/
+
+/* ========================================
+ * 响应式布局 (Responsive Layout)
+ * ======================================== */
+
+/* 平板端适配 */
+@media (min-width: 768px) and (max-width: 1199px) {
+  /* 无侧边栏，不需要 padding */
+  .homepage-main {
+    padding-left: 0;
+  }
+  
+  .nav-card {
+    width: 70px;
+    height: 95px;
+  }
+  
+  .poker-card-small {
+    width: 130px;
+    height: 170px;
+  }
+  
+  .poker-card-medium {
+    width: 200px;
+    height: 260px;
+  }
+  
+  .poker-card-large {
+    width: 260px;
+    height: 340px;
+  }
+  
+  /* 取消乱序效果 */
+  .card-offset-1,
+  .card-offset-2,
+  .card-offset-3,
+  .card-offset-4,
+  .card-offset-5,
+  .card-offset-6 {
+    transform: none;
+  }
+}
+
+/* 移动端适配 */
+@media (max-width: 767px) {
+  .pixel-ink-homepage {
+    overflow-y: auto;
+  }
+  
+  .homepage-main {
+    padding-left: 0;
+    padding-top: 80px;
+    min-height: 100vh;
+  }
+  
+  .navigation-cards {
+    top: auto;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    gap: 6px;
+  }
+  
+  .nav-card {
+    width: 60px;
+    height: 80px;
+  }
+  
+  .pixel-ink-homepage .core-anchor {
+    /* 移动端头像固定在顶部 */
+    position: relative;
+    transform: none;
+    margin: 20px auto;
+  }
+  
+  .function-cards {
+    position: static;
+    height: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .quadrant {
+    position: static;
+    transform: none;
+    margin: 0;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .quadrant-top-left,
+  .quadrant-bottom-right {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  
+  .poker-card-large,
+  .poker-card-medium {
+    width: 100%;
+    max-width: 280px;
+    height: 200px;
+  }
+  
+  .poker-card-small {
+    width: 140px;
+    height: 120px;
+  }
+  
+  /* 移动端取消所有变换效果 */
+  .card-offset-1,
+  .card-offset-2,
+  .card-offset-3,
+  .card-offset-4,
+  .card-offset-5,
+  .card-offset-6 {
+    transform: none;
+  }
+  
+  .poker-card:hover,
+  .nav-card:hover {
+    transform: none;
+  }
+}
+
+/* ========================================
+ * 全局像素风格 (Global Pixel Styles)
+ * ======================================== */
+
+.pixel-ink-homepage * {
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* 确保像素完美渲染 */
+.pixel-ink-homepage img,
+.pixel-ink-homepage canvas,
+.pixel-ink-homepage svg {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* 禁用文本选择（可选） */
+.pixel-ink-homepage .no-select {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.card-title {
+  font-size: 18px;
+  color: #4a7a96;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+[data-theme="dark"] .card-title {
+  color: #cc9966;
+}
+
+.card-description {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+[data-theme="dark"] .card-description {
+  color: #ccc;
+}
+
+.card-link {
+  background: #4a7a96;
+  color: #f5f2ef;
+  border: 2px solid #4a7a96;
+  border-radius: 2px;
+  padding: 8px 16px;
+  text-decoration: none;
+  font-size: 12px;
+  display: inline-block;
+  margin-top: auto;
+}
+
+.card-link:hover {
+  background: #cc9966;
+  border-color: #cc9966;
+}
+
+/* 技能标签 */
+.skill-tag {
+  background: #4a7a96;
+  color: #f5f2ef;
+  padding: 4px 8px;
+  border-radius: 2px;
+  font-size: 10px;
+  margin: 2px;
+  display: inline-block;
+}
+
+/* 抽卡机样式 */
+.card-draw {
+  background: linear-gradient(135deg, #f5f2ef 0%, rgba(74, 122, 150, 0.1) 100%);
+  cursor: pointer;
+}
+
+[data-theme="dark"] .card-draw {
+  background: linear-gradient(135deg, #2c2c2c 0%, rgba(204, 153, 102, 0.2) 100%);
+}
+
+.card-back-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.3;
+}
+
+.pattern-grid {
+  width: 100%;
+  height: 100%;
+  background-image: 
+    repeating-linear-gradient(45deg, #4a7a96 0px, #4a7a96 2px, transparent 2px, transparent 10px),
+    repeating-linear-gradient(-45deg, #cc9966 0px, #cc9966 2px, transparent 2px, transparent 10px);
+}
+
+.draw-card-label {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background: #4a7a96;
+  color: #f5f2ef;
+  padding: 6px 12px;
+  border-radius: 2px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* 文章卡片样式 */
+.article-title {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+[data-theme="dark"] .article-title {
+  color: #ccc;
+}
+
+.article-excerpt {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.publish-date {
+  font-size: 10px;
+  color: #4a7a96;
+}
+
+/* 项目卡片样式 */
+.project-name {
+  font-size: 14px;
+  color: #4a7a96;
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+
+.project-description {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+
+.tech-tag {
+  background: #cc9966;
+  color: #f5f2ef;
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-size: 9px;
+  margin: 1px;
+  display: inline-block;
+}
+
+/* 联系卡片样式 */
+.contact-links {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.contact-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: #4a7a96;
+  border: 2px solid #4a7a96;
+  border-radius: 2px;
+  text-decoration: none;
+  font-size: 16px;
+  color: #f5f2ef;
+}
+
+.contact-link:hover {
+  background: #cc9966;
+  border-color: #cc9966;
+}
+
+/* ========================================
+ * 减少动画模式支持 (Reduced Motion Support)
+ * ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .marquee-text {
+    animation: none;
+  }
+  
+  .poker-card:hover,
+  .nav-card:hover {
+    transform: none;
+  }
+}
+
+/* ========================================
+ * 高对比度模式支持 (High Contrast Support)
+ * ======================================== */
+
+@media (prefers-contrast: high) {
+  .poker-card,
+  .nav-card,
+  .sidebar {
+    border-width: 3px;
+  }
+  
+  .card-title,
+  .nickname,
+  .stat-value {
+    font-weight: bold;
+  }
+}
+
+/* ========================================
+ * 全局像素风格 (Global Pixel Styles)
+ * ======================================== */
+
+.pixel-ink-homepage * {
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+}
+
+/* 确保像素完美渲染 */
+.pixel-ink-homepage img,
+.pixel-ink-homepage canvas,
+.pixel-ink-homepage svg {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* 禁用文本选择（可选） */
+.pixel-ink-homepage .no-select {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}

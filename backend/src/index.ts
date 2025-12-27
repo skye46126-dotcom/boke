@@ -6,6 +6,8 @@ import { config } from './config';
 import articlesRouter from './routes/articles';
 import adminRouter from './routes/admin';
 import uploadRouter from './routes/upload';
+import tagsRouter from './routes/tags';
+import statsRouter from './routes/stats';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 import { requireAdmin, logSuspiciousAccess } from './middleware/adminAuth';
 import { csrfProtection, getCSRFToken } from './middleware/csrf';
@@ -66,6 +68,8 @@ app.get('/api/csrf-token', getCSRFToken);
 
 // Public API routes
 app.use('/api/articles', articlesRouter);
+app.use('/api/tags', tagsRouter);
+app.use('/api/stats', statsRouter);
 
 // Admin routes (protected by hidden path and CSRF)
 app.use(`/${config.admin.path}`, adminLimiter, requireAdmin, csrfProtection, adminRouter);

@@ -8,19 +8,25 @@ const router = Router();
 
 /**
  * GET /api/articles - 获取已发布的文章列表（前台）
+ * Query params:
+ *   - page: 页码（可选，默认 1）
+ *   - limit: 每页数量（可选，默认 10）
+ *   - tag: 标签 slug（可选，用于筛选）
  */
 router.get(
   '/',
   [
     query('page').optional().isInt({ min: 1 }).toInt(),
     query('limit').optional().isInt({ min: 1, max: 50 }).toInt(),
+    query('tag').optional().isString().trim(),
     validate,
   ],
   asyncHandler(async (req: Request, res: Response) => {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
+    const tagSlug = req.query.tag as string | undefined;
 
-    const result = await ArticleModel.findPublished(page, limit);
+    const result = await ArticleModel.findPublished(page, limit, tagSlug);
 
     res.json({
       success: true,

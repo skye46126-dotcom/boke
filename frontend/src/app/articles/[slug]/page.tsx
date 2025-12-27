@@ -1,15 +1,13 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { RichArticle } from '@/types/rich-article';
-import RichMarkdownContent from '@/components/RichMarkdownContent';
-import ArticleLayout from '@/components/ArticleLayout';
-import { generateArticleJsonLd, generateBreadcrumbJsonLd } from '@/lib/seo';
+import { Article } from '@/types/article';
+import { marked } from 'marked';
 
-async function getRichArticle(slug: string): Promise<RichArticle | null> {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+async function getArticle(slug: string): Promise<Article | null> {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
   
   try {
-    const res = await fetch(`${baseUrl}/api/articles/${slug}/rich`, {
+    const res = await fetch(`${baseUrl}/api/articles/${slug}`, {
       cache: 'no-store',
     });
 
@@ -20,9 +18,20 @@ async function getRichArticle(slug: string): Promise<RichArticle | null> {
     const response = await res.json();
     return response.data;
   } catch (error) {
-    console.error('Error fetching rich article:', error);
+    console.error('Error fetching article:', error);
     return null;
   }
+}
+
+// 简单的Markdown渲染函数
+function renderMarkdown(markdown: string): string {
+  // 配置marked
+  marked.setOptions({
+    gfm: true,
+    breaks: true,
+  });
+  
+  return marked(markdown) as string;
 }
 
 // 生成动态 metadata
@@ -31,7 +40,7 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const article = await getRichArticle(params.slug);
+  const article = await getArticle(params.slug);
 
   if (!article) {
     return {
@@ -41,38 +50,17 @@ export async function generateMetadata({
   }
 
   const description = article.excerpt || 
-    article.htmlContent
+    article.content
       .replace(/<[^>]*>/g, '') // 移除 HTML 标签
       .replace(/\s+/g, ' ') // 合并空白
       .trim()
       .substring(0, 160) + '...';
-
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
-  const articleUrl = `${baseUrl}/articles/${article.slug}`;
 
   return {
     title: article.title,
     description,
     keywords: [article.title, '博客', '文章'],
     authors: [{ name: '博主' }],
-    openGraph: {
-      title: article.title,
-      description,
-      url: articleUrl,
-      siteName: '个人博客',
-      locale: 'zh_CN',
-      type: 'article',
-      publishedTime: article.created_at,
-      modifiedTime: article.updated_at,
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: article.title,
-      description,
-    },
-    alternates: {
-      canonical: articleUrl,
-    },
   };
 }
 
@@ -81,74 +69,49 @@ export default async function ArticlePage({
 }: {
   params: { slug: string };
 }) {
-  const article = await getRichArticle(params.slug);
+  const article = await getArticle(params.slug);
 
   if (!article) {
     notFound();
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
-  
-  // 生成 JSON-LD 结构化数据
-  const articleJsonLd = generateArticleJsonLd(article, baseUrl);
-  const breadcrumbJsonLd = generateBreadcrumbJsonLd(
-    [
-      { name: '首页', url: '/' },
-      { name: article.title, url: `/articles/${article.slug}` },
-    ],
-    baseUrl
-  );
+  // 渲染Markdown内容
+  const htmlContent = renderMarkdown(article.content);
 
   return (
-    <>
-      {/* JSON-LD 结构化数据 */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
+    <div className="max-w-4xl mx-auto px-4 py-8">
+      <article className="article-detail">
+        <header className="article-header mb-8">
+          <h1 className="text-4xl font-bold mb-4">{article.title}</h1>
+          
+          <div className="text-gray-600 mb-4">
+            <time dateTime={article.created_at}>
+              发布于 {new Date(article.created_at).toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </time>
+            {article.updated_at !== article.created_at && (
+              <span className="ml-4">
+                更新于 {new Date(article.updated_at).toLocaleDateString('zh-CN', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </span>
+            )}
+          </div>
+          
+          {article.excerpt && (
+            <p className="text-lg text-gray-700 mb-6">{article.excerpt}</p>
+          )}
+        </header>
 
-      <main className="container">
-        <ArticleLayout tableOfContents={article.tableOfContents}>
-          <article className="article-detail">
-            <header className="article-header">
-              <h1 className="article-detail-title">{article.title}</h1>
-              
-              <div className="article-detail-meta">
-                <time dateTime={article.created_at}>
-                  发布于 {new Date(article.created_at).toLocaleDateString('zh-CN', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
-                </time>
-                {article.updated_at !== article.created_at && (
-                  <span className="updated-time">
-                    更新于 {new Date(article.updated_at).toLocaleDateString('zh-CN', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    })}
-                  </span>
-                )}
-                <span className="reading-time">
-                  阅读时间 {article.readingTime} 分钟
-                </span>
-              </div>
-            </header>
-
-            <div className="article-content">
-              <RichMarkdownContent 
-                htmlContent={article.htmlContent}
-                tableOfContents={article.tableOfContents}
-              />
-            </div>
-          </article>
-        </ArticleLayout>
-      </main>
-    </>
+        <div className="article-content prose prose-lg max-w-none">
+          <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+        </div>
+      </article>
+    </div>
   );
 }

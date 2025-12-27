@@ -1,13 +1,24 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import { Press_Start_2P } from 'next/font/google';
 import './globals.css';
 import 'highlight.js/styles/atom-one-dark.css';
-import '@/styles/typography.css';
+import '@/styles/theme-variables.css';
+import '@/styles/theme-toggle.css';
+import '@/styles/typography-longform.css';
 import '@/styles/article-layout.css';
 import '@/styles/table-of-contents.css';
 import '@/styles/magnetic.css';
 import '@/styles/heading-reveal.css';
 import '@/styles/accessibility.css';
+import { ThemeProvider } from '@/contexts/ThemeContext';
+
+const pressStart2P = Press_Start_2P({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-pixel',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: {
@@ -53,7 +64,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh-CN">
-      <body>{children}</body>
+      <head>
+        <meta name="theme-color" content="#ffffff" />
+      </head>
+      <body className={pressStart2P.variable}>
+        <ThemeProvider defaultTheme="system" storageKey="blog-theme">
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

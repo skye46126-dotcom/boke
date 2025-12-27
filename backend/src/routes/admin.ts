@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { body, param } from 'express-validator';
 import { ArticleModel, Article } from '../models/Article';
+import { TagModel } from '../models/Tag';
 import { validate, sanitizeInput } from '../middleware/validation';
 import { asyncHandler } from '../middleware/errorHandler';
 import { generateSlug } from '../utils/slug';
@@ -61,10 +62,12 @@ router.post(
     body('excerpt').optional().trim(),
     body('status').isIn(['draft', 'published']),
     body('slug').optional().trim(),
+    body('tagIds').optional().isArray(),
+    body('tagIds.*').optional().isUUID(),
     validate,
   ],
   asyncHandler(async (req: Request, res: Response) => {
-    const { title, content, excerpt, status } = req.body;
+    const { title, content, excerpt, status, tagIds } = req.body;
     let { slug } = req.body;
 
     // 如果没有提供 slug，自动生成
@@ -89,9 +92,20 @@ router.post(
       status,
     });
 
+    // 如果提供了标签 ID，关联标签
+    if (tagIds && Array.isArray(tagIds) && tagIds.length > 0) {
+      await TagModel.setArticleTags(article.id, tagIds);
+    }
+
+    // 重新获取文章（包含标签）
+    const articleWithTags = await ArticleModel.findById(article.id);
+    if (articleWithTags) {
+      articleWithTags.tags = await TagModel.findByArticleId(article.id);
+    }
+
     res.status(201).json({
       success: true,
-      data: article,
+      data: articleWithTags,
       message: 'Article created successfully',
     });
   })
@@ -110,11 +124,13 @@ router.put(
     body('excerpt').optional().trim(),
     body('status').optional().isIn(['draft', 'published']),
     body('slug').optional().trim(),
+    body('tagIds').optional().isArray(),
+    body('tagIds.*').optional().isUUID(),
     validate,
   ],
   asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { title, content, excerpt, status, slug } = req.body;
+    const { title, content, excerpt, status, slug, tagIds } = req.body;
 
     // 检查文章是否存在
     const existingArticle = await ArticleModel.findById(id);
@@ -144,9 +160,20 @@ router.put(
       slug,
     });
 
+    // 如果提供了标签 ID，更新标签关联
+    if (tagIds !== undefined && Array.isArray(tagIds)) {
+      await TagModel.setArticleTags(id, tagIds);
+    }
+
+    // 重新获取文章（包含标签）
+    const articleWithTags = await ArticleModel.findById(id);
+    if (articleWithTags) {
+      articleWithTags.tags = await TagModel.findByArticleId(id);
+    }
+
     res.json({
       success: true,
-      data: article,
+      data: articleWithTags,
       message: 'Article updated successfully',
     });
   })

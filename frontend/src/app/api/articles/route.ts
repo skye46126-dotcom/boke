@@ -10,6 +10,7 @@ export const GET = withErrorHandler(async (req: NextRequest) => {
   const url = new URL(req.url);
   const page = parseInt(url.searchParams.get('page') || '1', 10);
   const limit = parseInt(url.searchParams.get('limit') || '10', 10);
+  const tag = url.searchParams.get('tag') || undefined;
 
   // 验证参数
   if (page < 1 || limit < 1 || limit > 50) {
@@ -19,7 +20,7 @@ export const GET = withErrorHandler(async (req: NextRequest) => {
     );
   }
 
-  const result = await ArticleModel.findPublished(page, limit);
+  const result = await ArticleModel.findPublished(page, limit, tag);
 
   return NextResponse.json(
     {
