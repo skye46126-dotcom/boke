@@ -11,9 +11,15 @@ export default function ArticlesPage() {
   return (
     <>
       <SimpleNavigation />
-      <div className="articles-page">
+      <div className="articles-page" style={{ 
+        background: 'var(--color-background)', 
+        minHeight: '100vh',
+        transition: 'background 0.3s ease'
+      }}>
         <div className="container mx-auto px-4 py-8">
-          <h1 className="text-3xl font-bold mb-8">文章列表</h1>
+          <h1 className="text-3xl font-bold mb-8" style={{ color: 'var(--color-text-primary)' }}>
+            文章列表
+          </h1>
           <ArticlesClient />
         </div>
       </div>

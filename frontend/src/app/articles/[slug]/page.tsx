@@ -129,9 +129,10 @@ export default async function ArticlePage({
       <div className="max-w-4xl mx-auto px-4 py-8" style={{ marginLeft: '20px', transition: 'margin-left 0.3s ease' }}>
         <article className="article-detail">
           <header className="article-header mb-8">
-            <h1 className="text-4xl font-bold mb-4">{article.title}</h1>
+            <h1 className="article-detail-title text-4xl font-bold mb-4">{article.title}</h1>
             
-            <div className="text-gray-600 mb-4">
+            {/* 【修复】使用主题感知的颜色类 */}
+            <div className="article-detail-meta mb-4">
               <time dateTime={article.created_at}>
                 发布于 {new Date(article.created_at).toLocaleDateString('zh-CN', {
                   year: 'numeric',
@@ -140,7 +141,7 @@ export default async function ArticlePage({
                 })}
               </time>
               {article.updated_at !== article.created_at && (
-                <span className="ml-4">
+                <span className="updated-time ml-4">
                   更新于 {new Date(article.updated_at).toLocaleDateString('zh-CN', {
                     year: 'numeric',
                     month: 'long',
@@ -151,7 +152,7 @@ export default async function ArticlePage({
             </div>
             
             {article.excerpt && (
-              <p className="text-lg text-gray-700 mb-6">{article.excerpt}</p>
+              <p className="text-lg mb-6" style={{ color: 'var(--color-text-secondary)' }}>{article.excerpt}</p>
             )}
           </header>
 

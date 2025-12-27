@@ -39,8 +39,11 @@ export default function ArticlesClient() {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-        <span className="ml-2">加载中...</span>
+        <div 
+          className="animate-spin rounded-full h-8 w-8 border-b-2"
+          style={{ borderColor: 'var(--color-text-primary)' }}
+        ></div>
+        <span className="ml-2" style={{ color: 'var(--color-text-secondary)' }}>加载中...</span>
       </div>
     );
   }
@@ -48,10 +51,15 @@ export default function ArticlesClient() {
   if (error) {
     return (
       <div className="text-center py-12">
-        <p className="text-red-600 mb-4">加载文章时出错: {error}</p>
+        <p className="mb-4" style={{ color: 'var(--color-error, #ef4444)' }}>加载文章时出错: {error}</p>
         <button 
           onClick={() => window.location.reload()} 
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="px-4 py-2 rounded"
+          style={{ 
+            background: 'var(--color-accent)', 
+            color: '#fff',
+            transition: 'background 0.2s ease'
+          }}
         >
           重试
         </button>

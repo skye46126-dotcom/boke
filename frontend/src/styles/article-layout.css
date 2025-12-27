@@ -606,16 +606,221 @@
 
 /* ========================================
  * 深色模式特定调整 (Dark Mode Specific)
+ * 【修复】完整的黑夜模式样式
  * ======================================== */
 
-[data-theme="dark"] .article-content > * {
-  background: var(--color-surface-raised);
-  border-color: var(--color-border);
+/* 文章页面主体背景 */
+[data-theme="dark"] .article-detail {
+  background: #1a1a1a;
 }
 
+/* 文章内容卡片 */
+[data-theme="dark"] .article-content > * {
+  background: #2a2a2a;
+  border-color: #444;
+  box-shadow: 
+    2px 0 0 #111,
+    0 2px 0 #111,
+    2px 2px 0 #111;
+}
+
+/* 侧边栏 */
 [data-theme="dark"] .article-sidebar {
-  background: var(--color-background);
-  border-color: var(--color-border);
+  background: #1a1a1a;
+  border-color: #444;
+}
+
+/* 文章标题 */
+[data-theme="dark"] .article-detail-title,
+[data-theme="dark"] .article-content h1,
+[data-theme="dark"] .article-content h2,
+[data-theme="dark"] .article-content h3,
+[data-theme="dark"] .article-content h4,
+[data-theme="dark"] .article-content h5,
+[data-theme="dark"] .article-content h6 {
+  color: #e0e0e0;
+}
+
+/* 正文文字 */
+[data-theme="dark"] .article-content p,
+[data-theme="dark"] .article-content li,
+[data-theme="dark"] .article-content td,
+[data-theme="dark"] .article-content th {
+  color: #d0d0d0;
+}
+
+/* 文章元信息（日期等） */
+[data-theme="dark"] .article-detail-meta,
+[data-theme="dark"] .article-detail-meta time,
+[data-theme="dark"] .article-detail-meta .updated-time,
+[data-theme="dark"] .article-detail-meta .reading-time {
+  color: #aaa;
+}
+
+/* 文章摘要 */
+[data-theme="dark"] .article-header p {
+  color: #bbb;
+}
+
+/* 文章头部边框 */
+[data-theme="dark"] .article-header {
+  border-bottom-color: #444;
+}
+
+/* 块引用 */
+[data-theme="dark"] .article-content blockquote {
+  background: #252525;
+  border-left-color: #4a7a96;
+  color: #ccc;
+}
+
+[data-theme="dark"] .article-content blockquote p {
+  color: #ccc;
+}
+
+/* 代码块 */
+[data-theme="dark"] .article-content pre {
+  background: #1e1e1e;
+  border-color: #444;
+}
+
+[data-theme="dark"] .article-content pre code {
+  color: #d4d4d4;
+}
+
+/* 行内代码 */
+[data-theme="dark"] .article-content code:not(pre code) {
+  background: #333;
+  color: #ff6b9d;
+}
+
+/* 表格 */
+[data-theme="dark"] .article-content table {
+  border-color: #444;
+}
+
+[data-theme="dark"] .article-content th {
+  background: #2a2a2a;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+[data-theme="dark"] .article-content td {
+  border-color: #444;
+  color: #d0d0d0;
+}
+
+[data-theme="dark"] .article-content tr:nth-child(even) {
+  background: #252525;
+}
+
+/* 水平分隔线 */
+[data-theme="dark"] .article-content hr {
+  border-color: #444;
+}
+
+/* 图片容器 */
+[data-theme="dark"] .article-content figure,
+[data-theme="dark"] .article-content .image-container {
+  background: #252525;
+  border-color: #444;
+}
+
+[data-theme="dark"] .article-content figcaption {
+  color: #999;
+}
+
+/* 链接颜色 */
+[data-theme="dark"] .article-content a {
+  color: #6bb3d9;
+}
+
+[data-theme="dark"] .article-content a:hover {
+  color: #8cc8e8;
+}
+
+/* 像素装饰线 */
+[data-theme="dark"] .article-content > h1::after,
+[data-theme="dark"] .article-content > h2::after {
+  background: #6b8db5;
+  background-image: 
+    linear-gradient(90deg, 
+      #6b8db5 0px, #6b8db5 2px,
+      transparent 2px, transparent 4px
+    );
+}
+
+/* 项目信息 */
+[data-theme="dark"] .article-content .project-title {
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .article-content .project-description,
+[data-theme="dark"] .article-content .project-tech-stack {
+  color: #999;
+}
+
+/* 像素风格卡片 */
+[data-theme="dark"] .pixel-mini-card {
+  background: #2a2a2a;
+  border-color: #444;
+  box-shadow: 
+    1px 0 0 #111,
+    0 1px 0 #111,
+    1px 1px 0 #111;
+}
+
+[data-theme="dark"] .pixel-mini-card h4 {
+  color: #e0e0e0;
+}
+
+/* 返回链接 */
+[data-theme="dark"] .article-sidebar .back-link {
+  background: #2a2a2a;
+  border-color: #444;
+  color: #e0e0e0;
+  box-shadow: 
+    1px 0 0 #111,
+    0 1px 0 #111,
+    1px 1px 0 #111;
+}
+
+[data-theme="dark"] .article-sidebar .back-link:hover {
+  background: #cc9966;
+  color: #1a1a1a;
+  border-color: #cc9966;
+}
+
+/* 像素按钮 */
+[data-theme="dark"] .pixel-icon-button {
+  background: #2a2a2a;
+  border-color: #444;
+  color: #e0e0e0;
+  box-shadow: 
+    1px 0 0 #111,
+    0 1px 0 #111,
+    1px 1px 0 #111;
+}
+
+[data-theme="dark"] .pixel-icon-button:hover {
+  background: #cc9966 !important;
+  color: #1a1a1a !important;
+  border-color: #cc9966 !important;
+}
+
+/* 像素装饰 */
+[data-theme="dark"] .pixel-decoration {
+  background: #6b8db5;
+}
+
+[data-theme="dark"] .pixel-divider::before {
+  color: #6b8db5;
+}
+
+/* 列表标记 */
+[data-theme="dark"] .article-content ul li::marker,
+[data-theme="dark"] .article-content ol li::marker {
+  color: #888;
 }
 
 /* ========================================

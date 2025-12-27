@@ -98,6 +98,128 @@ code {
   background: #fff;
 }
 
+/* ========================================
+ * 文章列表页面 - 黑夜模式
+ * 【完整修复版】确保所有元素在黑夜模式下清晰可见
+ * ======================================== */
+
+/* 全局根元素黑夜模式背景 */
+[data-theme="dark"] body {
+  background: #1a1a1a;
+  color: #e0e0e0;
+}
+
+/* 文章列表页面背景 */
+[data-theme="dark"] .articles-page {
+  background: #1a1a1a !important;
+  min-height: 100vh;
+}
+
+/* 页面标题 */
+[data-theme="dark"] .articles-page h1 {
+  color: #e0e0e0 !important;
+}
+
+/* 文章卡片 - 与页面背景区分层次 */
+[data-theme="dark"] .article-card {
+  background: #2a2a2a !important;
+  border-color: #444 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .article-card:hover {
+  background: #333 !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  border-color: #555 !important;
+}
+
+/* 文章标题 */
+[data-theme="dark"] .article-title {
+  color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .article-card:hover .article-title {
+  color: #6bb3d9 !important;
+}
+
+/* 文章摘要 */
+[data-theme="dark"] .article-excerpt {
+  color: #d0d0d0 !important;
+}
+
+/* 文章元信息（日期等） */
+[data-theme="dark"] .article-meta {
+  color: #d0d0d0 !important;
+}
+
+[data-theme="dark"] .article-meta time {
+  color: #d0d0d0 !important;
+}
+
+/* 文章链接 */
+[data-theme="dark"] .article-link {
+  color: inherit;
+}
+
+/* 空状态 */
+[data-theme="dark"] .empty-state {
+  color: #999 !important;
+}
+
+[data-theme="dark"] .empty-state p {
+  color: #999 !important;
+}
+
+/* 加载状态 */
+[data-theme="dark"] .animate-spin {
+  border-color: #444 !important;
+  border-bottom-color: #e0e0e0 !important;
+}
+
+/* 错误状态 */
+[data-theme="dark"] .text-red-600 {
+  color: #ff6b6b !important;
+}
+
+/* 重试按钮 */
+[data-theme="dark"] button.bg-blue-500 {
+  background: #4a7a96 !important;
+}
+
+[data-theme="dark"] button.bg-blue-500:hover {
+  background: #5a8aa6 !important;
+}
+
+/* ========================================
+ * 顶部导航栏 - 黑夜模式
+ * ======================================== */
+
+/* 导航栏背景 */
+[data-theme="dark"] .simple-navigation {
+  background: #1a1a1a !important;
+  border-bottom-color: #444 !important;
+}
+
+/* Logo 文字 */
+[data-theme="dark"] .nav-logo,
+[data-theme="dark"] .logo-text {
+  color: #e0e0e0 !important;
+}
+
+/* 导航链接 */
+[data-theme="dark"] .nav-link {
+  color: #bbb !important;
+}
+
+[data-theme="dark"] .nav-link:hover {
+  color: #e0e0e0 !important;
+}
+
+/* 容器背景 */
+[data-theme="dark"] .container {
+  background: transparent;
+}
+
 .article-card:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);

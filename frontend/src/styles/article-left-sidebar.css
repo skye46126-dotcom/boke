@@ -3,7 +3,7 @@
  * Article Left Sidebar Styles
  * 像素风格，hover展开，适配日夜模式
  * 
- * 字号优化版本：
+ * 【字体优化】使用系统字体确保文字100%显示
  * - 返回按钮文字：16px，图标：18px
  * - 目录标题：16px
  * - 目录项文字：15px，序号：14px
@@ -24,6 +24,8 @@
   --color-pixel-card-bg: #fff;
   --color-pixel-shadow: #333;
   --color-pixel-accent: #4a7a96;
+  /* 【修复】定义可靠的系统字体栈 */
+  --sidebar-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 [data-theme="dark"] {
@@ -63,15 +65,14 @@
   z-index: 9992;
 }
 
-
 .left-sidebar-trigger .trigger-indicator {
-  font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
-  /* 【字号】触发指示器：18px */
+  /* 【修复】使用系统字体 */
+  font-family: var(--sidebar-font-family);
   font-size: 18px;
   color: var(--color-text-tertiary, #999);
   opacity: 0.3;
   transition: opacity 0.2s ease, transform 0.2s ease;
-  -webkit-font-smoothing: none;
+  -webkit-font-smoothing: antialiased;
 }
 
 .left-sidebar-trigger:hover .trigger-indicator {
@@ -86,7 +87,6 @@
 .left-sidebar {
   position: relative;
   height: 100vh;
-  /* 【宽度】加宽以适配更大字号：220px */
   width: 220px;
   background: var(--color-surface) !important;
   border-right: 2px solid var(--color-pixel-border);
@@ -106,12 +106,10 @@
 }
 
 .left-sidebar-content {
-  /* 【间距】内边距从24px 20px改为28px 24px */
   padding: 28px 24px;
   height: 100%;
   display: flex;
   flex-direction: column;
-  /* 【间距】元素间距加大：24px */
   gap: 24px;
   overflow-y: auto;
 }
@@ -123,18 +121,17 @@
 .left-sidebar-back {
   display: flex;
   align-items: center;
-  /* 【间距】图标与文字间距：10px */
   gap: 10px;
-  /* 【间距】内边距从8px 12px改为12px 18px */
   padding: 12px 18px;
   background: var(--color-pixel-card-bg, #fff);
   border: 1px solid var(--color-pixel-border, #666);
   text-decoration: none;
   color: var(--color-text-primary, #222);
-  font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
-  /* 【字号】返回按钮文字：16px */
+  /* 【修复】使用系统字体 */
+  font-family: var(--sidebar-font-family);
   font-size: 16px;
-  -webkit-font-smoothing: none;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
   box-shadow: 2px 2px 0 var(--color-pixel-shadow, #333);
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   will-change: transform, box-shadow;
@@ -166,7 +163,6 @@
 }
 
 .back-icon {
-  /* 【字号】返回图标：18px */
   font-size: 18px;
   transition: transform 0.2s ease;
 }
@@ -182,21 +178,19 @@
 .left-sidebar-toc {
   flex: 1;
   overflow-y: auto;
-  /* 【间距】目录区域内边距 */
   padding: 4px 0;
 }
 
 .toc-title {
-  font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
-  /* 【字号】目录标题：16px */
+  /* 【修复】使用系统字体 */
+  font-family: var(--sidebar-font-family);
   font-size: 16px;
-  font-weight: normal;
+  font-weight: 600;
   color: var(--color-text-secondary, #666);
-  /* 【间距】标题下边距：14px */
   margin: 0 0 14px 0;
   padding-bottom: 10px;
   border-bottom: 1px dashed var(--color-pixel-border, #666);
-  -webkit-font-smoothing: none;
+  -webkit-font-smoothing: antialiased;
 }
 
 [data-theme="dark"] .toc-title {
@@ -210,7 +204,6 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  /* 【间距】目录项间距从6px改为8px */
   gap: 8px;
 }
 
@@ -229,15 +222,14 @@
 .toc-link {
   display: flex;
   align-items: center;
-  /* 【间距】链接内边距从6px 10px改为8px 12px */
   padding: 8px 12px;
   gap: 10px;
   text-decoration: none;
   color: var(--color-text-primary, #222);
-  font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
-  /* 【字号】目录项文字：15px */
+  /* 【修复】使用系统字体 */
+  font-family: var(--sidebar-font-family);
   font-size: 15px;
-  -webkit-font-smoothing: none;
+  -webkit-font-smoothing: antialiased;
   background: transparent;
   border: 1px solid transparent;
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
@@ -280,12 +272,13 @@
 }
 
 .toc-number {
-  font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
-  /* 【字号】目录序号：14px */
+  /* 【修复】使用系统字体 */
+  font-family: var(--sidebar-font-family);
   font-size: 14px;
+  font-weight: 500;
   color: var(--color-text-tertiary, #999);
   min-width: 24px;
-  -webkit-font-smoothing: none;
+  -webkit-font-smoothing: antialiased;
 }
 
 .toc-item.active .toc-number {
@@ -311,7 +304,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* 【间距】主题区域内边距：14px */
   padding-top: 14px;
   border-top: 1px dashed var(--color-pixel-border, #666);
   margin-top: auto;
@@ -322,11 +314,12 @@
 }
 
 .theme-label {
-  font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
-  /* 【字号】主题标签：15px */
+  /* 【修复】使用系统字体 */
+  font-family: var(--sidebar-font-family);
   font-size: 15px;
+  font-weight: 500;
   color: var(--color-text-secondary, #666);
-  -webkit-font-smoothing: none;
+  -webkit-font-smoothing: antialiased;
 }
 
 [data-theme="dark"] .theme-label {
@@ -334,10 +327,10 @@
 }
 
 .theme-toggle-btn {
-  font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
-  /* 【字号】主题按钮：16px */
+  /* 【修复】使用系统字体 */
+  font-family: var(--sidebar-font-family);
   font-size: 16px;
-  /* 【间距】按钮内边距：8px 12px */
+  font-weight: 500;
   padding: 8px 12px;
   background: var(--color-pixel-card-bg, #fff);
   border: 1px solid var(--color-pixel-border, #666);
@@ -345,7 +338,7 @@
   cursor: pointer;
   box-shadow: 2px 2px 0 var(--color-pixel-shadow, #333);
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-  -webkit-font-smoothing: none;
+  -webkit-font-smoothing: antialiased;
   will-change: transform, box-shadow;
 }
 
@@ -413,12 +406,10 @@
   }
 
   .left-sidebar-content {
-    /* 【间距】移动端内边距同步加大 */
     padding: 24px 20px;
     gap: 20px;
   }
 
-  /* 移动端字号保持与桌面端一致 */
   .left-sidebar-back {
     font-size: 16px;
     padding: 12px 16px;
