@@ -30,11 +30,13 @@ interface Project {
 
 interface FunctionCardsProps {
   onDrawCardClick: () => void;
+  isCollapsed?: boolean;
   className?: string;
 }
 
 export default function FunctionCards({ 
   onDrawCardClick, 
+  isCollapsed = false,
   className = '' 
 }: FunctionCardsProps) {
   const [latestArticle, setLatestArticle] = useState<Article | null>(null);
@@ -92,7 +94,7 @@ export default function FunctionCards({
   };
 
   return (
-    <div className={`function-cards-grid ${className}`}>
+    <div className={`function-cards-grid ${isCollapsed ? 'cards-collapsed' : ''} ${className}`}>
       {/* 关于我 - 左上角 */}
       <div className="poker-card card-about">
         <div className="poker-card-content">

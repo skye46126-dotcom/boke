@@ -1,7 +1,7 @@
 /**
  * NavigationCards 组件
- * 顶栏导航模块：扑克牌样式导航卡片
- * 支持响应式布局和交互动效
+ * 顶栏导航模块：抽卡式扑克牌导航
+ * 右上角固定定位，hover展开卡牌
  */
 
 'use client';
@@ -28,49 +28,40 @@ export default function NavigationCards({ className = '' }: NavigationCardsProps
       id: 'articles',
       label: '文章',
       href: '/articles',
-      icon: '📖', // 可以替换为像素书型图标
+      icon: '📖',
     },
     {
       id: 'about',
       label: '关于',
       href: '#about',
-      icon: '👤', // 可以替换为像素个人图标
+      icon: '👤',
     },
     {
       id: 'projects',
       label: '项目',
       href: '#projects',
-      icon: '⚙️', // 可以替换为像素齿轮图标
+      icon: '⚙️',
     },
     {
       id: 'github',
       label: 'GitHub',
       href: 'https://github.com',
-      icon: '🔗', // 可以替换为像素Git图标
+      icon: '🔗',
       external: true,
     },
   ];
-
-  // 处理导航点击
-  const handleNavClick = (item: NavigationItem) => {
-    // 可以添加点击音效或其他交互逻辑
-    console.log(`Navigating to: ${item.label}`);
-  };
 
   // 渲染导航卡片
   const renderNavCard = (item: NavigationItem, index: number) => {
     const cardContent = (
       <div 
-        className={`nav-card poker-card poker-card-nav ${index === 2 ? 'nav-card-offset' : ''}`}
-        onClick={() => handleNavClick(item)}
+        className="nav-card"
+        style={{ transitionDelay: `${index * 0.1}s` }}
       >
-        <div className="poker-card-content">
-          {/* 花色图标 */}
-          <div className="poker-card-suit">
+        <div className="nav-card-content">
+          <div className="nav-card-suit">
             <span className="pixel-icon">{item.icon}</span>
           </div>
-          
-          {/* 卡片文字 */}
           <div className="nav-card-text">
             <span className="pixel-font">{item.label}</span>
           </div>
@@ -78,7 +69,6 @@ export default function NavigationCards({ className = '' }: NavigationCardsProps
       </div>
     );
 
-    // 根据是否为外部链接选择包装组件
     if (item.external) {
       return (
         <a
@@ -87,6 +77,7 @@ export default function NavigationCards({ className = '' }: NavigationCardsProps
           target="_blank"
           rel="noopener noreferrer"
           className="nav-card-link"
+          style={{ transitionDelay: `${index * 0.1}s` }}
         >
           {cardContent}
         </a>
@@ -94,15 +85,26 @@ export default function NavigationCards({ className = '' }: NavigationCardsProps
     }
 
     return (
-      <Link key={item.id} href={item.href} className="nav-card-link">
+      <Link 
+        key={item.id} 
+        href={item.href} 
+        className="nav-card-link"
+        style={{ transitionDelay: `${index * 0.1}s` }}
+      >
         {cardContent}
       </Link>
     );
   };
 
   return (
-    <nav className={`navigation-cards ${className}`}>
-      <div className="nav-cards-container">
+    <nav className={`nav-container ${className}`}>
+      {/* 触发按钮 */}
+      <div className="nav-trigger">
+        <span className="trigger-icon">☰</span>
+      </div>
+      
+      {/* 导航卡牌容器 */}
+      <div className="nav-cards-wrapper">
         {navigationItems.map((item, index) => renderNavCard(item, index))}
       </div>
     </nav>

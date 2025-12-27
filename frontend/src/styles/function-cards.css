@@ -900,3 +900,111 @@
     border: 1px solid currentColor;
   }
 }
+
+
+/* ========================================
+ * 卡牌收起/展开动画 (Cards Collapse/Expand Animation)
+ * 
+ * 动画顺序控制：
+ * - 展开流程：先收小卡牌(0.6s) → 再放大卡牌(0.5s)
+ * - 收起流程：先收大卡牌(0.6s) → 再放小卡牌(0.5s)
+ * 
+ * 小卡牌收回逻辑：
+ * - 从原位置向头像中心(50%, 50%)汇聚
+ * - 同步 scale(0) + opacity(0)
+ * - 模拟"收进头像"的效果
+ * 
+ * 动画时长：0.6s
+ * 动画曲线：ease-out（柔和感）
+ * ======================================== */
+
+/* 收起状态下的卡牌容器 */
+.function-cards-grid.cards-collapsed {
+  z-index: 50; /* 低于大卡牌 */
+  pointer-events: none; /* 收起时禁用点击 */
+}
+
+/* 收起状态下的所有卡牌 - 向头像中心汇聚并消失 */
+.function-cards-grid.cards-collapsed .poker-card {
+  /* 移动到头像中心位置 (50%, 50%) - 模拟"收进头像" */
+  left: 50% !important;
+  top: 50% !important;
+  /* 缩放到0并完全透明 - 同步消失效果 */
+  transform: translate(-50%, -50%) scale(0) !important;
+  opacity: 0 !important;
+  /* 收起动画 0.6s ease-out - 柔和的减速效果 */
+  transition: 
+    left 0.6s ease-out, 
+    top 0.6s ease-out, 
+    transform 0.6s ease-out, 
+    opacity 0.6s ease-out !important;
+}
+
+/* 收起状态下隐藏卡牌内容 - 同步淡出 */
+.function-cards-grid.cards-collapsed .poker-card-content {
+  opacity: 0;
+  transition: opacity 0.4s ease-out;
+}
+
+/* 收起状态下禁用hover效果 */
+.function-cards-grid.cards-collapsed .poker-card:hover {
+  box-shadow: none;
+  z-index: inherit;
+}
+
+/* 展开状态的过渡动画 - 从头像中心展开，0.5s */
+.function-cards-grid:not(.cards-collapsed) .poker-card {
+  opacity: 1;
+  transition: 
+    left 0.5s ease-out, 
+    top 0.5s ease-out, 
+    transform 0.5s ease-out, 
+    opacity 0.5s ease-out;
+}
+
+/* 展开状态下恢复卡牌内容 */
+.function-cards-grid:not(.cards-collapsed) .poker-card-content {
+  opacity: 1;
+  transition: opacity 0.3s ease-out 0.15s; /* 稍微延迟显示内容 */
+}
+
+/* 移动端收起状态 */
+@media (max-width: 767px) {
+  .function-cards-grid.cards-collapsed {
+    margin-top: 0;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .function-cards-grid.cards-collapsed .poker-card {
+    position: absolute !important;
+    /* 移动端头像中心位置 */
+    left: 50% !important;
+    top: 120px !important;
+    transform: translate(-50%, -50%) scale(0) !important;
+    opacity: 0 !important;
+    max-width: none;
+    margin: 0;
+    /* 保持 0.6s ease-out 动画 */
+    transition: 
+      left 0.6s ease-out, 
+      top 0.6s ease-out, 
+      transform 0.6s ease-out, 
+      opacity 0.6s ease-out !important;
+  }
+}
+
+/* 减少动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+  .function-cards-grid.cards-collapsed .poker-card {
+    transition: opacity 0.2s ease-out !important;
+  }
+  
+  .function-cards-grid:not(.cards-collapsed) .poker-card {
+    transition: opacity 0.2s ease-out;
+  }
+}

@@ -14,6 +14,8 @@ import PixelImage from './PixelImage';
 interface CoreAnchorProps {
   avatarStyle?: 'circle' | 'tv';
   className?: string;
+  onAvatarClick?: () => void;
+  isActive?: boolean;
 }
 
 // 打字机效果配置
@@ -32,7 +34,9 @@ type Phase = 'typing' | 'pause-after-type' | 'deleting' | 'pause-after-delete';
 
 export default function CoreAnchor({ 
   avatarStyle = 'circle', 
-  className = '' 
+  className = '',
+  onAvatarClick,
+  isActive = false
 }: CoreAnchorProps) {
   const [displayText, setDisplayText] = useState('');
   const [textIndex, setTextIndex] = useState(0);
@@ -100,13 +104,20 @@ export default function CoreAnchor({
 
   return (
     <div className={`core-anchor ${className}`}>
-      {/* 头像容器 */}
-      <div className={`avatar-container avatar-${avatarStyle}`}>
+      {/* 头像容器 - 可点击触发卡牌动画 */}
+      <div 
+        className={`avatar-container avatar-${avatarStyle} ${isActive ? 'avatar-active' : ''}`}
+        onClick={onAvatarClick}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => e.key === 'Enter' && onAvatarClick?.()}
+        style={{ cursor: onAvatarClick ? 'pointer' : 'default' }}
+      >
         {avatarStyle === 'circle' ? (
           // 圆形像素头像
           <div className="avatar-circle">
             <PixelImage 
-              src="/images/avatar.svg" 
+              src="/avater.jpeg" 
               alt="头像"
               className="avatar-image"
               width={200}
@@ -119,7 +130,7 @@ export default function CoreAnchor({
             <div className="tv-frame">
               <div className="tv-screen">
                 <PixelImage 
-                  src="/images/avatar.svg" 
+                  src="/avater.jpeg" 
                   alt="头像"
                   className="avatar-image"
                   width={180}

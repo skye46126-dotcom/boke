@@ -277,3 +277,63 @@
   outline: 2px solid #4a7a96;
   outline-offset: 4px;
 }
+
+
+/* ========================================
+ * 头像激活状态 (Avatar Active State)
+ * 点击头像后的视觉反馈
+ * ======================================== */
+
+.avatar-container.avatar-active .avatar-circle,
+.avatar-container.avatar-active .tv-frame {
+  border-color: #cc9966;
+  box-shadow: 0 0 20px rgba(204, 153, 102, 0.5);
+  animation: avatar-pulse 2s infinite;
+}
+
+[data-theme="dark"] .avatar-container.avatar-active .avatar-circle,
+[data-theme="dark"] .avatar-container.avatar-active .tv-frame {
+  border-color: #4a7a96;
+  box-shadow: 0 0 20px rgba(74, 122, 150, 0.5);
+}
+
+@keyframes avatar-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(204, 153, 102, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(204, 153, 102, 0.7);
+  }
+}
+
+[data-theme="dark"] .avatar-container.avatar-active .avatar-circle,
+[data-theme="dark"] .avatar-container.avatar-active .tv-frame {
+  animation-name: avatar-pulse-dark;
+}
+
+@keyframes avatar-pulse-dark {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(74, 122, 150, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(74, 122, 150, 0.7);
+  }
+}
+
+/* 可点击头像的光标和交互提示 */
+.avatar-container[role="button"] {
+  cursor: pointer;
+}
+
+.avatar-container[role="button"]:focus {
+  outline: 3px solid #4a7a96;
+  outline-offset: 4px;
+  border-radius: 50%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avatar-container.avatar-active .avatar-circle,
+  .avatar-container.avatar-active .tv-frame {
+    animation: none;
+  }
+}

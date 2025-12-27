@@ -2,147 +2,253 @@
  * 导航卡片样式
  * Navigation Cards Styles
  * 
- * 顶栏导航扑克牌样式和交互动效
+ * 右上角抽卡式导航：hover展开卡牌
+ * 独立固定定位，不嵌套于圆形卡牌布局
  */
 
 /* ========================================
- * 导航卡片布局 (Navigation Cards Layout)
+ * 导航容器 (Navigation Container)
+ * 右上角固定定位，flex-direction: row-reverse
  * ======================================== */
 
-.navigation-cards {
+.nav-container {
   position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 20px;
+  right: 20px;
   z-index: 999;
-  padding: 8px 16px;
-  background: rgba(24, 24, 24, 0.8);
-  backdrop-filter: blur(8px);
-  border-radius: 0 0 var(--pixel-border-radius) var(--pixel-border-radius);
-  border: var(--pixel-border-width-thin) solid var(--color-pixel-ink-gray);
-  border-top: none;
-}
-
-[data-theme="dark"] .navigation-cards {
-  background: rgba(44, 44, 44, 0.9);
-  border-color: var(--color-pixel-ink-light-gray);
-}
-
-.nav-cards-container {
   display: flex;
-  gap: 10px;
+  flex-direction: row-reverse;
   align-items: flex-start;
+  gap: 8px;
 }
 
 /* ========================================
- * 导航卡片样式 (Navigation Card Styles)
+ * 触发按钮 (Trigger Button)
+ * 32×32px 石青色像素按钮
+ * ======================================== */
+
+.nav-trigger {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #4a7a96 0%, #3d6a84 100%);
+  border: 2px solid #4a7a96;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.nav-trigger .trigger-icon {
+  color: #f5f2ef;
+  font-size: 16px;
+  font-family: 'Courier New', monospace;
+  line-height: 1;
+}
+
+[data-theme="dark"] .nav-trigger {
+  background: linear-gradient(135deg, #cc9966 0%, #b8864d 100%);
+  border-color: #cc9966;
+}
+
+[data-theme="dark"] .nav-trigger .trigger-icon {
+  color: #181818;
+}
+
+/* 触发按钮hover效果 */
+.nav-trigger:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(74, 122, 150, 0.4);
+}
+
+[data-theme="dark"] .nav-trigger:hover {
+  box-shadow: 0 2px 8px rgba(204, 153, 102, 0.4);
+}
+
+/* ========================================
+ * 卡牌容器 (Cards Wrapper)
+ * 收起状态隐藏，hover展开
+ * ======================================== */
+
+.nav-cards-wrapper {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 8px;
+  overflow: hidden;
+}
+
+/* ========================================
+ * 导航卡片链接 (Navigation Card Link)
  * ======================================== */
 
 .nav-card-link {
   text-decoration: none;
   display: block;
+  transform: translateX(calc(100% + 20px));
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
 }
+
+/* ========================================
+ * 导航卡片 (Navigation Card)
+ * 80×110px 像素扑克牌样式
+ * ======================================== */
 
 .nav-card {
+  width: 80px;
+  height: 110px;
+  background: linear-gradient(135deg, #f5f2ef 0%, rgba(74, 122, 150, 0.1) 100%);
+  border: 2px solid #666;
+  border-radius: 2px;
   cursor: pointer;
-  user-select: none;
   transition: all 0.3s ease;
   position: relative;
+  overflow: hidden;
 }
 
-/* 导航卡片内容 */
-.nav-card .poker-card-content {
+[data-theme="dark"] .nav-card {
+  background: linear-gradient(135deg, #2c2c2c 0%, rgba(204, 153, 102, 0.15) 100%);
+  border-color: #888;
+}
+
+.nav-card-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 8px;
+  padding: 10px 6px;
   height: 100%;
+  gap: 6px;
+}
+
+.nav-card-suit {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-card-suit .pixel-icon {
+  font-size: 20px;
+  display: block;
 }
 
 .nav-card-text {
-  margin-top: 4px;
   text-align: center;
 }
 
 .nav-card-text .pixel-font {
-  font-size: 14px;
-  color: var(--color-text-primary);
-  line-height: 1;
+  font-size: 12px;
+  color: #4a7a96;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  line-height: 1.2;
 }
 
-/* 花色图标样式 */
-.nav-card .poker-card-suit {
-  position: static;
-  width: 20px;
-  height: 20px;
-  opacity: 1;
-  margin-bottom: 4px;
+[data-theme="dark"] .nav-card-text .pixel-font {
+  color: #cc9966;
 }
 
-.nav-card .pixel-icon {
-  font-size: 16px;
-  display: block;
+/* 卡片hover效果 */
+.nav-card:hover {
+  transform: translateY(-4px);
+  border-color: #4a7a96;
+  box-shadow: 0 4px 12px rgba(74, 122, 150, 0.3);
+}
+
+[data-theme="dark"] .nav-card:hover {
+  border-color: #cc9966;
+  box-shadow: 0 4px 12px rgba(204, 153, 102, 0.3);
+}
+
+/* 卡片点击效果 */
+.nav-card:active {
+  transform: translateY(-2px);
 }
 
 /* ========================================
- * 导航卡片交互效果 (Navigation Card Interactions)
+ * 抽卡交互效果 (Draw Card Interaction)
+ * hover容器时展开卡牌，隐藏触发按钮
  * ======================================== */
 
-/* 悬停效果 */
-.nav-card:hover {
-  animation: pixel-shake 0.3s infinite alternate;
-  box-shadow: 0 0 4px var(--color-pixel-ink-stone-blue);
-  width: 85px;
-  height: 115px;
-  border-color: var(--color-pixel-ink-stone-blue);
+/* hover时展开卡牌 */
+.nav-container:hover .nav-card-link {
+  transform: translateX(0);
+  opacity: 1;
 }
 
-/* 点击效果 */
-.nav-card:active {
-  transform: translateY(2px);
-  box-shadow: none;
-  animation: pixel-flash 0.1s linear;
+/* hover时隐藏触发按钮 */
+.nav-container:hover .nav-trigger {
+  opacity: 0;
+  transform: scale(0.8);
+  pointer-events: none;
 }
 
-/* 轻微错落效果 - 仅PC端 */
-@media (min-width: 1200px) {
-  .nav-card-offset {
-    transform: translateY(-2px);
-  }
-  
-  .nav-card-offset:hover {
-    transform: translateY(-2px);
-  }
-  
-  .nav-card-offset:active {
-    transform: translateY(0px);
-  }
-}
+/* 卡牌依次展开延迟（通过inline style设置） */
+.nav-card-link:nth-child(1) { transition-delay: 0s; }
+.nav-card-link:nth-child(2) { transition-delay: 0.1s; }
+.nav-card-link:nth-child(3) { transition-delay: 0.2s; }
+.nav-card-link:nth-child(4) { transition-delay: 0.3s; }
+
+/* hover离开时收起延迟（反向） */
+.nav-container:not(:hover) .nav-card-link:nth-child(4) { transition-delay: 0s; }
+.nav-container:not(:hover) .nav-card-link:nth-child(3) { transition-delay: 0.05s; }
+.nav-container:not(:hover) .nav-card-link:nth-child(2) { transition-delay: 0.1s; }
+.nav-container:not(:hover) .nav-card-link:nth-child(1) { transition-delay: 0.15s; }
 
 /* ========================================
  * 响应式适配 (Responsive Adaptations)
  * ======================================== */
 
-/* 平板端和移动端适配 */
-@media (max-width: 1199px) {
-  .navigation-cards {
+/* 平板端适配 */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .nav-card {
+    width: 70px;
+    height: 95px;
+  }
+  
+  .nav-card-suit .pixel-icon {
+    font-size: 18px;
+  }
+  
+  .nav-card-text .pixel-font {
+    font-size: 11px;
+  }
+}
+
+/* 移动端适配 - 底部固定导航 */
+@media (max-width: 767px) {
+  .nav-container {
     position: fixed;
     top: auto;
     bottom: 0;
     left: 0;
     right: 0;
-    transform: none;
-    width: 100vw;
+    flex-direction: row;
+    justify-content: center;
     padding: 12px 16px;
-    border-radius: var(--pixel-border-radius) var(--pixel-border-radius) 0 0;
-    border-bottom: none;
-    border-top: var(--pixel-border-width-thin) solid var(--color-pixel-ink-gray);
+    background: rgba(245, 242, 239, 0.95);
+    backdrop-filter: blur(8px);
+    border-top: 2px solid #666;
+    gap: 8px;
   }
   
-  .nav-cards-container {
-    justify-content: space-around;
-    gap: 8px;
+  [data-theme="dark"] .nav-container {
+    background: rgba(24, 24, 24, 0.95);
+    border-color: #888;
+  }
+  
+  /* 移动端隐藏触发按钮，直接显示卡牌 */
+  .nav-trigger {
+    display: none;
+  }
+  
+  .nav-card-link {
+    transform: translateX(0);
+    opacity: 1;
   }
   
   .nav-card {
@@ -150,132 +256,68 @@
     height: 80px;
   }
   
-  .nav-card:hover {
-    width: 65px;
-    height: 85px;
-    animation: none; /* 移动端禁用抖动动画 */
-  }
-  
-  .nav-card-text .pixel-font {
-    font-size: 12px;
-  }
-  
-  .nav-card .poker-card-suit {
-    width: 16px;
-    height: 16px;
-  }
-  
-  .nav-card .pixel-icon {
-    font-size: 14px;
-  }
-  
-  /* 取消错落效果 */
-  .nav-card-offset {
-    transform: none;
-  }
-  
-  .nav-card-offset:hover,
-  .nav-card-offset:active {
-    transform: none;
-  }
-}
-
-/* 移动端进一步优化 */
-@media (max-width: 767px) {
-  .navigation-cards {
-    padding: 8px 12px;
-  }
-  
-  .nav-cards-container {
+  .nav-card-content {
+    padding: 6px 4px;
     gap: 4px;
   }
   
-  .nav-card {
-    width: 50px;
-    height: 70px;
-  }
-  
-  .nav-card:hover {
-    width: 52px;
-    height: 72px;
-  }
-  
-  .nav-card .poker-card-content {
-    padding: 4px;
+  .nav-card-suit .pixel-icon {
+    font-size: 16px;
   }
   
   .nav-card-text .pixel-font {
     font-size: 10px;
   }
   
-  .nav-card .poker-card-suit {
-    width: 14px;
-    height: 14px;
-    margin-bottom: 2px;
-  }
-  
-  .nav-card .pixel-icon {
-    font-size: 12px;
+  .nav-card:hover {
+    transform: translateY(-2px);
   }
 }
-
-/* ========================================
- * 动画定义 (Animation Definitions)
- * ======================================== */
-
-/* 抖动动画 - 已在 pixel-ink-system.css 中定义 */
-/* 闪烁动画 - 已在 pixel-ink-system.css 中定义 */
 
 /* ========================================
  * 无障碍支持 (Accessibility Support)
  * ======================================== */
 
-/* 键盘导航支持 */
-.nav-card:focus {
-  outline: 2px solid var(--color-pixel-ink-stone-blue);
+.nav-card:focus,
+.nav-card-link:focus {
+  outline: 2px solid #4a7a96;
   outline-offset: 2px;
 }
 
-/* 减少动画模式支持 */
+[data-theme="dark"] .nav-card:focus,
+[data-theme="dark"] .nav-card-link:focus {
+  outline-color: #cc9966;
+}
+
+/* 减少动画模式 */
 @media (prefers-reduced-motion: reduce) {
-  .nav-card:hover {
-    animation: none;
-  }
-  
-  .nav-card:active {
-    animation: none;
-  }
-  
+  .nav-card-link,
+  .nav-trigger,
   .nav-card {
     transition: none;
   }
-}
-
-/* 高对比度模式支持 */
-@media (prefers-contrast: high) {
-  .navigation-cards {
-    background: rgba(0, 0, 0, 0.95);
-    border-width: 2px;
+  
+  .nav-card-link {
+    transform: translateX(0);
+    opacity: 1;
   }
   
-  [data-theme="dark"] .navigation-cards {
-    background: rgba(255, 255, 255, 0.95);
+  .nav-trigger {
+    display: none;
+  }
+}
+
+/* 高对比度模式 */
+@media (prefers-contrast: high) {
+  .nav-card {
+    border-width: 3px;
+  }
+  
+  .nav-trigger {
+    border-width: 3px;
   }
   
   .nav-card-text .pixel-font {
     font-weight: bold;
   }
-}
-
-/* ========================================
- * 主题切换过渡 (Theme Transition)
- * ======================================== */
-
-.navigation-cards,
-.nav-card,
-.nav-card-text .pixel-font {
-  transition: 
-    background-color var(--transition-theme),
-    border-color var(--transition-theme),
-    color var(--transition-theme);
 }
