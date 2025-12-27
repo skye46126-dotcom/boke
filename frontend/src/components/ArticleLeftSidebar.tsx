@@ -2,19 +2,44 @@
  * ArticleLeftSidebar 组件
  * 像素风左侧侧边栏：返回按钮、目录、日夜模式切换
  * 交互：hover左侧20px触发区展开，离开收起，移动端点击触发
+ * 磁吸效果：返回按钮和目录链接使用 MagneticLink 组件
  */
 
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { TocItem } from '@/types/rich-article';
-// import ThemeToggle from './ThemeToggle';
+import MagneticLink from './MagneticLink';
+import { useMagnetic } from '@/lib/hooks/useMagnetic';
 import '@/styles/article-left-sidebar.css';
 
 interface ArticleLeftSidebarProps {
   tableOfContents?: TocItem[];
   backUrl?: string;
   backText?: string;
+}
+
+// 磁吸按钮组件 - 用于主题切换按钮
+function MagneticButton({ 
+  children, 
+  onClick, 
+  className 
+}: { 
+  children: React.ReactNode; 
+  onClick: () => void; 
+  className?: string;
+}) {
+  const magneticRef = useMagnetic({ strength: 0.15, radius: 50 });
+  
+  return (
+    <button
+      ref={magneticRef as React.RefObject<HTMLButtonElement>}
+      className={className}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
 }
 
 export default function ArticleLeftSidebar({
@@ -123,11 +148,15 @@ export default function ArticleLeftSidebar({
           className={`left-sidebar ${isExpanded ? 'expanded' : 'collapsed'}`}
         >
         <div className="left-sidebar-content">
-          {/* 返回按钮 */}
-          <a href={backUrl} className="left-sidebar-back">
+          {/* 返回按钮 - 使用 MagneticLink */}
+          <MagneticLink 
+            href={backUrl} 
+            className="left-sidebar-back"
+            config={{ strength: 0.2, radius: 60 }}
+          >
             <span className="back-icon">←</span>
             <span className="back-text">{backText}</span>
-          </a>
+          </MagneticLink>
 
           {/* 目录 */}
           {tableOfContents.length > 0 && (
@@ -139,9 +168,11 @@ export default function ArticleLeftSidebar({
                     key={item.id}
                     className={`toc-item level-${item.level} ${activeId === item.id ? 'active' : ''}`}
                   >
-                    <a
+                    {/* 目录链接 - 使用 MagneticLink */}
+                    <MagneticLink
                       href={`#${item.id}`}
                       className="toc-link"
+                      config={{ strength: 0.1, radius: 40 }}
                       onClick={(e) => {
                         e.preventDefault();
                         scrollToHeading(item.id);
@@ -149,19 +180,22 @@ export default function ArticleLeftSidebar({
                     >
                       <span className="toc-number">{String(index + 1).padStart(2, '0')}</span>
                       <span className="toc-text">{item.text}</span>
-                    </a>
+                    </MagneticLink>
                   </li>
                 ))}
               </ul>
             </nav>
           )}
 
-          {/* 日夜模式切换 */}
+          {/* 日夜模式切换 - 使用 MagneticButton */}
           <div className="left-sidebar-theme">
             <span className="theme-label">主题</span>
-            <button className="theme-toggle-btn" onClick={toggleTheme}>
+            <MagneticButton 
+              className="theme-toggle-btn" 
+              onClick={toggleTheme}
+            >
               {currentTheme === 'dark' ? '☀️ 白天' : '🌙 黑夜'}
-            </button>
+            </MagneticButton>
           </div>
         </div>
       </aside>

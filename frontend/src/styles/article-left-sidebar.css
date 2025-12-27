@@ -63,12 +63,15 @@
   font-size: 16px;
   color: var(--color-text-tertiary, #999);
   opacity: 0.3;
-  transition: opacity 0.3s ease;
+  /* 微观动力：过渡时长0.2s */
+  transition: opacity 0.2s ease, transform 0.2s ease;
   -webkit-font-smoothing: none;
 }
 
 .left-sidebar-trigger:hover .trigger-indicator {
   opacity: 0.8;
+  /* 微观动力：hover时右移1px提示展开方向 */
+  transform: translateX(1px);
 }
 
 
@@ -107,7 +110,7 @@
 }
 
 /* ========================================
- * 返回按钮
+ * 返回按钮 - 微观动力交互
  * ======================================== */
 
 .left-sidebar-back {
@@ -122,15 +125,29 @@
   font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
   font-size: 12px;
   -webkit-font-smoothing: none;
-  transition: all 0.2s ease;
+  /* 微观动力：基础阴影 */
   box-shadow: 2px 2px 0 var(--color-pixel-shadow, #333);
+  /* 微观动力：过渡时长0.2s */
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  /* 确保transform不影响布局 */
+  will-change: transform, box-shadow;
 }
 
+/* 微观动力：hover时微缩放+阴影偏移 */
 .left-sidebar-back:hover {
   background: var(--color-pixel-accent, #4a7a96);
   color: #fff;
-  transform: translate(-1px, -1px);
+  border-color: var(--color-pixel-accent, #4a7a96);
+  /* 微观动力：向上浮起1px + 阴影增加1px */
+  transform: translateY(-1px);
   box-shadow: 3px 3px 0 var(--color-pixel-shadow, #333);
+}
+
+/* 微观动力：点击时下压反馈 */
+.left-sidebar-back:active {
+  /* 微观动力：下压1px + 阴影减少 */
+  transform: translateY(1px);
+  box-shadow: 1px 1px 0 var(--color-pixel-shadow, #333);
 }
 
 [data-theme="dark"] .left-sidebar-back {
@@ -142,15 +159,23 @@
 [data-theme="dark"] .left-sidebar-back:hover {
   background: var(--color-pixel-accent, #cc9966);
   color: #1a1a1a;
+  border-color: var(--color-pixel-accent, #cc9966);
 }
 
 .back-icon {
   font-size: 14px;
+  /* 微观动力：图标微动 */
+  transition: transform 0.2s ease;
+}
+
+.left-sidebar-back:hover .back-icon {
+  /* 微观动力：hover时箭头左移1px */
+  transform: translateX(-1px);
 }
 
 
 /* ========================================
- * 目录样式
+ * 目录样式 - 微观动力交互
  * ======================================== */
 
 .left-sidebar-toc {
@@ -200,20 +225,33 @@
   font-size: 10px;
   line-height: 1.4;
   -webkit-font-smoothing: none;
-  transition: all 0.2s ease;
+  /* 微观动力：左侧边框作为指示器 */
   border-left: 2px solid transparent;
+  /* 微观动力：过渡时长0.2s */
+  transition: transform 0.2s ease, color 0.2s ease, background 0.2s ease, border-color 0.2s ease, padding-left 0.2s ease;
+  will-change: transform;
 }
 
+/* 微观动力：hover时微位移+边框显示 */
 .left-sidebar-toc .toc-link:hover {
   color: var(--color-text-primary, #222);
   background: var(--color-surface-raised, rgba(0,0,0,0.03));
   border-left-color: var(--color-pixel-accent, #4a7a96);
+  /* 微观动力：右移1px */
+  transform: translateX(1px);
+  padding-left: 10px;
+}
+
+/* 微观动力：点击时下压 */
+.left-sidebar-toc .toc-link:active {
+  transform: translateX(1px) translateY(1px);
 }
 
 .left-sidebar-toc .toc-item.active .toc-link {
   color: var(--color-pixel-accent, #4a7a96);
   border-left-color: var(--color-pixel-accent, #4a7a96);
   background: var(--color-surface-raised, rgba(74,122,150,0.1));
+  padding-left: 10px;
 }
 
 [data-theme="dark"] .left-sidebar-toc .toc-link {
@@ -235,6 +273,16 @@
   color: var(--color-text-tertiary, #999);
   font-size: 9px;
   min-width: 16px;
+  /* 微观动力：序号微动 */
+  transition: color 0.2s ease;
+}
+
+.left-sidebar-toc .toc-link:hover .toc-number {
+  color: var(--color-pixel-accent, #4a7a96);
+}
+
+[data-theme="dark"] .left-sidebar-toc .toc-link:hover .toc-number {
+  color: var(--color-pixel-accent, #cc9966);
 }
 
 .left-sidebar-toc .toc-text {
@@ -326,7 +374,7 @@
 
 
 /* ========================================
- * 主题切换按钮
+ * 主题切换按钮 - 微观动力交互
  * ======================================== */
 
 .theme-toggle-btn {
@@ -337,12 +385,97 @@
   background: var(--color-pixel-card-bg);
   color: var(--color-text-primary);
   cursor: pointer;
-  box-shadow: 1px 1px 0 var(--color-pixel-shadow);
+  /* 微观动力：基础阴影 */
+  box-shadow: 2px 2px 0 var(--color-pixel-shadow);
   -webkit-font-smoothing: none;
-  transition: all 0.2s ease;
+  /* 微观动力：过渡时长0.2s */
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  will-change: transform, box-shadow;
 }
 
+/* 微观动力：hover时微浮起+阴影增加 */
 .theme-toggle-btn:hover {
   background: var(--color-pixel-accent);
   color: #fff;
+  border-color: var(--color-pixel-accent);
+  /* 微观动力：向上浮起1px */
+  transform: translateY(-1px);
+  box-shadow: 3px 3px 0 var(--color-pixel-shadow);
+}
+
+/* 微观动力：点击时下压反馈 */
+.theme-toggle-btn:active {
+  /* 微观动力：下压1px + 阴影减少 */
+  transform: translateY(1px);
+  box-shadow: 1px 1px 0 var(--color-pixel-shadow);
+}
+
+[data-theme="dark"] .theme-toggle-btn {
+  background: var(--color-pixel-card-bg);
+  color: var(--color-text-primary);
+  border-color: var(--color-pixel-border);
+}
+
+[data-theme="dark"] .theme-toggle-btn:hover {
+  background: var(--color-pixel-accent);
+  color: #1a1a1a;
+  border-color: var(--color-pixel-accent);
+}
+
+/* ========================================
+ * 触发区指示器 - 微观动力交互
+ * ======================================== */
+
+.left-sidebar-trigger .trigger-indicator {
+  font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
+  font-size: 16px;
+  color: var(--color-text-tertiary, #999);
+  opacity: 0.3;
+  /* 微观动力：过渡时长0.2s */
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  -webkit-font-smoothing: none;
+}
+
+.left-sidebar-trigger:hover .trigger-indicator {
+  opacity: 0.8;
+  /* 微观动力：hover时右移1px提示展开方向 */
+  transform: translateX(1px);
+}
+
+/* ========================================
+ * 移动端触摸反馈适配
+ * ======================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  /* 移动端：使用:active替代:hover */
+  .left-sidebar-back:active {
+    background: var(--color-pixel-accent, #4a7a96);
+    color: #fff;
+    transform: translateY(1px);
+    box-shadow: 1px 1px 0 var(--color-pixel-shadow, #333);
+  }
+  
+  .left-sidebar-toc .toc-link:active {
+    color: var(--color-text-primary, #222);
+    background: var(--color-surface-raised, rgba(0,0,0,0.03));
+    border-left-color: var(--color-pixel-accent, #4a7a96);
+    transform: translateX(1px) translateY(1px);
+  }
+  
+  .theme-toggle-btn:active {
+    background: var(--color-pixel-accent);
+    color: #fff;
+    transform: translateY(1px);
+    box-shadow: 1px 1px 0 var(--color-pixel-shadow);
+  }
+  
+  [data-theme="dark"] .left-sidebar-back:active {
+    background: var(--color-pixel-accent, #cc9966);
+    color: #1a1a1a;
+  }
+  
+  [data-theme="dark"] .theme-toggle-btn:active {
+    background: var(--color-pixel-accent);
+    color: #1a1a1a;
+  }
 }
