@@ -1,7 +1,10 @@
 /**
  * NavigationCards 组件
- * 顶栏导航模块：抽卡式扑克牌导航
- * 右上角固定定位，hover展开卡牌
+ * 顶栏导航模块：扑克牌花色导航
+ * 右上角固定定位，使用美术素材作为按钮
+ * 
+ * 按钮顺序：文章 → 项目 → GitHub → 关于
+ * 素材对应：fangkuai(文章) → heitao(项目) → meihua(GitHub) → hongtao(关于)
  */
 
 'use client';
@@ -12,8 +15,9 @@ import Link from 'next/link';
 interface NavigationItem {
   id: string;
   label: string;
+  description: string;  // 说明文字
   href: string;
-  icon: string;
+  image: string;
   external?: boolean;
 }
 
@@ -22,50 +26,50 @@ interface NavigationCardsProps {
 }
 
 export default function NavigationCards({ className = '' }: NavigationCardsProps) {
-  // 导航项配置
+  // 导航项配置 - 顺序：文章 → 项目 → GitHub → 关于
   const navigationItems: NavigationItem[] = [
     {
       id: 'articles',
       label: '文章',
+      description: '文章合集',
       href: '/articles',
-      icon: '📖',
-    },
-    {
-      id: 'about',
-      label: '关于',
-      href: '#about',
-      icon: '👤',
+      image: '/fangkuai.png',
     },
     {
       id: 'projects',
       label: '项目',
+      description: '项目列表',
       href: '#projects',
-      icon: '⚙️',
+      image: '/heitao.png',
     },
     {
       id: 'github',
       label: 'GitHub',
+      description: '代码仓库',
       href: 'https://github.com',
-      icon: '🔗',
+      image: '/meihua.png',
       external: true,
+    },
+    {
+      id: 'about',
+      label: '关于',
+      description: '了解更多',
+      href: '#about',
+      image: '/hongtao.png',
     },
   ];
 
   // 渲染导航卡片
   const renderNavCard = (item: NavigationItem, index: number) => {
     const cardContent = (
-      <div 
-        className="nav-card"
-        style={{ transitionDelay: `${index * 0.1}s` }}
-      >
-        <div className="nav-card-content">
-          <div className="nav-card-suit">
-            <span className="pixel-icon">{item.icon}</span>
-          </div>
-          <div className="nav-card-text">
-            <span className="pixel-font">{item.label}</span>
-          </div>
-        </div>
+      <div className="nav-card-wrapper">
+        <div 
+          className="nav-card"
+          style={{ 
+            backgroundImage: `url(${item.image})`,
+          }}
+        />
+        <span className="nav-card-description">{item.description}</span>
       </div>
     );
 
@@ -78,6 +82,7 @@ export default function NavigationCards({ className = '' }: NavigationCardsProps
           rel="noopener noreferrer"
           className="nav-card-link"
           style={{ transitionDelay: `${index * 0.1}s` }}
+          aria-label={item.label}
         >
           {cardContent}
         </a>
@@ -90,6 +95,7 @@ export default function NavigationCards({ className = '' }: NavigationCardsProps
         href={item.href} 
         className="nav-card-link"
         style={{ transitionDelay: `${index * 0.1}s` }}
+        aria-label={item.label}
       >
         {cardContent}
       </Link>

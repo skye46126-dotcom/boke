@@ -1,0 +1,348 @@
+/**
+ * 左侧侧边栏样式
+ * Article Left Sidebar Styles
+ * 像素风格，hover展开，适配日夜模式
+ */
+
+/* ========================================
+ * CSS 变量定义
+ * ======================================== */
+
+:root {
+  --color-text-primary: #222;
+  --color-text-secondary: #666;
+  --color-text-tertiary: #999;
+  --color-surface: #f5f2ef;
+  --color-surface-raised: rgba(0,0,0,0.03);
+  --color-pixel-border: #666;
+  --color-pixel-card-bg: #fff;
+  --color-pixel-shadow: #333;
+  --color-pixel-accent: #4a7a96;
+}
+
+[data-theme="dark"] {
+  --color-text-primary: #e0e0e0;
+  --color-text-secondary: #aaa;
+  --color-text-tertiary: #888;
+  --color-surface: #1a1a1a;
+  --color-surface-raised: rgba(255,255,255,0.05);
+  --color-pixel-border: #555;
+  --color-pixel-card-bg: #2a2a2a;
+  --color-pixel-shadow: #000;
+  --color-pixel-accent: #cc9966;
+}
+
+/* ========================================
+ * 触发区 - 左侧20px隐形区域
+ * ======================================== */
+
+/* 侧边栏容器 - 包裹触发区和侧边栏 */
+.left-sidebar-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  z-index: 9990;
+  display: flex;
+}
+
+.left-sidebar-trigger {
+  position: relative;
+  width: 20px;
+  height: 100vh;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  z-index: 9992;
+}
+
+.left-sidebar-trigger .trigger-indicator {
+  font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
+  font-size: 16px;
+  color: var(--color-text-tertiary, #999);
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+  -webkit-font-smoothing: none;
+}
+
+.left-sidebar-trigger:hover .trigger-indicator {
+  opacity: 0.8;
+}
+
+
+/* ========================================
+ * 侧边栏主体
+ * ======================================== */
+
+.left-sidebar {
+  position: relative;
+  height: 100vh;
+  width: 200px;
+  background: var(--color-surface) !important;
+  border-right: 2px solid var(--color-pixel-border);
+  z-index: 9991;
+  transform: translateX(-200px);
+  transition: transform 0.3s ease-out;
+  overflow: hidden;
+}
+
+.left-sidebar.expanded {
+  transform: translateX(0);
+}
+
+[data-theme="dark"] .left-sidebar {
+  background: var(--color-surface, #1a1a1a);
+  border-color: var(--color-pixel-border, #555);
+}
+
+.left-sidebar-content {
+  padding: 20px 16px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+}
+
+/* ========================================
+ * 返回按钮
+ * ======================================== */
+
+.left-sidebar-back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--color-pixel-card-bg, #fff);
+  border: 1px solid var(--color-pixel-border, #666);
+  text-decoration: none;
+  color: var(--color-text-primary, #222);
+  font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
+  font-size: 12px;
+  -webkit-font-smoothing: none;
+  transition: all 0.2s ease;
+  box-shadow: 2px 2px 0 var(--color-pixel-shadow, #333);
+}
+
+.left-sidebar-back:hover {
+  background: var(--color-pixel-accent, #4a7a96);
+  color: #fff;
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--color-pixel-shadow, #333);
+}
+
+[data-theme="dark"] .left-sidebar-back {
+  background: var(--color-pixel-card-bg, #2a2a2a);
+  color: var(--color-text-primary, #e0e0e0);
+  border-color: var(--color-pixel-border, #555);
+}
+
+[data-theme="dark"] .left-sidebar-back:hover {
+  background: var(--color-pixel-accent, #cc9966);
+  color: #1a1a1a;
+}
+
+.back-icon {
+  font-size: 14px;
+}
+
+
+/* ========================================
+ * 目录样式
+ * ======================================== */
+
+.left-sidebar-toc {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.left-sidebar-toc .toc-title {
+  font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
+  font-size: 11px;
+  color: var(--color-text-secondary, #666);
+  margin: 0 0 12px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--color-pixel-border, #999);
+  -webkit-font-smoothing: none;
+}
+
+[data-theme="dark"] .left-sidebar-toc .toc-title {
+  color: var(--color-text-secondary, #aaa);
+}
+
+.left-sidebar-toc .toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.left-sidebar-toc .toc-item {
+  margin: 0;
+}
+
+.left-sidebar-toc .toc-item.level-2 { padding-left: 12px; }
+.left-sidebar-toc .toc-item.level-3 { padding-left: 24px; }
+.left-sidebar-toc .toc-item.level-4 { padding-left: 36px; }
+
+.left-sidebar-toc .toc-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 4px 8px;
+  text-decoration: none;
+  color: var(--color-text-secondary, #555);
+  font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
+  font-size: 10px;
+  line-height: 1.4;
+  -webkit-font-smoothing: none;
+  transition: all 0.2s ease;
+  border-left: 2px solid transparent;
+}
+
+.left-sidebar-toc .toc-link:hover {
+  color: var(--color-text-primary, #222);
+  background: var(--color-surface-raised, rgba(0,0,0,0.03));
+  border-left-color: var(--color-pixel-accent, #4a7a96);
+}
+
+.left-sidebar-toc .toc-item.active .toc-link {
+  color: var(--color-pixel-accent, #4a7a96);
+  border-left-color: var(--color-pixel-accent, #4a7a96);
+  background: var(--color-surface-raised, rgba(74,122,150,0.1));
+}
+
+[data-theme="dark"] .left-sidebar-toc .toc-link {
+  color: var(--color-text-secondary, #999);
+}
+
+[data-theme="dark"] .left-sidebar-toc .toc-link:hover {
+  color: var(--color-text-primary, #e0e0e0);
+  background: rgba(255,255,255,0.05);
+}
+
+[data-theme="dark"] .left-sidebar-toc .toc-item.active .toc-link {
+  color: var(--color-pixel-accent, #cc9966);
+  border-left-color: var(--color-pixel-accent, #cc9966);
+  background: rgba(204,153,102,0.1);
+}
+
+.left-sidebar-toc .toc-number {
+  color: var(--color-text-tertiary, #999);
+  font-size: 9px;
+  min-width: 16px;
+}
+
+.left-sidebar-toc .toc-text {
+  flex: 1;
+  word-break: break-word;
+}
+
+
+/* ========================================
+ * 主题切换区域
+ * ======================================== */
+
+.left-sidebar-theme {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  background: var(--color-pixel-card-bg, #fff);
+  border: 1px solid var(--color-pixel-border, #666);
+  box-shadow: 2px 2px 0 var(--color-pixel-shadow, #333);
+}
+
+[data-theme="dark"] .left-sidebar-theme {
+  background: var(--color-pixel-card-bg, #2a2a2a);
+  border-color: var(--color-pixel-border, #555);
+}
+
+.left-sidebar-theme .theme-label {
+  font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
+  font-size: 10px;
+  color: var(--color-text-secondary, #666);
+  -webkit-font-smoothing: none;
+}
+
+[data-theme="dark"] .left-sidebar-theme .theme-label {
+  color: var(--color-text-secondary, #aaa);
+}
+
+/* ========================================
+ * 移动端遮罩
+ * ======================================== */
+
+.left-sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 9989;
+}
+
+/* ========================================
+ * 移动端适配
+ * ======================================== */
+
+@media (max-width: 767px) {
+  .left-sidebar-trigger {
+    width: 30px;
+  }
+  
+  .left-sidebar-trigger .trigger-indicator {
+    opacity: 0.5;
+    font-size: 20px;
+  }
+  
+  .left-sidebar {
+    width: 260px;
+    transform: translateX(-260px);
+  }
+  
+  .left-sidebar.expanded {
+    transform: translateX(0);
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* ========================================
+ * 减少动画模式
+ * ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .left-sidebar,
+  .left-sidebar-back,
+  .left-sidebar-toc .toc-link {
+    transition: none;
+  }
+}
+
+
+/* ========================================
+ * 主题切换按钮
+ * ======================================== */
+
+.theme-toggle-btn {
+  font-family: 'Zpix', monospace;
+  font-size: 10px;
+  padding: 4px 8px;
+  border: 1px solid var(--color-pixel-border);
+  background: var(--color-pixel-card-bg);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  box-shadow: 1px 1px 0 var(--color-pixel-shadow);
+  -webkit-font-smoothing: none;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--color-pixel-accent);
+  color: #fff;
+}

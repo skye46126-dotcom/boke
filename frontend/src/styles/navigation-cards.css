@@ -7,6 +7,26 @@
  */
 
 /* ========================================
+ * 像素字体定义
+ * ======================================== */
+
+@font-face {
+  font-family: 'Zpix';
+  src: url('/fonts/zpix.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Pixelify Sans';
+  src: url('/fonts/PixelifySans-VariableFont_wght.ttf') format('truetype');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ========================================
  * 导航容器 (Navigation Container)
  * 右上角固定定位，flex-direction: row-reverse
  * ======================================== */
@@ -20,6 +40,8 @@
   flex-direction: row-reverse;
   align-items: flex-start;
   gap: 8px;
+  /* 允许溢出显示文字 */
+  overflow: visible;
 }
 
 /* ========================================
@@ -76,7 +98,8 @@
   display: flex;
   flex-direction: row-reverse;
   gap: 8px;
-  overflow: hidden;
+  /* 改为 visible 以显示卡片下方的文字 */
+  overflow: visible;
 }
 
 /* ========================================
@@ -93,80 +116,107 @@
 
 /* ========================================
  * 导航卡片 (Navigation Card)
- * 80×110px 像素扑克牌样式
+ * 使用美术素材作为背景，严格1:1还原素材尺寸
+ * 素材尺寸：512×702，缩放显示为 64×88
  * ======================================== */
 
-.nav-card {
-  width: 80px;
-  height: 110px;
-  background: linear-gradient(135deg, #f5f2ef 0%, rgba(74, 122, 150, 0.1) 100%);
-  border: 2px solid #666;
-  border-radius: 2px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-[data-theme="dark"] .nav-card {
-  background: linear-gradient(135deg, #2c2c2c 0%, rgba(204, 153, 102, 0.15) 100%);
-  border-color: #888;
-}
-
-.nav-card-content {
+/* 卡片包装器 - 包含卡片和说明文字，垂直排列 */
+.nav-card-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 10px 6px;
-  height: 100%;
-  gap: 6px;
+  gap: 2px;
 }
 
-.nav-card-suit {
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.nav-card {
+  /* 按素材比例缩放（512:702 ≈ 1:1.37） */
+  width: 64px;
+  height: 88px;
+  /* 移除原有背景和边框，使用素材 */
+  background-color: transparent;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  position: relative;
+  overflow: visible;
 }
 
-.nav-card-suit .pixel-icon {
-  font-size: 20px;
-  display: block;
-}
-
-.nav-card-text {
+/* 说明文字样式 - 极小、近黑、清晰可见 */
+.nav-card-description {
+  /* 字体：像素字体优先，系统等宽字体兜底 */
+  font-family: 'Zpix', 'Pixelify Sans', Consolas, Monaco, monospace;
+  /* 尺寸：8px（像素字体清晰下限，极小不抢镜） */
+  font-size: 8px;
+  /* 颜色：近黑色，清晰可见 */
+  color: #222222;
+  /* 水平居中对齐 */
   text-align: center;
+  /* 像素字体无抗锯齿 - 保持清晰 */
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  font-smooth: never;
+  /* 确保可见 */
+  visibility: visible;
+  opacity: 1;
+  /* 确保文字不被遮挡 */
+  position: relative;
+  z-index: 10;
+  /* 无多余装饰 */
+  background: none;
+  border: none;
+  box-shadow: none;
+  text-shadow: none;
+  white-space: nowrap;
+  /* 过渡效果 */
+  transition: color 0.3s ease;
 }
 
-.nav-card-text .pixel-font {
-  font-size: 12px;
-  color: #4a7a96;
-  font-family: 'Courier New', monospace;
-  font-weight: bold;
-  line-height: 1.2;
+[data-theme="dark"] .nav-card {
+  background-color: transparent;
+  border: none;
 }
 
-[data-theme="dark"] .nav-card-text .pixel-font {
-  color: #cc9966;
+[data-theme="dark"] .nav-card-description {
+  color: #cccccc;
+  visibility: visible;
+  opacity: 1;
 }
 
 /* 卡片hover效果 */
 .nav-card:hover {
-  transform: translateY(-4px);
-  border-color: #4a7a96;
-  box-shadow: 0 4px 12px rgba(74, 122, 150, 0.3);
+  transform: translateY(-6px) scale(1.05);
+  filter: brightness(1.1);
+  box-shadow: none;
+  border: none;
+}
+
+/* hover时说明文字颜色 - 轻微变化 */
+.nav-card-link:hover .nav-card-description {
+  color: #2a2a2a;
 }
 
 [data-theme="dark"] .nav-card:hover {
-  border-color: #cc9966;
-  box-shadow: 0 4px 12px rgba(204, 153, 102, 0.3);
+  filter: brightness(1.15);
+  box-shadow: none;
+  border: none;
+}
+
+[data-theme="dark"] .nav-card-link:hover .nav-card-description {
+  color: #dddddd;
 }
 
 /* 卡片点击效果 */
 .nav-card:active {
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(0.98);
+  filter: brightness(0.95);
+}
+
+.nav-card-link:active .nav-card-description {
+  color: #2a2a2a;
 }
 
 /* ========================================
@@ -206,16 +256,13 @@
 /* 平板端适配 */
 @media (min-width: 768px) and (max-width: 1199px) {
   .nav-card {
-    width: 70px;
-    height: 95px;
+    width: 56px;
+    height: 77px;
   }
   
-  .nav-card-suit .pixel-icon {
-    font-size: 18px;
-  }
-  
-  .nav-card-text .pixel-font {
-    font-size: 11px;
+  .nav-card-description {
+    margin-top: 1px;
+    font-size: 8px;
   }
 }
 
@@ -252,25 +299,17 @@
   }
   
   .nav-card {
-    width: 60px;
-    height: 80px;
+    width: 48px;
+    height: 66px;
   }
   
-  .nav-card-content {
-    padding: 6px 4px;
-    gap: 4px;
-  }
-  
-  .nav-card-suit .pixel-icon {
-    font-size: 16px;
-  }
-  
-  .nav-card-text .pixel-font {
-    font-size: 10px;
+  .nav-card-description {
+    margin-top: 1px;
+    font-size: 8px;
   }
   
   .nav-card:hover {
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.02);
   }
 }
 
