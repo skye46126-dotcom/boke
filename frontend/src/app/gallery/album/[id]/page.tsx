@@ -128,7 +128,7 @@ export default function AlbumDetailPage() {
         <div className="pixel-empty-state">该图片集暂无图片</div>
       )}
 
-      {/* 图片预览弹窗 */}
+      {/* 图片预览弹窗 - 纯净模式 */}
       {previewItem && (
         <div className="pixel-preview-overlay" onClick={handleClosePreview}>
           <button className="pixel-preview-close" onClick={handleClosePreview}>
@@ -136,10 +136,6 @@ export default function AlbumDetailPage() {
           </button>
           <div className="pixel-preview-content" onClick={(e) => e.stopPropagation()}>
             <img src={previewItem.img_url} alt={previewItem.title} />
-            <div className="pixel-preview-info">
-              <h3>{previewItem.title}</h3>
-              {previewItem.description && <p>{previewItem.description}</p>}
-            </div>
           </div>
         </div>
       )}

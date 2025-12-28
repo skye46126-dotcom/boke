@@ -161,109 +161,75 @@
 }
 
 /* ========================================
- * 图片网格 - 像素风格卡片
+ * 图片网格 - 纯净平铺模式
  * ======================================== */
 
 .pixel-gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
 }
 
 .pixel-gallery-item {
-  background: var(--color-pixel-ink-paper, #f5f2ef);
-  border: 2px solid #666;
+  position: relative;
+  aspect-ratio: 1;
+  background: #1a1a1a;
+  border: 1px solid rgba(102, 102, 102, 0.3);
   border-radius: 2px;
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 [data-theme="dark"] .pixel-gallery-item {
-  background: #2c2c2c;
-  border-color: #888;
+  background: #0a0a0a;
+  border-color: rgba(136, 136, 136, 0.2);
 }
 
 .pixel-gallery-item:hover {
-  transform: scale(1.03);
-  box-shadow: 4px 4px 0 rgba(74, 122, 150, 0.3);
+  transform: scale(1.02);
+  border-color: rgba(74, 122, 150, 0.5);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="dark"] .pixel-gallery-item:hover {
-  box-shadow: 4px 4px 0 rgba(204, 153, 102, 0.3);
+  border-color: rgba(204, 153, 102, 0.5);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .pixel-gallery-item img {
   width: 100%;
-  height: 180px;
+  height: 100%;
   object-fit: cover;
   display: block;
-  border-bottom: 2px solid #666;
+  transition: transform 0.3s ease;
 }
 
-[data-theme="dark"] .pixel-gallery-item img {
-  border-bottom-color: #888;
+.pixel-gallery-item:hover img {
+  transform: scale(1.05);
 }
 
+/* 隐藏的信息区域（已移除） */
 .pixel-item-info {
-  padding: 10px;
+  display: none;
 }
 
 .pixel-item-info h3 {
-  font-size: 13px;
-  font-family: 'Courier New', monospace;
-  color: #4a7a96;
-  margin: 0 0 6px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-[data-theme="dark"] .pixel-item-info h3 {
-  color: #cc9966;
+  display: none;
 }
 
 .pixel-category-tag {
-  display: inline-block;
-  padding: 2px 6px;
-  background: rgba(74, 122, 150, 0.15);
-  border: 1px solid #4a7a96;
-  border-radius: 2px;
-  font-size: 10px;
-  font-family: 'Courier New', monospace;
-  color: #4a7a96;
+  display: none;
 }
 
-[data-theme="dark"] .pixel-category-tag {
-  background: rgba(204, 153, 102, 0.15);
-  border-color: #cc9966;
-  color: #cc9966;
-}
-
-/* 图片信息元数据区域 */
+/* 图片信息元数据区域（已隐藏） */
 .pixel-item-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  align-items: center;
+  display: none;
 }
 
-/* 相册集标签 */
+/* 相册集标签（已隐藏） */
 .pixel-album-tag {
-  display: inline-block;
-  padding: 2px 6px;
-  background: rgba(102, 153, 102, 0.15);
-  border: 1px solid #669966;
-  border-radius: 2px;
-  font-size: 10px;
-  font-family: 'Courier New', monospace;
-  color: #669966;
-}
-
-[data-theme="dark"] .pixel-album-tag {
-  background: rgba(153, 204, 153, 0.15);
-  border-color: #99cc99;
-  color: #99cc99;
+  display: none;
 }
 
 /* ========================================
@@ -433,26 +399,15 @@
 }
 
 .pixel-preview-info {
-  margin-top: 16px;
-  text-align: center;
-  background: rgba(74, 122, 150, 0.2);
-  padding: 12px 24px;
-  border: 2px solid #4a7a96;
-  border-radius: 2px;
+  display: none;
 }
 
 .pixel-preview-info h3 {
-  font-size: 16px;
-  font-family: 'Courier New', monospace;
-  color: #f5f2ef;
-  margin: 0 0 6px;
+  display: none;
 }
 
 .pixel-preview-info p {
-  font-size: 13px;
-  font-family: 'Courier New', monospace;
-  color: #ccc;
-  margin: 0;
+  display: none;
 }
 
 /* ========================================
@@ -505,18 +460,20 @@
  * 响应式适配
  * ======================================== */
 
+@media (min-width: 1200px) {
+  .pixel-gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  }
+}
+
 @media (max-width: 768px) {
   .gallery-page {
     padding: 16px;
   }
   
   .pixel-gallery-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 12px;
-  }
-  
-  .pixel-gallery-item img {
-    height: 140px;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 8px;
   }
   
   .pixel-albums-grid {
@@ -532,5 +489,12 @@
     flex: 1;
     justify-content: center;
     min-width: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pixel-gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
   }
 }

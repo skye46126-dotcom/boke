@@ -177,7 +177,7 @@ export default function GalleryClient() {
 
       {/* 内容区域 */}
       {viewMode === 'grid' ? (
-        // 图片平铺网格
+        // 图片平铺网格 - 纯净模式
         items.length > 0 ? (
           <div className="pixel-gallery-grid">
             {items.map((item) => (
@@ -190,17 +190,7 @@ export default function GalleryClient() {
                   src={item.img_url}
                   alt={item.title}
                   loading="lazy"
-                  style={{ maxHeight: '300px', objectFit: 'cover' }}
                 />
-                <div className="pixel-item-info">
-                  <h3>{item.title}</h3>
-                  <div className="pixel-item-meta">
-                    <span className="pixel-category-tag">{item.category}</span>
-                    {getAlbumName(item.album_id) && (
-                      <span className="pixel-album-tag">📁 {getAlbumName(item.album_id)}</span>
-                    )}
-                  </div>
-                </div>
               </div>
             ))}
           </div>
@@ -237,7 +227,7 @@ export default function GalleryClient() {
         )
       )}
 
-      {/* 图片预览弹窗 - 像素风格 */}
+      {/* 图片预览弹窗 - 纯净模式 */}
       {previewItem && (
         <div className="pixel-preview-overlay" onClick={handleClosePreview}>
           <button className="pixel-preview-close" onClick={handleClosePreview}>
@@ -245,10 +235,6 @@ export default function GalleryClient() {
           </button>
           <div className="pixel-preview-content" onClick={(e) => e.stopPropagation()}>
             <img src={previewItem.img_url} alt={previewItem.title} />
-            <div className="pixel-preview-info">
-              <h3>{previewItem.title}</h3>
-              {previewItem.description && <p>{previewItem.description}</p>}
-            </div>
           </div>
         </div>
       )}
