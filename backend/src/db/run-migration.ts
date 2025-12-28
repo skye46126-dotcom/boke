@@ -21,6 +21,9 @@ async function main() {
   try {
     // Run migrations in order
     await runMigration('001_add_tags.sql');
+    await runMigration('003_create_gallery.sql');
+    await runMigration('004_create_gallery_albums.sql');
+    await runMigration('005_add_showcase_order.sql');
     
     console.log('\n✓ All migrations completed successfully');
     process.exit(0);

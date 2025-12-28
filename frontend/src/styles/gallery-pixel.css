@@ -1,0 +1,536 @@
+/**
+ * 相册页面像素风格样式
+ * Gallery Pixel Style
+ * 
+ * 设计规范：
+ * - 边框：2px 方块式边框
+ * - 圆角：2px 像素直角
+ * - 间距：8px/16px 像素级单位
+ * - 配色：浅灰底 + 深蓝/浅蓝像素色块
+ * - 字体：Courier New 等宽像素风
+ */
+
+/* ========================================
+ * 相册页面容器
+ * ======================================== */
+
+.gallery-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  min-height: 100vh;
+  background: var(--color-pixel-ink-paper, #f5f2ef);
+}
+
+[data-theme="dark"] .gallery-page {
+  background: #1a1a1a;
+}
+
+.gallery-page-header {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #666;
+}
+
+.gallery-page-header h1 {
+  font-size: 24px;
+  font-family: 'Courier New', monospace;
+  color: #4a7a96;
+  margin: 0;
+}
+
+[data-theme="dark"] .gallery-page-header h1 {
+  color: #cc9966;
+}
+
+[data-theme="dark"] .gallery-page-header {
+  border-bottom-color: #444;
+}
+
+/* ========================================
+ * 视图切换按钮 - 像素风格
+ * ======================================== */
+
+.pixel-view-toggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.pixel-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: var(--color-pixel-ink-paper, #f5f2ef);
+  border: 2px solid #666;
+  border-radius: 2px;
+  color: #666;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: 'Courier New', monospace;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+[data-theme="dark"] .pixel-toggle-btn {
+  background: #2c2c2c;
+  border-color: #888;
+  color: #aaa;
+}
+
+.pixel-toggle-btn:hover {
+  border-color: #4a7a96;
+  color: #4a7a96;
+  box-shadow: 2px 2px 0 rgba(74, 122, 150, 0.3);
+}
+
+[data-theme="dark"] .pixel-toggle-btn:hover {
+  border-color: #cc9966;
+  color: #cc9966;
+  box-shadow: 2px 2px 0 rgba(204, 153, 102, 0.3);
+}
+
+.pixel-toggle-btn.active {
+  background: #4a7a96;
+  border-color: #4a7a96;
+  color: #f5f2ef;
+  box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .pixel-toggle-btn.active {
+  background: #cc9966;
+  border-color: #cc9966;
+  color: #1a1a1a;
+}
+
+.pixel-toggle-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ========================================
+ * 分类筛选按钮 - 像素风格
+ * ======================================== */
+
+.pixel-category-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.pixel-filter-btn {
+  padding: 6px 12px;
+  background: var(--color-pixel-ink-paper, #f5f2ef);
+  border: 2px solid #999;
+  border-radius: 2px;
+  color: #666;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: 'Courier New', monospace;
+  transition: all 0.15s ease;
+}
+
+[data-theme="dark"] .pixel-filter-btn {
+  background: #2c2c2c;
+  border-color: #666;
+  color: #999;
+}
+
+.pixel-filter-btn:hover {
+  border-color: #4a7a96;
+  color: #4a7a96;
+}
+
+[data-theme="dark"] .pixel-filter-btn:hover {
+  border-color: #cc9966;
+  color: #cc9966;
+}
+
+.pixel-filter-btn.active {
+  background: #4a7a96;
+  border-color: #4a7a96;
+  color: #f5f2ef;
+}
+
+[data-theme="dark"] .pixel-filter-btn.active {
+  background: #cc9966;
+  border-color: #cc9966;
+  color: #1a1a1a;
+}
+
+/* ========================================
+ * 图片网格 - 像素风格卡片
+ * ======================================== */
+
+.pixel-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.pixel-gallery-item {
+  background: var(--color-pixel-ink-paper, #f5f2ef);
+  border: 2px solid #666;
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+[data-theme="dark"] .pixel-gallery-item {
+  background: #2c2c2c;
+  border-color: #888;
+}
+
+.pixel-gallery-item:hover {
+  transform: scale(1.03);
+  box-shadow: 4px 4px 0 rgba(74, 122, 150, 0.3);
+}
+
+[data-theme="dark"] .pixel-gallery-item:hover {
+  box-shadow: 4px 4px 0 rgba(204, 153, 102, 0.3);
+}
+
+.pixel-gallery-item img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+  border-bottom: 2px solid #666;
+}
+
+[data-theme="dark"] .pixel-gallery-item img {
+  border-bottom-color: #888;
+}
+
+.pixel-item-info {
+  padding: 10px;
+}
+
+.pixel-item-info h3 {
+  font-size: 13px;
+  font-family: 'Courier New', monospace;
+  color: #4a7a96;
+  margin: 0 0 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+[data-theme="dark"] .pixel-item-info h3 {
+  color: #cc9966;
+}
+
+.pixel-category-tag {
+  display: inline-block;
+  padding: 2px 6px;
+  background: rgba(74, 122, 150, 0.15);
+  border: 1px solid #4a7a96;
+  border-radius: 2px;
+  font-size: 10px;
+  font-family: 'Courier New', monospace;
+  color: #4a7a96;
+}
+
+[data-theme="dark"] .pixel-category-tag {
+  background: rgba(204, 153, 102, 0.15);
+  border-color: #cc9966;
+  color: #cc9966;
+}
+
+/* 图片信息元数据区域 */
+.pixel-item-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+/* 相册集标签 */
+.pixel-album-tag {
+  display: inline-block;
+  padding: 2px 6px;
+  background: rgba(102, 153, 102, 0.15);
+  border: 1px solid #669966;
+  border-radius: 2px;
+  font-size: 10px;
+  font-family: 'Courier New', monospace;
+  color: #669966;
+}
+
+[data-theme="dark"] .pixel-album-tag {
+  background: rgba(153, 204, 153, 0.15);
+  border-color: #99cc99;
+  color: #99cc99;
+}
+
+/* ========================================
+ * 图片集网格 - 像素风格
+ * ======================================== */
+
+.pixel-albums-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.pixel-album-card {
+  display: block;
+  background: var(--color-pixel-ink-paper, #f5f2ef);
+  border: 2px solid #666;
+  border-radius: 2px;
+  overflow: hidden;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+[data-theme="dark"] .pixel-album-card {
+  background: #2c2c2c;
+  border-color: #888;
+}
+
+.pixel-album-card:hover {
+  transform: scale(1.03);
+  box-shadow: 4px 4px 0 rgba(74, 122, 150, 0.3);
+}
+
+[data-theme="dark"] .pixel-album-card:hover {
+  box-shadow: 4px 4px 0 rgba(204, 153, 102, 0.3);
+}
+
+.pixel-album-cover {
+  position: relative;
+  height: 180px;
+  background: #ddd;
+  border-bottom: 2px solid #666;
+}
+
+[data-theme="dark"] .pixel-album-cover {
+  background: #333;
+  border-bottom-color: #888;
+}
+
+.pixel-album-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pixel-album-cover .no-cover {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  color: #999;
+}
+
+.pixel-album-count {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: #4a7a96;
+  color: #f5f2ef;
+  padding: 4px 8px;
+  border: 2px solid #4a7a96;
+  border-radius: 2px;
+  font-size: 11px;
+  font-family: 'Courier New', monospace;
+}
+
+[data-theme="dark"] .pixel-album-count {
+  background: #cc9966;
+  border-color: #cc9966;
+  color: #1a1a1a;
+}
+
+.pixel-album-info {
+  padding: 12px;
+}
+
+.pixel-album-info h3 {
+  font-size: 15px;
+  font-family: 'Courier New', monospace;
+  color: #4a7a96;
+  margin: 0 0 6px;
+}
+
+[data-theme="dark"] .pixel-album-info h3 {
+  color: #cc9966;
+}
+
+.pixel-album-info p {
+  font-size: 12px;
+  font-family: 'Courier New', monospace;
+  color: #666;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+[data-theme="dark"] .pixel-album-info p {
+  color: #999;
+}
+
+/* ========================================
+ * 图片预览弹窗 - 像素风格
+ * ======================================== */
+
+.pixel-preview-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 24px;
+}
+
+.pixel-preview-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  background: #4a7a96;
+  border: 2px solid #4a7a96;
+  border-radius: 2px;
+  color: #f5f2ef;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.pixel-preview-close:hover {
+  background: #cc9966;
+  border-color: #cc9966;
+}
+
+.pixel-preview-content {
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pixel-preview-content img {
+  max-width: 100%;
+  max-height: 75vh;
+  object-fit: contain;
+  border: 4px solid #4a7a96;
+}
+
+.pixel-preview-info {
+  margin-top: 16px;
+  text-align: center;
+  background: rgba(74, 122, 150, 0.2);
+  padding: 12px 24px;
+  border: 2px solid #4a7a96;
+  border-radius: 2px;
+}
+
+.pixel-preview-info h3 {
+  font-size: 16px;
+  font-family: 'Courier New', monospace;
+  color: #f5f2ef;
+  margin: 0 0 6px;
+}
+
+.pixel-preview-info p {
+  font-size: 13px;
+  font-family: 'Courier New', monospace;
+  color: #ccc;
+  margin: 0;
+}
+
+/* ========================================
+ * 空状态 & 加载状态
+ * ======================================== */
+
+.pixel-empty-state {
+  text-align: center;
+  padding: 48px;
+  color: #999;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+}
+
+.pixel-loading {
+  text-align: center;
+  padding: 48px;
+}
+
+.pixel-loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 4px solid #ddd;
+  border-top-color: #4a7a96;
+  border-radius: 2px;
+  animation: pixel-spin 0.8s steps(8) infinite;
+  margin: 0 auto 16px;
+}
+
+[data-theme="dark"] .pixel-loading-spinner {
+  border-color: #444;
+  border-top-color: #cc9966;
+}
+
+@keyframes pixel-spin {
+  to { transform: rotate(360deg); }
+}
+
+.pixel-loading p {
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  color: #666;
+}
+
+[data-theme="dark"] .pixel-loading p {
+  color: #999;
+}
+
+/* ========================================
+ * 响应式适配
+ * ======================================== */
+
+@media (max-width: 768px) {
+  .gallery-page {
+    padding: 16px;
+  }
+  
+  .pixel-gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+  }
+  
+  .pixel-gallery-item img {
+    height: 140px;
+  }
+  
+  .pixel-albums-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .pixel-view-toggle {
+    flex-wrap: wrap;
+  }
+  
+  .pixel-toggle-btn {
+    flex: 1;
+    justify-content: center;
+    min-width: 100px;
+  }
+}

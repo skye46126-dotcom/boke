@@ -220,6 +220,73 @@ code {
   background: transparent;
 }
 
+/* ========================================
+ * 相册页面 - 黑夜模式
+ * ======================================== */
+
+/* 相册页面背景 */
+[data-theme="dark"] .gallery-page {
+  background: #1a1a1a !important;
+}
+
+/* 页面标题 */
+[data-theme="dark"] .gallery-page h1 {
+  color: #e0e0e0 !important;
+}
+
+/* 相册卡片 */
+[data-theme="dark"] .gallery-item {
+  background: #2a2a2a !important;
+  border-color: #444 !important;
+}
+
+[data-theme="dark"] .gallery-item:hover {
+  border-color: #555 !important;
+}
+
+/* 分类筛选按钮 */
+[data-theme="dark"] .category-filter button {
+  background: #2a2a2a;
+  border-color: #444;
+  color: #e0e0e0;
+}
+
+/* ========================================
+ * 画廊长廊页面 - 黑夜模式
+ * ======================================== */
+
+/* 长廊页面背景 */
+[data-theme="dark"] .gallery-showcase {
+  background: #0a0a0a !important;
+}
+
+/* 返回按钮 */
+[data-theme="dark"] .gallery-showcase .back-btn {
+  background: #2a2a2a !important;
+  border-color: #444 !important;
+  color: #e0e0e0 !important;
+}
+
+/* 作品标题 */
+[data-theme="dark"] .gallery-showcase h2 {
+  color: #e0e0e0 !important;
+}
+
+/* 作品描述 */
+[data-theme="dark"] .gallery-showcase p {
+  color: #bbb !important;
+}
+
+/* 进度指示器 */
+[data-theme="dark"] .gallery-showcase .progress-dot {
+  background: #444 !important;
+}
+
+[data-theme="dark"] .gallery-showcase .progress-dot.active {
+  background: var(--color-accent) !important;
+}
+
+
 .article-card:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
@@ -1084,4 +1151,371 @@ code {
   .preview-title {
     font-size: 2rem;
   }
+}
+
+
+/* ========================================
+ * Admin 后台 - 黑夜模式配色升级
+ * 
+ * 设计原则：
+ * 1. 深灰渐变背景替代纯黑，柔和不刺眼
+ * 2. 荧光青/蓝色系提升黑夜辨识度
+ * 3. 卡片内阴影+描边，层次分明
+ * 4. 列表 hover 柔和高亮
+ * ======================================== */
+
+/* 整体背景 - 深灰渐变 */
+[data-theme="dark"] .admin-container {
+  background: linear-gradient(180deg, #121212 0%, #181818 100%) !important;
+  color: #e5e7eb !important;
+}
+
+/* 顶部标题栏 */
+[data-theme="dark"] .admin-header {
+  border-bottom-color: #272727 !important;
+}
+
+[data-theme="dark"] .admin-header h1 {
+  color: #f3f4f6 !important;
+}
+
+/* 标签页 */
+[data-theme="dark"] .admin-tabs {
+  border-bottom-color: #272727 !important;
+}
+
+[data-theme="dark"] .tab-btn {
+  color: #9ca3af !important;
+}
+
+[data-theme="dark"] .tab-btn:hover {
+  color: #e5e7eb !important;
+  background: #242424 !important;
+}
+
+[data-theme="dark"] .tab-btn.active {
+  color: #22d3ee !important;
+  border-bottom-color: #22d3ee !important;
+}
+
+/* ========================================
+ * 统计卡片 - 黑夜模式
+ * ======================================== */
+[data-theme="dark"] .stat-card {
+  background: #1f1f1f !important;
+  border: 1px solid #333 !important;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+[data-theme="dark"] .stat-value {
+  color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] .stat-label {
+  color: #9ca3af !important;
+}
+
+/* 统计卡片颜色区分 - 荧光色系 */
+[data-theme="dark"] .stat-card-blue {
+  border-left-color: #38bdf8 !important;
+}
+
+[data-theme="dark"] .stat-card-blue .stat-value {
+  color: #38bdf8 !important;
+}
+
+[data-theme="dark"] .stat-card-green {
+  border-left-color: #10b981 !important;
+}
+
+[data-theme="dark"] .stat-card-green .stat-value {
+  color: #10b981 !important;
+}
+
+[data-theme="dark"] .stat-card-gray {
+  border-left-color: #6b7280 !important;
+}
+
+[data-theme="dark"] .stat-card-gray .stat-value {
+  color: #9ca3af !important;
+}
+
+/* 进度条背景 */
+[data-theme="dark"] .stat-progress {
+  background: #272727 !important;
+}
+
+/* ========================================
+ * 筛选栏 - 黑夜模式
+ * ======================================== */
+[data-theme="dark"] .filter-bar {
+  background: #1f1f1f !important;
+  border-color: #333 !important;
+}
+
+[data-theme="dark"] .filter-group label {
+  color: #9ca3af !important;
+}
+
+[data-theme="dark"] .filter-select {
+  background: #181818 !important;
+  border-color: #333 !important;
+  color: #e5e7eb !important;
+}
+
+[data-theme="dark"] .filter-select:focus {
+  border-color: #22d3ee !important;
+  outline: none;
+}
+
+/* ========================================
+ * 按钮 - 黑夜模式
+ * ======================================== */
+[data-theme="dark"] .btn-primary {
+  background: #2d3748 !important;
+  color: #22d3ee !important;
+  border: 1px solid #374151 !important;
+}
+
+[data-theme="dark"] .btn-primary:hover {
+  background: #374151 !important;
+  color: #67e8f9 !important;
+}
+
+[data-theme="dark"] .btn-secondary {
+  background: #374151 !important;
+  color: #e5e7eb !important;
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background: #4b5563 !important;
+}
+
+/* ========================================
+ * 表格/列表 - 黑夜模式
+ * ======================================== */
+[data-theme="dark"] .articles-table-container {
+  background: #1f1f1f !important;
+  border-color: #333 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+[data-theme="dark"] .articles-table thead {
+  background: #181818 !important;
+}
+
+[data-theme="dark"] .articles-table th {
+  color: #e5e7eb !important;
+  border-bottom-color: #333 !important;
+}
+
+[data-theme="dark"] .articles-table td {
+  color: #e5e7eb !important;
+  border-bottom-color: #272727 !important;
+}
+
+/* 列表行 hover - 柔和荧光青边框 */
+[data-theme="dark"] .articles-table tbody tr:hover {
+  background: #242424 !important;
+  box-shadow: inset 0 0 0 1px rgba(34, 211, 238, 0.2) !important;
+}
+
+/* 可排序表头 hover */
+[data-theme="dark"] .sortable-th:hover {
+  background: #242424 !important;
+  color: #22d3ee !important;
+}
+
+/* 文章标题链接 */
+[data-theme="dark"] .article-title-cell a {
+  color: #38bdf8 !important;
+}
+
+[data-theme="dark"] .article-title-cell a:hover {
+  color: #67e8f9 !important;
+}
+
+/* 日期单元格 */
+[data-theme="dark"] .date-cell {
+  color: #9ca3af !important;
+}
+
+/* 空行提示 */
+[data-theme="dark"] .empty-row {
+  color: #6b7280 !important;
+}
+
+/* ========================================
+ * 状态标签 - 黑夜模式（荧光色）
+ * ======================================== */
+[data-theme="dark"] .status-badge {
+  font-weight: 600 !important;
+}
+
+[data-theme="dark"] .status-published {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #10b981 !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+}
+
+[data-theme="dark"] .status-draft {
+  background: rgba(245, 158, 11, 0.15) !important;
+  color: #f59e0b !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+}
+
+/* ========================================
+ * 分类标签 - 黑夜模式
+ * ======================================== */
+[data-theme="dark"] .category-badge {
+  background: #242424 !important;
+  border-color: #333 !important;
+  color: #9ca3af !important;
+}
+
+/* ========================================
+ * 操作按钮 - 黑夜模式
+ * ======================================== */
+[data-theme="dark"] .btn-link {
+  color: #38bdf8 !important;
+}
+
+[data-theme="dark"] .btn-link:hover {
+  color: #67e8f9 !important;
+}
+
+[data-theme="dark"] .btn-preview {
+  color: #38bdf8 !important;
+}
+
+[data-theme="dark"] .btn-preview:hover {
+  color: #67e8f9 !important;
+}
+
+[data-theme="dark"] .btn-edit {
+  color: #22d3ee !important;
+}
+
+[data-theme="dark"] .btn-edit:hover {
+  color: #67e8f9 !important;
+}
+
+[data-theme="dark"] .btn-delete {
+  color: #f87171 !important;
+}
+
+[data-theme="dark"] .btn-delete:hover {
+  color: #fca5a5 !important;
+}
+
+/* ========================================
+ * 缩略图 - 黑夜模式
+ * ======================================== */
+[data-theme="dark"] .thumbnail-cell img {
+  border: 1px solid #333 !important;
+}
+
+/* ========================================
+ * 表单元素 - 黑夜模式
+ * ======================================== */
+[data-theme="dark"] .form-input,
+[data-theme="dark"] .form-textarea,
+[data-theme="dark"] .form-select {
+  background: #181818 !important;
+  border-color: #333 !important;
+  color: #e5e7eb !important;
+}
+
+[data-theme="dark"] .form-input:focus,
+[data-theme="dark"] .form-textarea:focus,
+[data-theme="dark"] .form-select:focus {
+  border-color: #22d3ee !important;
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.2) !important;
+}
+
+[data-theme="dark"] .form-group label {
+  color: #e5e7eb !important;
+}
+
+[data-theme="dark"] .form-hint {
+  color: #9ca3af !important;
+}
+
+/* ========================================
+ * 消息提示 - 黑夜模式
+ * ======================================== */
+[data-theme="dark"] .error-message {
+  background: rgba(239, 68, 68, 0.1) !important;
+  border-color: #ef4444 !important;
+  color: #f87171 !important;
+}
+
+[data-theme="dark"] .success-message {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-color: #10b981 !important;
+  color: #34d399 !important;
+}
+
+[data-theme="dark"] .loading {
+  color: #9ca3af !important;
+}
+
+/* ========================================
+ * 编辑器 - 黑夜模式
+ * ======================================== */
+[data-theme="dark"] .article-editor {
+  background: #1f1f1f !important;
+  border-color: #333 !important;
+}
+
+[data-theme="dark"] .editor-toolbar {
+  background: #181818 !important;
+  border-bottom-color: #333 !important;
+}
+
+[data-theme="dark"] .image-size-select {
+  background: #242424 !important;
+  border-color: #333 !important;
+  color: #e5e7eb !important;
+}
+
+[data-theme="dark"] .preview-title {
+  color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] .preview-excerpt {
+  color: #9ca3af !important;
+  border-bottom-color: #333 !important;
+}
+
+/* ========================================
+ * Admin 子页面（新建/编辑）- 黑夜模式
+ * ======================================== */
+[data-theme="dark"] .admin-form {
+  background: #1f1f1f !important;
+  border-color: #333 !important;
+}
+
+[data-theme="dark"] .admin-form input,
+[data-theme="dark"] .admin-form textarea,
+[data-theme="dark"] .admin-form select {
+  background: #181818 !important;
+  border-color: #333 !important;
+  color: #e5e7eb !important;
+}
+
+[data-theme="dark"] .admin-form input:focus,
+[data-theme="dark"] .admin-form textarea:focus,
+[data-theme="dark"] .admin-form select:focus {
+  border-color: #22d3ee !important;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.2) !important;
+}
+
+[data-theme="dark"] .image-preview {
+  border-color: #333 !important;
+}
+
+[data-theme="dark"] .image-preview img {
+  border-color: #333 !important;
 }

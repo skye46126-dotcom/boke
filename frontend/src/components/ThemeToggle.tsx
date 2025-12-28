@@ -5,7 +5,7 @@ import { useTheme, getThemeDisplayName, type Theme } from '@/contexts/ThemeConte
 
 // 组件属性接口
 export interface ThemeToggleProps {
-  variant?: 'icon' | 'dropdown' | 'segmented';
+  variant?: 'icon' | 'dropdown' | 'segmented' | 'compact';
   size?: 'sm' | 'md' | 'lg';
   showLabel?: boolean;
   className?: string;
@@ -64,6 +64,55 @@ function IconThemeToggle({ size = 'md', className = '' }: ThemeToggleProps) {
       >
         {currentOption.icon}
       </span>
+    </button>
+  );
+}
+
+// 紧凑循环切换器（Admin 专用）
+function CompactThemeToggle({ size = 'sm', className = '' }: ThemeToggleProps) {
+  const { theme, setTheme, systemTheme } = useTheme();
+  
+  const handleToggle = () => {
+    // 循环切换：light -> dark -> system -> light
+    const currentIndex = THEME_OPTIONS.findIndex(option => option.value === theme);
+    const nextIndex = (currentIndex + 1) % THEME_OPTIONS.length;
+    setTheme(THEME_OPTIONS[nextIndex].value);
+  };
+
+  const currentOption = THEME_OPTIONS.find(option => option.value === theme) || THEME_OPTIONS[0];
+  const displayName = getThemeDisplayName(theme, systemTheme);
+
+  const sizeStyles = {
+    sm: { padding: '6px 10px', fontSize: '12px', gap: '6px' },
+    md: { padding: '8px 14px', fontSize: '14px', gap: '8px' },
+    lg: { padding: '10px 18px', fontSize: '16px', gap: '10px' },
+  };
+
+  return (
+    <button
+      onClick={handleToggle}
+      className={`theme-toggle-compact ${className}`}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: sizeStyles[size].gap,
+        padding: sizeStyles[size].padding,
+        fontSize: sizeStyles[size].fontSize,
+        background: 'var(--color-surface-raised)',
+        border: '2px solid var(--color-border)',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        transition: 'all 0.15s ease',
+        color: 'var(--color-text-primary)',
+        fontFamily: "'Courier New', monospace",
+        fontWeight: 500,
+      }}
+      title={`当前: ${displayName}，点击切换`}
+      aria-label={`切换主题，当前: ${displayName}`}
+      type="button"
+    >
+      <span style={{ fontSize: '1.1em' }}>{currentOption.icon}</span>
+      <span>{currentOption.label}</span>
     </button>
   );
 }
@@ -282,6 +331,8 @@ export function ThemeToggle(props: ThemeToggleProps) {
       return <DropdownThemeToggle {...props} />;
     case 'segmented':
       return <SegmentedThemeToggle {...props} />;
+    case 'compact':
+      return <CompactThemeToggle {...props} />;
     case 'icon':
     default:
       return <IconThemeToggle {...props} />;

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import ArticlesClient from './ArticlesClient';
-import SimpleNavigation from '@/components/SimpleNavigation';
+import FixedThemeToggle from '@/components/FixedThemeToggle';
 
 export const metadata: Metadata = {
   title: '文章列表 - 像素开发者',
@@ -9,20 +9,21 @@ export const metadata: Metadata = {
 
 export default function ArticlesPage() {
   return (
-    <>
-      <SimpleNavigation />
-      <div className="articles-page" style={{ 
-        background: 'var(--color-background)', 
-        minHeight: '100vh',
-        transition: 'background 0.3s ease'
-      }}>
-        <div className="container mx-auto px-4 py-8">
-          <h1 className="text-3xl font-bold mb-8" style={{ color: 'var(--color-text-primary)' }}>
-            文章列表
-          </h1>
-          <ArticlesClient />
-        </div>
+    <div className="articles-page" style={{ 
+      background: 'var(--color-background)', 
+      minHeight: '100vh',
+      transition: 'background 0.3s ease',
+      position: 'relative'
+    }}>
+      {/* 右上角主题切换 */}
+      <FixedThemeToggle />
+      
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-8" style={{ color: 'var(--color-text-primary)' }}>
+          文章列表
+        </h1>
+        <ArticlesClient />
       </div>
-    </>
+    </div>
   );
 }

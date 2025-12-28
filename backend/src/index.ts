@@ -8,6 +8,8 @@ import adminRouter from './routes/admin';
 import uploadRouter from './routes/upload';
 import tagsRouter from './routes/tags';
 import statsRouter from './routes/stats';
+import galleryRouter from './routes/gallery';
+import galleryAlbumsRouter from './routes/galleryAlbums';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 import { requireAdmin, logSuspiciousAccess } from './middleware/adminAuth';
 import { csrfProtection, getCSRFToken } from './middleware/csrf';
@@ -31,18 +33,18 @@ app.use(xssProtection);
 // Request size limit (1MB for regular requests)
 app.use(requestSizeLimit(1024 * 1024));
 
-// Rate limiting
+// Rate limiting - 开发环境放宽限制
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 500, // limit each IP to 500 requests per minute
   message: 'Too many requests from this IP, please try again later.',
 });
 app.use('/api/', limiter);
 
 // Stricter rate limiting for admin routes
 const adminLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 50, // limit each IP to 50 requests per windowMs
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 200, // limit each IP to 200 requests per minute
   message: 'Too many requests from this IP, please try again later.',
 });
 
@@ -70,6 +72,8 @@ app.get('/api/csrf-token', getCSRFToken);
 app.use('/api/articles', articlesRouter);
 app.use('/api/tags', tagsRouter);
 app.use('/api/stats', statsRouter);
+app.use('/api/gallery/albums', galleryAlbumsRouter);  // 必须在 /api/gallery 之前
+app.use('/api/gallery', galleryRouter);
 
 // Admin routes (protected by hidden path and CSRF)
 app.use(`/${config.admin.path}`, adminLimiter, requireAdmin, csrfProtection, adminRouter);
