@@ -5,6 +5,7 @@
 import type { Metadata } from 'next';
 import GalleryClient from './GalleryClient';
 import FixedThemeToggle from '@/components/FixedThemeToggle';
+import { getAlbums, getGalleryItems, getCategories } from '@/content/gallery';
 import '@/styles/gallery-pixel.css';
 
 export const metadata: Metadata = {
@@ -13,6 +14,11 @@ export const metadata: Metadata = {
 };
 
 export default function GalleryPage() {
+  // 在服务端获取数据
+  const albums = getAlbums();
+  const items = getGalleryItems();
+  const categories = getCategories();
+
   return (
     <main className="gallery-page" style={{ position: 'relative' }}>
       {/* 右上角主题切换 */}
@@ -34,8 +40,12 @@ export default function GalleryPage() {
         </div>
       </header>
       
-      {/* 相册内容 */}
-      <GalleryClient />
+      {/* 相册内容 - 传递静态数据 */}
+      <GalleryClient 
+        initialAlbums={albums}
+        initialItems={items}
+        initialCategories={categories}
+      />
     </main>
   );
 }

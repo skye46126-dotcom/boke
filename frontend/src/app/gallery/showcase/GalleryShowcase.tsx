@@ -12,42 +12,33 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
-import { GalleryItem } from '@/types/gallery';
 
-const API_URL = 'http://localhost:3001';
-
-// ========================================
-// 数据获取
-// ========================================
-
-async function fetchGalleryItems(): Promise<GalleryItem[]> {
-  // 从长廊配置 API 获取图片（按 showcase_order 排序）
-  const res = await fetch(`${API_URL}/api/gallery/showcase`);
-  const data = await res.json();
-  return data.success ? data.data : [];
+// 长廊图片类型
+interface CorridorImage {
+  id: string;
+  title: string;
+  description?: string;
+  img_url: string;
+  author?: string;
+  date?: string;
+  order?: number;
 }
 
 // ========================================
 // 主组件
 // ========================================
 
-export default function GalleryShowcase() {
-  const [items, setItems] = useState<GalleryItem[]>([]);
+interface GalleryShowcaseProps {
+  images: CorridorImage[];
+}
+
+export default function GalleryShowcase({ images }: GalleryShowcaseProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [loading, setLoading] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
   
   // 触摸滑动状态
   const touchStartY = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
-
-  // 加载数据
-  useEffect(() => {
-    fetchGalleryItems()
-      .then(setItems)
-      .catch(console.error)
-      .finally(() => setLoading(false));
-  }, []);
 
   // ========================================
   // 【滑动切换】核心逻辑
@@ -63,11 +54,11 @@ export default function GalleryShowcase() {
 
   // 切换到下一幅
   const goToNext = useCallback(() => {
-    if (isTransitioning || currentIndex >= items.length - 1) return;
+    if (isTransitioning || currentIndex >= images.length - 1) return;
     setIsTransitioning(true);
     setCurrentIndex((prev) => prev + 1);
     setTimeout(() => setIsTransitioning(false), 500);
-  }, [currentIndex, items.length, isTransitioning]);
+  }, [currentIndex, images.length, isTransitioning]);
 
   // 【PC端】滚轮事件
   useEffect(() => {
@@ -127,26 +118,8 @@ export default function GalleryShowcase() {
   // 渲染
   // ========================================
 
-  // 加载状态
-  if (loading) {
-    return (
-      <div
-        style={{
-          width: '100vw',
-          height: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: 'var(--color-background)',
-        }}
-      >
-        <p style={{ color: 'var(--color-text-secondary)' }}>加载中...</p>
-      </div>
-    );
-  }
-
   // 空状态
-  if (items.length === 0) {
+  if (images.length === 0) {
     return (
       <div
         style={{
@@ -156,15 +129,25 @@ export default function GalleryShowcase() {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'var(--color-background)',
+          background: 'var(--vintage-bg, #F5F0E8)',
+          fontFamily: "'Noto Serif SC', Georgia, serif",
         }}
       >
-        <p style={{ color: 'var(--color-text-muted)', marginBottom: '16px' }}>暂无作品</p>
+        <p style={{ color: 'var(--vintage-text-light, #8B7355)', marginBottom: '16px', fontSize: '18px' }}>
+          📜 暂无作品
+        </p>
+        <p style={{ color: 'var(--vintage-text-light, #8B7355)', marginBottom: '24px', fontSize: '14px' }}>
+          请在后台管理的"长廊管理"中添加图片
+        </p>
         <Link
           href="/gallery"
           style={{
-            color: 'var(--color-accent)',
+            color: 'var(--vintage-accent, #9E7F66)',
             textDecoration: 'none',
+            padding: '10px 20px',
+            border: '1px solid var(--vintage-border, #D4C7B0)',
+            borderRadius: '4px',
+            background: 'var(--vintage-paper, #FAF7F2)',
           }}
         >
           返回相册
@@ -173,7 +156,7 @@ export default function GalleryShowcase() {
     );
   }
 
-  const currentItem = items[currentIndex];
+  const currentItem = images[currentIndex];
 
   return (
     <div
@@ -184,9 +167,10 @@ export default function GalleryShowcase() {
         width: '100vw',
         height: '100vh',
         overflow: 'hidden',
-        background: 'var(--color-background)',
+        background: 'var(--vintage-bg, #F5F0E8)',
         position: 'relative',
-        touchAction: 'none', // 禁用默认触摸行为
+        touchAction: 'none',
+        fontFamily: "'Noto Serif SC', Georgia, serif",
       }}
     >
       {/* ========================================
@@ -203,12 +187,14 @@ export default function GalleryShowcase() {
           alignItems: 'center',
           gap: '8px',
           padding: '12px 20px',
-          background: 'var(--color-surface-raised)',
-          border: '2px solid var(--color-border)',
-          color: 'var(--color-text-primary)',
+          background: 'var(--vintage-paper, #FAF7F2)',
+          border: '1px solid var(--vintage-border, #D4C7B0)',
+          borderRadius: '4px',
+          color: 'var(--vintage-text-dark, #4A3F35)',
           textDecoration: 'none',
           fontWeight: 500,
           transition: 'all 0.2s ease',
+          boxShadow: '0 2px 8px rgba(74, 63, 53, 0.1)',
         }}
       >
         <span>←</span>
@@ -238,7 +224,7 @@ export default function GalleryShowcase() {
             alignItems: 'center',
             justifyContent: 'center',
             maxWidth: '90vw',
-            maxHeight: '70vh', // 占屏幕高度70%
+            maxHeight: '70vh',
             transition: 'transform 0.5s ease, opacity 0.5s ease',
             transform: isTransitioning ? 'translateY(20px)' : 'translateY(0)',
             opacity: isTransitioning ? 0.8 : 1,
@@ -252,7 +238,9 @@ export default function GalleryShowcase() {
               maxWidth: '100%',
               maxHeight: '60vh',
               objectFit: 'contain',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+              boxShadow: '0 8px 32px rgba(74, 63, 53, 0.2)',
+              borderRadius: '4px',
+              border: '4px solid var(--vintage-paper, #FAF7F2)',
             }}
           />
 
@@ -261,24 +249,54 @@ export default function GalleryShowcase() {
             style={{
               marginTop: '24px',
               textAlign: 'center',
+              background: 'var(--vintage-paper, #FAF7F2)',
+              padding: '16px 24px',
+              borderRadius: '4px',
+              border: '1px solid var(--vintage-border, #D4C7B0)',
+              boxShadow: '0 2px 8px rgba(74, 63, 53, 0.08)',
             }}
           >
             <h2
               style={{
-                fontSize: '24px',
+                fontSize: '22px',
                 fontWeight: 600,
-                color: 'var(--color-text-primary)',
+                color: 'var(--vintage-text-dark, #4A3F35)',
                 marginBottom: '8px',
+                margin: 0,
               }}
             >
               {currentItem.title}
             </h2>
+            {currentItem.author && (
+              <p
+                style={{
+                  fontSize: '14px',
+                  color: 'var(--vintage-accent, #9E7F66)',
+                  margin: '8px 0 0 0',
+                }}
+              >
+                作者: {currentItem.author}
+              </p>
+            )}
+            {currentItem.date && (
+              <p
+                style={{
+                  fontSize: '12px',
+                  color: 'var(--vintage-text-light, #8B7355)',
+                  margin: '4px 0 0 0',
+                }}
+              >
+                {currentItem.date}
+              </p>
+            )}
             {currentItem.description && (
               <p
                 style={{
                   fontSize: '14px',
-                  color: 'var(--color-text-secondary)',
+                  color: 'var(--vintage-text-medium, #6B5D4D)',
                   maxWidth: '600px',
+                  margin: '12px 0 0 0',
+                  lineHeight: 1.6,
                 }}
               >
                 {currentItem.description}
@@ -303,7 +321,7 @@ export default function GalleryShowcase() {
           zIndex: 100,
         }}
       >
-        {items.map((_, index) => (
+        {images.map((_, index) => (
           <button
             key={index}
             onClick={() => {
@@ -319,8 +337,8 @@ export default function GalleryShowcase() {
               borderRadius: '4px',
               border: 'none',
               background: index === currentIndex 
-                ? 'var(--color-accent)' 
-                : 'var(--color-border)',
+                ? 'var(--vintage-accent, #9E7F66)' 
+                : 'var(--vintage-border, #D4C7B0)',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
               padding: 0,
@@ -339,12 +357,16 @@ export default function GalleryShowcase() {
           bottom: '24px',
           left: '50%',
           transform: 'translateX(-50%)',
-          color: 'var(--color-text-muted)',
+          color: 'var(--vintage-text-light, #8B7355)',
           fontSize: '14px',
           zIndex: 100,
+          background: 'var(--vintage-paper, #FAF7F2)',
+          padding: '8px 16px',
+          borderRadius: '4px',
+          border: '1px solid var(--vintage-border, #D4C7B0)',
         }}
       >
-        {currentIndex + 1} / {items.length}
+        {currentIndex + 1} / {images.length}
       </div>
 
       {/* ========================================
@@ -354,12 +376,12 @@ export default function GalleryShowcase() {
         <div
           style={{
             position: 'fixed',
-            bottom: '60px',
+            bottom: '70px',
             left: '50%',
             transform: 'translateX(-50%)',
-            color: 'var(--color-text-muted)',
+            color: 'var(--vintage-text-light, #8B7355)',
             fontSize: '12px',
-            opacity: 0.6,
+            opacity: 0.7,
             animation: 'bounce 2s infinite',
           }}
         >

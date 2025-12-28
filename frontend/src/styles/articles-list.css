@@ -1,0 +1,179 @@
+/**
+ * 文章列表页样式 - 复古纸张风格
+ */
+
+/* 复古衬线字体 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap');
+
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(192px, 1fr));
+  gap: 28px;
+}
+
+/* 文章卡片 - 适配 at1.png 尺寸比例 (128x166) */
+.article-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  aspect-ratio: 128 / 166;
+  max-width: 256px;
+  background-image: url('/images/article-default.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none;
+  transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
+  padding: 22px 18px 16px 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /* 复古衬线字体 */
+  font-family: 'Noto Serif SC', 'Georgia', 'Times New Roman', serif;
+  letter-spacing: 0.03em;
+}
+
+.article-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  filter: brightness(1.03);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* 移除封面区域 */
+.article-cover {
+  display: none;
+}
+
+/* 标题区域 - 居中，暖棕色 */
+.article-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #5D4E3C;
+  margin: 0 0 8px 0;
+  padding: 0;
+  line-height: 1.55;
+  min-height: 46px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.06);
+  font-family: 'Noto Serif SC', 'Georgia', serif;
+}
+
+[data-theme="dark"] .article-title {
+  color: #5D4E3C;
+}
+
+/* 日期区域 - 缩进，浅棕色 */
+.article-date {
+  font-size: 11px;
+  color: #8B7355;
+  margin: 0 0 8px 0;
+  padding: 0 8px;
+  line-height: 1.5;
+  font-family: 'Noto Serif SC', 'Georgia', serif;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+  letter-spacing: 0.05em;
+}
+
+[data-theme="dark"] .article-date {
+  color: #8B7355;
+}
+
+/* 摘要区域 - 缩进，深米色 */
+.article-excerpt {
+  font-size: 12px;
+  color: #6B5D4D;
+  margin: 0 0 10px 0;
+  padding: 0 6px;
+  line-height: 1.6;
+  flex: 1;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+  font-family: 'Noto Serif SC', 'Georgia', serif;
+}
+
+[data-theme="dark"] .article-excerpt {
+  color: #6B5D4D;
+}
+
+/* 标签区域 */
+.article-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: auto 0 0 0;
+  padding: 0 4px;
+  justify-content: center;
+}
+
+/* 标签 - 低饱和暖色调 */
+.article-tag {
+  display: inline-block;
+  padding: 3px 8px;
+  background: rgba(158, 127, 102, 0.15);
+  color: #7A6248;
+  font-size: 10px;
+  border-radius: 3px;
+  border: 1px solid rgba(158, 127, 102, 0.35);
+  font-family: 'Noto Serif SC', 'Georgia', serif;
+  line-height: 1.4;
+  white-space: nowrap;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.02em;
+}
+
+[data-theme="dark"] .article-tag {
+  background: rgba(158, 127, 102, 0.15);
+  color: #7A6248;
+  border-color: rgba(158, 127, 102, 0.35);
+}
+
+/* 空内容占位 */
+.article-title:empty::before {
+  content: '无标题';
+  color: #A89880;
+}
+
+.article-excerpt:empty {
+  display: none;
+}
+
+.article-tags:empty {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .articles-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px;
+  }
+  
+  .article-card {
+    max-width: 200px;
+    padding: 18px 14px 14px 14px;
+  }
+  
+  .article-title {
+    font-size: 14px;
+    min-height: 42px;
+  }
+  
+  .article-excerpt {
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+}

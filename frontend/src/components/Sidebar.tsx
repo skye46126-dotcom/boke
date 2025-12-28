@@ -41,47 +41,12 @@ export default function Sidebar({
   });
   const [isLoading, setIsLoading] = useState(true);
 
-  // 获取标签数据
+  // 静态博客：使用静态占位数据
   useEffect(() => {
-    async function fetchTags() {
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/api/tags`);
-        if (response.ok) {
-          const data = await response.json();
-          if (data.success) {
-            setTags(data.data || []);
-          }
-        }
-      } catch (error) {
-        console.error('Failed to fetch tags:', error);
-      }
-    }
-
-    fetchTags();
-  }, []);
-
-  // 获取阅读统计
-  useEffect(() => {
-    async function fetchStats() {
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/api/stats`);
-        if (response.ok) {
-          const data = await response.json();
-          if (data.success) {
-            setStats({
-              totalArticles: data.data.totalArticles || 0,
-              totalViews: data.data.totalViews || 0
-            });
-          }
-        }
-      } catch (error) {
-        console.error('Failed to fetch stats:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchStats();
+    // 静态博客不再从后端获取标签，使用占位数据
+    setTags([]);
+    setStats({ totalArticles: 0, totalViews: 0 });
+    setIsLoading(false);
   }, []);
 
   // 处理标签点击

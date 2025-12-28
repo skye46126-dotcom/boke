@@ -1,32 +1,13 @@
 import { MetadataRoute } from 'next';
-
-async function getArticles() {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
-  
-  try {
-    const res = await fetch(`${baseUrl}/api/articles?limit=1000`, {
-      cache: 'no-store',
-    });
-
-    if (!res.ok) {
-      return [];
-    }
-
-    const response = await res.json();
-    return response.data.articles || [];
-  } catch (error) {
-    console.error('Error fetching articles for sitemap:', error);
-    return [];
-  }
-}
+import { getPublishedArticlesMeta } from '@/content/articles';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
-  const articles = await getArticles();
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+  const articles = getPublishedArticlesMeta();
 
-  const articleUrls = articles.map((article: any) => ({
+  const articleUrls = articles.map((article) => ({
     url: `${baseUrl}/articles/${article.slug}`,
-    lastModified: new Date(article.updated_at),
+    lastModified: new Date(article.date),
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }));
@@ -37,6 +18,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 1,
+    },
+    {
+      url: `${baseUrl}/articles`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/gallery`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/tags`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.6,
     },
     ...articleUrls,
   ];

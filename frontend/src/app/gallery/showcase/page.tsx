@@ -9,6 +9,10 @@
  */
 
 import type { Metadata } from 'next';
+import { getCorridorImages } from '@/content/corridor';
+
+// 强制静态生成
+export const dynamic = 'force-static';
 import GalleryShowcase from './GalleryShowcase';
 
 export const metadata: Metadata = {
@@ -17,5 +21,8 @@ export const metadata: Metadata = {
 };
 
 export default function ShowcasePage() {
-  return <GalleryShowcase />;
+  // 服务端获取长廊图片数据
+  const images = getCorridorImages();
+  
+  return <GalleryShowcase images={images} />;
 }

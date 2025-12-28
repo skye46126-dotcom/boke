@@ -12,34 +12,31 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { GalleryItem, GalleryAlbum, GalleryViewMode } from '@/types/gallery';
 import '@/styles/gallery-pixel.css';
 
-const API_URL = 'http://localhost:3001';
-
-// ========================================
-// API 请求函数
-// ========================================
-
-async function fetchGallery(category?: string): Promise<GalleryItem[]> {
-  const url = category && category !== 'all'
-    ? `${API_URL}/api/gallery?category=${encodeURIComponent(category)}`
-    : `${API_URL}/api/gallery`;
-  const res = await fetch(url);
-  const data = await res.json();
-  return data.success ? data.data.items : [];
+// 类型定义
+interface GalleryAlbum {
+  id: string;
+  name: string;
+  description?: string;
+  cover_url?: string;
+  image_count?: number;
 }
 
-async function fetchCategories(): Promise<string[]> {
-  const res = await fetch(`${API_URL}/api/gallery/categories`);
-  const data = await res.json();
-  return data.success ? data.data : [];
+interface GalleryItem {
+  id: string;
+  title: string;
+  img_url: string;
+  category: string;
+  album_id?: string | null;
 }
 
-async function fetchAlbums(): Promise<GalleryAlbum[]> {
-  const res = await fetch(`${API_URL}/api/gallery/albums`);
-  const data = await res.json();
-  return data.success ? data.data : [];
+type GalleryViewMode = 'grid' | 'albums';
+
+interface GalleryClientProps {
+  initialAlbums: GalleryAlbum[];
+  initialItems: GalleryItem[];
+  initialCategories: string[];
 }
 
 // ========================================
@@ -66,46 +63,26 @@ const AlbumIcon = () => (
 // 主组件
 // ========================================
 
-export default function GalleryClient() {
+export default function GalleryClient({ 
+  initialAlbums, 
+  initialItems, 
+  initialCategories 
+}: GalleryClientProps) {
   const [viewMode, setViewMode] = useState<GalleryViewMode>('grid');
-  const [items, setItems] = useState<GalleryItem[]>([]);
-  const [albums, setAlbums] = useState<GalleryAlbum[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
+  const [items, setItems] = useState<GalleryItem[]>(initialItems);
+  const [albums] = useState<GalleryAlbum[]>(initialAlbums);
+  const [categories] = useState<string[]>(initialCategories);
   const [activeCategory, setActiveCategory] = useState('all');
-  const [loading, setLoading] = useState(true);
   const [previewItem, setPreviewItem] = useState<GalleryItem | null>(null);
 
-  // 加载分类
+  // 分类筛选
   useEffect(() => {
-    fetchCategories().then(setCategories).catch(console.error);
-  }, []);
-
-  // 加载数据
-  useEffect(() => {
-    setLoading(true);
-    
-    // 始终加载相册集列表（用于显示名称）
-    fetchAlbums().then(setAlbums).catch(console.error);
-    
-    if (viewMode === 'grid') {
-      fetchGallery(activeCategory)
-        .then(setItems)
-        .catch(console.error)
-        .finally(() => setLoading(false));
+    if (activeCategory === 'all') {
+      setItems(initialItems);
     } else {
-      fetchAlbums()
-        .then(setAlbums)
-        .catch(console.error)
-        .finally(() => setLoading(false));
+      setItems(initialItems.filter(item => item.category === activeCategory));
     }
-  }, [viewMode, activeCategory]);
-
-  // 获取相册集名称
-  const getAlbumName = (albumId: string | null) => {
-    if (!albumId) return null;
-    const album = albums.find(a => a.id === albumId);
-    return album ? album.name : null;
-  };
+  }, [activeCategory, initialItems]);
 
   const handleClosePreview = useCallback(() => setPreviewItem(null), []);
 
@@ -123,16 +100,6 @@ export default function GalleryClient() {
       document.body.style.overflow = '';
     };
   }, [previewItem, handleClosePreview]);
-
-  // 加载状态
-  if (loading) {
-    return (
-      <div className="pixel-loading">
-        <div className="pixel-loading-spinner" />
-        <p>加载中...</p>
-      </div>
-    );
-  }
 
   return (
     <>

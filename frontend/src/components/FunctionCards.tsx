@@ -6,26 +6,9 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { useMagnetic } from '@/lib/hooks/useMagnetic';
-
-interface Article {
-  id: string;
-  title: string;
-  excerpt: string;
-  publishedAt: string;
-  slug: string;
-}
-
-interface Project {
-  id: string;
-  name: string;
-  description: string;
-  techStack: string[];
-  image?: string;
-  url?: string;
-}
 
 interface FunctionCardsProps {
   onDrawCardClick: () => void;
@@ -35,7 +18,6 @@ interface FunctionCardsProps {
 
 // 磁吸小卡牌 - Link
 function MagneticSmallCard({ href, className, children }: { href: string; className: string; children: React.ReactNode }) {
-  // 磁吸配置：strength 0.3 让效果更明显
   const magneticRef = useMagnetic({ strength: 0.3, radius: 80 });
   return (
     <Link ref={magneticRef as React.RefObject<HTMLAnchorElement>} href={href} className={`${className} magnetic-small-card`}>
@@ -54,7 +36,6 @@ function MagneticExternalCard({ href, className, children }: { href: string; cla
   );
 }
 
-
 // 磁吸小卡牌 - 可点击Div
 function MagneticClickableCard({ className, onClick, children }: { className: string; onClick: () => void; children: React.ReactNode }) {
   const magneticRef = useMagnetic({ strength: 0.3, radius: 80 });
@@ -66,48 +47,6 @@ function MagneticClickableCard({ className, onClick, children }: { className: st
 }
 
 export default function FunctionCards({ onDrawCardClick, isCollapsed = false, className = '' }: FunctionCardsProps) {
-  const [latestArticle, setLatestArticle] = useState<Article | null>(null);
-  const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
-
-  useEffect(() => {
-    async function fetchLatestArticle() {
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/api/stats`);
-        if (response.ok) {
-          const data = await response.json();
-          if (data.success && data.data.latestArticles.length > 0) {
-            setLatestArticle(data.data.latestArticles[0]);
-          }
-        }
-      } catch (error) {
-        console.error('Failed to fetch latest article:', error);
-      }
-    }
-    fetchLatestArticle();
-  }, []);
-
-  useEffect(() => {
-    async function fetchFeaturedProjects() {
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/api/projects?featured=true&limit=3`);
-        if (response.ok) {
-          const data = await response.json();
-          if (data.success) {
-            setFeaturedProjects(data.data || []);
-          }
-        }
-      } catch (error) {
-        console.error('Failed to fetch featured projects:', error);
-      }
-    }
-    fetchFeaturedProjects();
-  }, []);
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric' });
-  };
-
   return (
     <div className={`function-cards-grid ${isCollapsed ? 'cards-collapsed' : ''} ${className}`}>
       {/* 大卡片 - 无磁吸 */}
@@ -135,42 +74,17 @@ export default function FunctionCards({ onDrawCardClick, isCollapsed = false, cl
       <div className="poker-card card-article no-magnetic">
         <div className="poker-card-content">
           <div className="poker-card-suit"><span className="pixel-icon">📖</span></div>
-          {latestArticle ? (
-            <>
-              <h3 className="card-title pixel-font">最新文章</h3>
-              <h4 className="article-title">{latestArticle.title}</h4>
-              <p className="article-excerpt">{latestArticle.excerpt || '暂无摘要...'}</p>
-              <div className="article-meta"><span className="publish-date">{formatDate(latestArticle.publishedAt)}</span></div>
-              <Link href={`/articles/${latestArticle.slug}`} className="card-link pixel-button">阅读全文</Link>
-            </>
-          ) : (
-            <>
-              <h3 className="card-title pixel-font">最新文章</h3>
-              <p className="article-excerpt">暂无文章...</p>
-              <Link href="/articles" className="card-link pixel-button">查看所有文章</Link>
-            </>
-          )}
+          <h3 className="card-title pixel-font">最新文章</h3>
+          <p className="article-excerpt">查看博客获取最新内容...</p>
+          <Link href="/articles" className="card-link pixel-button">查看所有文章</Link>
         </div>
       </div>
-
 
       <div className="poker-card card-projects no-magnetic">
         <div className="poker-card-content">
           <div className="poker-card-suit"><span className="pixel-icon">⚙️</span></div>
           <h3 className="card-title pixel-font">作品集</h3>
-          {featuredProjects.length > 0 ? (
-            <div className="projects-preview">
-              {featuredProjects.slice(0, 2).map((project) => (
-                <div key={project.id} className="project-item">
-                  <h4 className="project-name pixel-font">{project.name}</h4>
-                  <p className="project-description">{project.description}</p>
-                  <div className="tech-stack">
-                    {project.techStack.slice(0, 3).map((tech) => (<span key={tech} className="tech-tag">{tech}</span>))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (<p className="projects-placeholder">项目开发中...</p>)}
+          <p className="projects-placeholder">项目开发中...</p>
           <Link href="#projects" className="card-link pixel-button">查看所有项目</Link>
         </div>
       </div>

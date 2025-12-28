@@ -11,31 +11,49 @@
  */
 
 /* ========================================
- * 相册页面容器
+ * 相册页面容器 - 全屏铺满
  * ======================================== */
 
 .gallery-page {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 24px;
+  width: 100%;
   min-height: 100vh;
-  background: var(--color-pixel-ink-paper, #f5f2ef);
+  padding: 24px 48px;
+  box-sizing: border-box;
+  /* 复古纸张纹理背景 */
+  background: #F5F0E8;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(139, 115, 85, 0.03) 2px,
+      rgba(139, 115, 85, 0.03) 4px
+    );
 }
 
 [data-theme="dark"] .gallery-page {
-  background: #1a1a1a;
+  background: #1C1915;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(139, 115, 85, 0.05) 2px,
+      rgba(139, 115, 85, 0.05) 4px
+    );
 }
 
 .gallery-page-header {
-  margin-bottom: 24px;
+  max-width: 1800px;
+  margin: 0 auto 24px;
   padding-bottom: 16px;
-  border-bottom: 2px solid #666;
+  border-bottom: 2px solid #D4C7B0;
 }
 
 .gallery-page-header h1 {
   font-size: 24px;
-  font-family: 'Courier New', monospace;
-  color: #4a7a96;
+  font-family: 'Noto Serif SC', 'Courier New', monospace;
+  color: #4A3F35;
   margin: 0;
 }
 
@@ -44,7 +62,7 @@
 }
 
 [data-theme="dark"] .gallery-page-header {
-  border-bottom-color: #444;
+  border-bottom-color: #4A4035;
 }
 
 /* ========================================
@@ -55,6 +73,9 @@
   display: flex;
   gap: 8px;
   margin-bottom: 16px;
+  max-width: 1800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .pixel-toggle-btn {
@@ -62,27 +83,28 @@
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
-  background: var(--color-pixel-ink-paper, #f5f2ef);
-  border: 2px solid #666;
-  border-radius: 2px;
-  color: #666;
+  background: #FAF7F2;
+  border: 2px solid #D4C7B0;
+  border-radius: 4px;
+  color: #6B5D4D;
   cursor: pointer;
   font-size: 13px;
-  font-family: 'Courier New', monospace;
+  font-family: 'Noto Serif SC', 'Courier New', monospace;
   font-weight: 500;
   transition: all 0.15s ease;
+  box-shadow: 0 2px 4px rgba(74, 63, 53, 0.1);
 }
 
 [data-theme="dark"] .pixel-toggle-btn {
-  background: #2c2c2c;
-  border-color: #888;
-  color: #aaa;
+  background: #252219;
+  border-color: #4A4035;
+  color: #C5B8A8;
 }
 
 .pixel-toggle-btn:hover {
-  border-color: #4a7a96;
-  color: #4a7a96;
-  box-shadow: 2px 2px 0 rgba(74, 122, 150, 0.3);
+  border-color: #9E7F66;
+  color: #9E7F66;
+  box-shadow: 2px 2px 0 rgba(158, 127, 102, 0.2);
 }
 
 [data-theme="dark"] .pixel-toggle-btn:hover {
@@ -92,10 +114,10 @@
 }
 
 .pixel-toggle-btn.active {
-  background: #4a7a96;
-  border-color: #4a7a96;
-  color: #f5f2ef;
-  box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.2);
+  background: #9E7F66;
+  border-color: #9E7F66;
+  color: #FAF7F2;
+  box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.15);
 }
 
 [data-theme="dark"] .pixel-toggle-btn.active {
@@ -110,7 +132,7 @@
 }
 
 /* ========================================
- * 分类筛选按钮 - 像素风格
+ * 分类筛选按钮 - 复古风格
  * ======================================== */
 
 .pixel-category-filter {
@@ -118,29 +140,32 @@
   flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 24px;
+  max-width: 1800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .pixel-filter-btn {
   padding: 6px 12px;
-  background: var(--color-pixel-ink-paper, #f5f2ef);
-  border: 2px solid #999;
-  border-radius: 2px;
-  color: #666;
+  background: #FAF7F2;
+  border: 1px solid #D4C7B0;
+  border-radius: 4px;
+  color: #6B5D4D;
   cursor: pointer;
   font-size: 12px;
-  font-family: 'Courier New', monospace;
+  font-family: 'Noto Serif SC', 'Courier New', monospace;
   transition: all 0.15s ease;
 }
 
 [data-theme="dark"] .pixel-filter-btn {
-  background: #2c2c2c;
-  border-color: #666;
-  color: #999;
+  background: #252219;
+  border-color: #4A4035;
+  color: #9E8F7D;
 }
 
 .pixel-filter-btn:hover {
-  border-color: #4a7a96;
-  color: #4a7a96;
+  border-color: #9E7F66;
+  color: #9E7F66;
 }
 
 [data-theme="dark"] .pixel-filter-btn:hover {
@@ -149,9 +174,9 @@
 }
 
 .pixel-filter-btn.active {
-  background: #4a7a96;
-  border-color: #4a7a96;
-  color: #f5f2ef;
+  background: #9E7F66;
+  border-color: #9E7F66;
+  color: #FAF7F2;
 }
 
 [data-theme="dark"] .pixel-filter-btn.active {
@@ -161,39 +186,41 @@
 }
 
 /* ========================================
- * 图片网格 - 纯净平铺模式
+ * 图片网格 - 全屏铺满模式
  * ======================================== */
 
 .pixel-gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  max-width: 1800px;
+  margin: 0 auto;
 }
 
 .pixel-gallery-item {
   position: relative;
   aspect-ratio: 1;
-  background: #1a1a1a;
-  border: 1px solid rgba(102, 102, 102, 0.3);
-  border-radius: 2px;
+  background: #252219;
+  border: 2px solid #D4C7B0;
+  border-radius: 4px;
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 [data-theme="dark"] .pixel-gallery-item {
-  background: #0a0a0a;
-  border-color: rgba(136, 136, 136, 0.2);
+  background: #1C1915;
+  border-color: #4A4035;
 }
 
 .pixel-gallery-item:hover {
   transform: scale(1.02);
-  border-color: rgba(74, 122, 150, 0.5);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  border-color: #9E7F66;
+  box-shadow: 0 4px 20px rgba(74, 63, 53, 0.2);
 }
 
 [data-theme="dark"] .pixel-gallery-item:hover {
-  border-color: rgba(204, 153, 102, 0.5);
+  border-color: #cc9966;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
@@ -233,33 +260,35 @@
 }
 
 /* ========================================
- * 图片集网格 - 像素风格
+ * 图片集网格 - 复古风格全屏
  * ======================================== */
 
 .pixel-albums-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  max-width: 1800px;
+  margin: 0 auto;
 }
 
 .pixel-album-card {
   display: block;
-  background: var(--color-pixel-ink-paper, #f5f2ef);
-  border: 2px solid #666;
-  border-radius: 2px;
+  background: #FAF7F2;
+  border: 2px solid #D4C7B0;
+  border-radius: 6px;
   overflow: hidden;
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 [data-theme="dark"] .pixel-album-card {
-  background: #2c2c2c;
-  border-color: #888;
+  background: #252219;
+  border-color: #4A4035;
 }
 
 .pixel-album-card:hover {
-  transform: scale(1.03);
-  box-shadow: 4px 4px 0 rgba(74, 122, 150, 0.3);
+  transform: scale(1.02);
+  box-shadow: 4px 4px 0 rgba(158, 127, 102, 0.2);
 }
 
 [data-theme="dark"] .pixel-album-card:hover {
@@ -268,14 +297,14 @@
 
 .pixel-album-cover {
   position: relative;
-  height: 180px;
-  background: #ddd;
-  border-bottom: 2px solid #666;
+  height: 200px;
+  background: #EDE8E0;
+  border-bottom: 2px solid #D4C7B0;
 }
 
 [data-theme="dark"] .pixel-album-cover {
-  background: #333;
-  border-bottom-color: #888;
+  background: #1C1915;
+  border-bottom-color: #4A4035;
 }
 
 .pixel-album-cover img {
@@ -291,20 +320,20 @@
   align-items: center;
   justify-content: center;
   font-size: 40px;
-  color: #999;
+  color: #B8A890;
 }
 
 .pixel-album-count {
   position: absolute;
   bottom: 8px;
   right: 8px;
-  background: #4a7a96;
-  color: #f5f2ef;
-  padding: 4px 8px;
-  border: 2px solid #4a7a96;
-  border-radius: 2px;
-  font-size: 11px;
-  font-family: 'Courier New', monospace;
+  background: #9E7F66;
+  color: #FAF7F2;
+  padding: 4px 10px;
+  border: 1px solid #8A6B52;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: 'Noto Serif SC', 'Courier New', monospace;
 }
 
 [data-theme="dark"] .pixel-album-count {
@@ -314,13 +343,13 @@
 }
 
 .pixel-album-info {
-  padding: 12px;
+  padding: 14px 16px;
 }
 
 .pixel-album-info h3 {
-  font-size: 15px;
-  font-family: 'Courier New', monospace;
-  color: #4a7a96;
+  font-size: 16px;
+  font-family: 'Noto Serif SC', 'Courier New', monospace;
+  color: #4A3F35;
   margin: 0 0 6px;
 }
 
@@ -329,9 +358,9 @@
 }
 
 .pixel-album-info p {
-  font-size: 12px;
-  font-family: 'Courier New', monospace;
-  color: #666;
+  font-size: 13px;
+  font-family: 'Noto Serif SC', 'Courier New', monospace;
+  color: #6B5D4D;
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -339,11 +368,11 @@
 }
 
 [data-theme="dark"] .pixel-album-info p {
-  color: #999;
+  color: #9E8F7D;
 }
 
 /* ========================================
- * 图片预览弹窗 - 像素风格
+ * 图片预览弹窗 - 复古风格
  * ======================================== */
 
 .pixel-preview-overlay {
@@ -352,7 +381,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(28, 25, 21, 0.95);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -366,10 +395,10 @@
   right: 16px;
   width: 40px;
   height: 40px;
-  background: #4a7a96;
-  border: 2px solid #4a7a96;
-  border-radius: 2px;
-  color: #f5f2ef;
+  background: #9E7F66;
+  border: 2px solid #8A6B52;
+  border-radius: 4px;
+  color: #FAF7F2;
   font-size: 24px;
   cursor: pointer;
   display: flex;
@@ -393,9 +422,11 @@
 
 .pixel-preview-content img {
   max-width: 100%;
-  max-height: 75vh;
+  max-height: 80vh;
   object-fit: contain;
-  border: 4px solid #4a7a96;
+  border: 4px solid #D4C7B0;
+  border-radius: 4px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 .pixel-preview-info {

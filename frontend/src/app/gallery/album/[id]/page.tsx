@@ -7,10 +7,25 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { GalleryItem, GalleryAlbum } from '@/types/gallery';
 import '@/styles/gallery-pixel.css';
 
-const API_URL = 'http://localhost:3001';
+// 类型定义
+interface GalleryItem {
+  id: string;
+  title: string;
+  img_url: string;
+  category: string;
+  album_id?: string | null;
+}
+
+interface GalleryAlbum {
+  id: string;
+  name: string;
+  description?: string;
+  cover_url?: string;
+  image_count?: number;
+  images?: GalleryItem[];
+}
 
 export default function AlbumDetailPage() {
   const params = useParams();
@@ -24,11 +39,14 @@ export default function AlbumDetailPage() {
   useEffect(() => {
     async function fetchAlbum() {
       try {
-        const res = await fetch(`${API_URL}/api/gallery/albums/${albumId}`);
+        // 尝试从静态数据获取（通过 API route）
+        const res = await fetch(`/api/gallery/albums/${albumId}`);
         if (!res.ok) throw new Error('图片集不存在');
         const data = await res.json();
         if (data.success) {
           setAlbum(data.data);
+        } else {
+          throw new Error(data.message || '加载失败');
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : '加载失败');
@@ -98,8 +116,17 @@ export default function AlbumDetailPage() {
             {album.description}
           </p>
         )}
-        <span className="pixel-category-tag" style={{ marginTop: '8px', display: 'inline-block' }}>
-          {album.image_count} 张图片
+        <span style={{ 
+          display: 'inline-block',
+          marginTop: '8px',
+          padding: '4px 8px',
+          background: 'var(--color-accent, #4a7a96)',
+          color: '#fff',
+          fontSize: '12px',
+          borderRadius: '2px',
+          fontFamily: "'Courier New', monospace",
+        }}>
+          {album.image_count || album.images?.length || 0} 张图片
         </span>
       </header>
 
@@ -118,9 +145,6 @@ export default function AlbumDetailPage() {
                 loading="lazy"
                 style={{ maxHeight: '300px', objectFit: 'cover' }}
               />
-              <div className="pixel-item-info">
-                <h3>{item.title}</h3>
-              </div>
             </div>
           ))}
         </div>

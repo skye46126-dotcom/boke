@@ -1,0 +1,194 @@
+/**
+ * 标签页面样式 - 像素风格
+ */
+
+.tags-page {
+  min-height: 100vh;
+  background: var(--color-background, #f5f2ef);
+  position: relative;
+}
+
+[data-theme="dark"] .tags-page {
+  background: #1a1a1a;
+}
+
+.tags-header {
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #666;
+}
+
+[data-theme="dark"] .tags-header {
+  border-bottom-color: #444;
+}
+
+.tags-header .back-link {
+  display: inline-block;
+  margin-bottom: 16px;
+  padding: 6px 12px;
+  background: var(--color-background, #f5f2ef);
+  border: 2px solid #999;
+  border-radius: 2px;
+  color: #666;
+  font-size: 13px;
+  font-family: 'Courier New', monospace;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+[data-theme="dark"] .tags-header .back-link {
+  background: #2c2c2c;
+  border-color: #666;
+  color: #999;
+}
+
+.tags-header .back-link:hover {
+  border-color: var(--color-accent, #4a7a96);
+  color: var(--color-accent, #4a7a96);
+}
+
+[data-theme="dark"] .tags-header .back-link:hover {
+  border-color: #cc9966;
+  color: #cc9966;
+}
+
+.tags-header h1 {
+  font-size: 28px;
+  font-family: 'Courier New', monospace;
+  color: var(--color-accent, #4a7a96);
+  margin: 0 0 8px;
+}
+
+[data-theme="dark"] .tags-header h1 {
+  color: #cc9966;
+}
+
+.tags-count {
+  font-size: 14px;
+  font-family: 'Courier New', monospace;
+  color: var(--color-text-secondary, #666);
+  margin: 0;
+}
+
+[data-theme="dark"] .tags-count {
+  color: #999;
+}
+
+.tags-empty {
+  text-align: center;
+  padding: 48px;
+  color: #999;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+}
+
+.tags-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.tag-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--color-card-bg, #fff);
+  border: 2px solid #666;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+[data-theme="dark"] .tag-card {
+  background: #2c2c2c;
+  border-color: #888;
+}
+
+.tag-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-accent, #4a7a96);
+  box-shadow: 3px 3px 0 rgba(74, 122, 150, 0.3);
+}
+
+[data-theme="dark"] .tag-card:hover {
+  border-color: #cc9966;
+  box-shadow: 3px 3px 0 rgba(204, 153, 102, 0.3);
+}
+
+.tag-name {
+  font-size: 15px;
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  color: var(--color-text-primary, #1a1a1a);
+}
+
+[data-theme="dark"] .tag-name {
+  color: #f5f5f5;
+}
+
+.tag-count {
+  font-size: 12px;
+  font-family: 'Courier New', monospace;
+  padding: 2px 8px;
+  background: var(--color-accent, #4a7a96);
+  color: #fff;
+  border-radius: 2px;
+}
+
+[data-theme="dark"] .tag-count {
+  background: #cc9966;
+  color: #1a1a1a;
+}
+
+/* 标签详情页样式 */
+.tag-detail-header {
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #666;
+}
+
+[data-theme="dark"] .tag-detail-header {
+  border-bottom-color: #444;
+}
+
+.tag-detail-header h1 {
+  font-size: 28px;
+  font-family: 'Courier New', monospace;
+  color: var(--color-text-primary, #1a1a1a);
+  margin: 0 0 8px;
+}
+
+[data-theme="dark"] .tag-detail-header h1 {
+  color: #f5f5f5;
+}
+
+.tag-detail-header .tag-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  background: var(--color-accent, #4a7a96);
+  color: #fff;
+  font-size: 14px;
+  font-family: 'Courier New', monospace;
+  border-radius: 2px;
+  margin-right: 12px;
+}
+
+[data-theme="dark"] .tag-detail-header .tag-badge {
+  background: #cc9966;
+  color: #1a1a1a;
+}
+
+@media (max-width: 768px) {
+  .tags-grid {
+    gap: 8px;
+  }
+  
+  .tag-card {
+    padding: 10px 12px;
+  }
+  
+  .tag-name {
+    font-size: 14px;
+  }
+}

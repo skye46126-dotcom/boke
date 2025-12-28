@@ -1,28 +1,16 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { Article } from '@/types/article';
+import Link from 'next/link';
+import { getArticleBySlug, getAllArticleSlugs } from '@/content/articles';
 import { TocItem } from '@/types/rich-article';
 import { marked } from 'marked';
 import ArticleLeftSidebar from '@/components/ArticleLeftSidebar';
+import '@/styles/article-vintage.css';
 
-async function getArticle(slug: string): Promise<Article | null> {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-  
-  try {
-    const res = await fetch(`${baseUrl}/api/articles/${slug}`, {
-      cache: 'no-store',
-    });
-
-    if (!res.ok) {
-      return null;
-    }
-
-    const response = await res.json();
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching article:', error);
-    return null;
-  }
+// 生成静态路径
+export function generateStaticParams() {
+  const slugs = getAllArticleSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 // 从Markdown提取目录
@@ -77,7 +65,7 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const article = await getArticle(params.slug);
+  const article = getArticleBySlug(params.slug);
 
   if (!article) {
     return {
@@ -96,26 +84,25 @@ export async function generateMetadata({
   return {
     title: article.title,
     description,
-    keywords: [article.title, '博客', '文章'],
+    keywords: [article.title, '博客', '文章', ...article.tags],
     authors: [{ name: '博主' }],
   };
 }
 
-export default async function ArticlePage({
+export default function ArticlePage({
   params,
 }: {
   params: { slug: string };
 }) {
-  const article = await getArticle(params.slug);
+  const article = getArticleBySlug(params.slug);
 
-  if (!article) {
+  if (!article || article.status === 'draft') {
     notFound();
   }
 
   // 渲染Markdown内容并提取目录
   const htmlContent = renderMarkdown(article.content);
   const tableOfContents = extractToc(article.content);
-  console.log('侧边栏目录数据：', tableOfContents);
 
   return (
     <>
@@ -131,25 +118,31 @@ export default async function ArticlePage({
           <header className="article-header mb-8">
             <h1 className="article-detail-title text-4xl font-bold mb-4">{article.title}</h1>
             
-            {/* 【修复】使用主题感知的颜色类 */}
+            {/* 文章元信息 */}
             <div className="article-detail-meta mb-4">
-              <time dateTime={article.created_at}>
-                发布于 {new Date(article.created_at).toLocaleDateString('zh-CN', {
+              <time dateTime={article.date}>
+                发布于 {new Date(article.date).toLocaleDateString('zh-CN', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',
                 })}
               </time>
-              {article.updated_at !== article.created_at && (
-                <span className="updated-time ml-4">
-                  更新于 {new Date(article.updated_at).toLocaleDateString('zh-CN', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
-                </span>
-              )}
             </div>
+            
+            {/* 标签 */}
+            {article.tags.length > 0 && (
+              <div className="article-tags mb-4" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                {article.tags.map((tag) => (
+                  <Link 
+                    key={tag} 
+                    href={`/tags/${encodeURIComponent(tag)}`}
+                    className="article-tag"
+                  >
+                    {tag}
+                  </Link>
+                ))}
+              </div>
+            )}
             
             {article.excerpt && (
               <p className="text-lg mb-6" style={{ color: 'var(--color-text-secondary)' }}>{article.excerpt}</p>
