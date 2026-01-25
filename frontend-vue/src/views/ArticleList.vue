@@ -1,0 +1,153 @@
+<template>
+  <div class="min-h-screen bg-gh-bg text-gh-text">
+    <!-- Header -->
+    <header class="border-b border-gh-border backdrop-blur sticky top-0 z-40 bg-gh-bg/95">
+      <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
+        <router-link to="/" class="flex items-center gap-3">
+          <span class="text-xl font-bold">YourName</span>
+          <span class="text-xs text-gh-text-muted px-2 py-1 bg-gh-card border border-gh-border rounded">
+            Developer
+          </span>
+        </router-link>
+        <div class="flex gap-6 items-center">
+          <router-link to="/articles" class="text-vp-c-brand font-medium">
+            Articles
+          </router-link>
+          <a href="/#projects" class="text-gh-text-muted hover:text-vp-c-brand transition">
+            Projects
+          </a>
+          <a href="/#about" class="text-gh-text-muted hover:text-vp-c-brand transition">
+            About
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-6 py-12">
+      <!-- Page Header -->
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold mb-2">All Articles</h1>
+        <p class="text-gh-text-muted">{{ articles.length }} articles published</p>
+      </div>
+
+      <!-- Search Trigger -->
+      <button
+        @click="openSearch"
+        class="w-full mb-8 px-4 py-3 bg-gh-card border border-gh-border rounded-lg text-left text-gh-text-muted flex items-center justify-between hover:border-vp-c-brand transition group"
+      >
+        <span class="flex items-center gap-2 group-hover:text-gh-text transition">
+          <Search class="w-4 h-4" />
+          Search articles...
+        </span>
+        <kbd class="hidden sm:inline-block px-2 py-0.5 text-xs bg-gh-bg border border-gh-border rounded text-gh-text-muted font-mono">⌘K</kbd>
+      </button>
+
+      <!-- Loading State -->
+      <div v-if="loading" class="text-center py-12">
+        <p class="text-gh-text-muted">Loading articles...</p>
+      </div>
+
+      <!-- Error State -->
+      <div v-else-if="error" class="text-center py-12">
+        <p class="text-gh-text-muted">{{ error }}</p>
+      </div>
+
+      <!-- Articles List (GitHub Issues Style) -->
+      <div v-else class="space-y-0 border border-gh-border rounded-vp overflow-hidden">
+        <router-link
+          v-for="article in articles"
+          :key="article.id"
+          :to="`/articles/${article.slug}`"
+          class="block p-4 border-b border-gh-border last:border-b-0 hover:bg-gh-card transition"
+        >
+          <div class="flex items-start gap-4">
+            <!-- Issue Icon (Green Dot) -->
+            <svg class="w-5 h-5 text-vp-c-brand mt-1 flex-shrink-0" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 9.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>
+              <path fill-rule="evenodd" d="M8 0a8 8 0 100 16A8 8 0 008 0zM1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0z"/>
+            </svg>
+            
+            <!-- Article Info -->
+            <div class="flex-1 min-w-0">
+              <h2 class="text-lg font-semibold text-gh-text hover:text-vp-c-brand transition">
+                {{ article.title }}
+              </h2>
+              <p v-if="article.excerpt" class="text-sm text-gh-text-muted mt-1 line-clamp-2">
+                {{ article.excerpt }}
+              </p>
+              
+              <!-- Tags and Date -->
+              <div class="flex items-center gap-4 mt-3 flex-wrap">
+                <div v-if="article.tags && article.tags.length" class="flex gap-2">
+                  <span 
+                    v-for="tag in article.tags" 
+                    :key="tag"
+                    class="px-2 py-1 text-xs bg-gh-bg border border-gh-border rounded-full text-gh-text-muted hover:border-vp-c-brand transition"
+                  >
+                    {{ tag }}
+                  </span>
+                </div>
+                <span class="text-xs text-gh-text-muted">
+                  Updated {{ formatDate(article.date) }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Arrow Icon -->
+            <svg class="w-5 h-5 text-gh-text-muted flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </div>
+        </router-link>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import { supabase } from '../lib/supabase'
+import { Search } from 'lucide-vue-next'
+
+const articles = ref([])
+const loading = ref(true)
+const error = ref(null)
+
+const openSearch = () => {
+  const event = new KeyboardEvent('keydown', { key: 'k', metaKey: true, ctrlKey: true })
+  window.dispatchEvent(event)
+}
+
+const formatDate = (dateString) => {
+  const date = new Date(dateString)
+  const now = new Date()
+  const diffTime = Math.abs(now - date)
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
+  
+  if (diffDays === 0) return 'today'
+  if (diffDays === 1) return 'yesterday'
+  if (diffDays < 7) return `${diffDays} days ago`
+  if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`
+  if (diffDays < 365) return `${Math.floor(diffDays / 30)} months ago`
+  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+}
+
+onMounted(async () => {
+  try {
+    const { data, error: fetchError } = await supabase
+      .from('articles')
+      .select('*')
+      .eq('status', 'published')
+      .order('date', { ascending: false })
+
+    if (fetchError) throw fetchError
+    articles.value = data
+  } catch (err) {
+    console.error('Error fetching articles:', err)
+    error.value = 'Failed to load articles. Please check your database connection.'
+  } finally {
+    loading.value = false
+  }
+})
+</script>

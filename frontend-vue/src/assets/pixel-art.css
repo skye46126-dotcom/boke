@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+:root {
+    --font-pixel: 'Press Start 2P', system-ui, -apple-system, sans-serif;
+    --bg-color: #1a1a1a;
+    --text-color: #f0f0f0;
+    --primary-color: #ff00ff;
+    --secondary-color: #00ffff;
+    --accent-color: #ffff00;
+    --border-size: 4px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-pixel);
+    line-height: 1.6;
+}
+
+.pixel-border {
+    position: relative;
+    background: white;
+    box-shadow:
+        0 var(--border-size) 0 0 black,
+        0 calc(var(--border-size) * -1) 0 0 black,
+        var(--border-size) 0 0 0 black,
+        calc(var(--border-size) * -1) 0 0 0 black;
+    padding: 1rem;
+    margin: 1rem;
+    color: black;
+}
+
+.pixel-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow:
+        0 var(--border-size) 0 0 #800080,
+        0 calc(var(--border-size) * -1) 0 0 #ff66ff,
+        var(--border-size) 0 0 0 #800080,
+        calc(var(--border-size) * -1) 0 0 0 #ff66ff;
+    transition: transform 0.1s;
+}
+
+.pixel-button:active {
+    transform: translateY(2px);
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}

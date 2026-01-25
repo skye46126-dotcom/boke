@@ -1,0 +1,137 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+
+@theme {
+  /* VitePress 品牌色系统 */
+  --color-vp-c-brand: #3eaf7c;
+  --color-vp-c-brand-light: #4abf8a;
+  --color-vp-c-brand-lighter: #63d9a7;
+  --color-vp-c-brand-dark: #2f8d68;
+  --color-vp-c-brand-darker: #266d53;
+
+  /* GitHub 背景色系统 */
+  --color-gh-bg: #0d1117;
+  --color-gh-card: #161b22;
+  --color-gh-border: #30363d;
+  --color-gh-text: #c9d1d9;
+  --color-gh-text-muted: #8b949e;
+
+  /* 扑克牌花色色 */
+  --color-poker-diamond: #58a6ff;
+  --color-poker-spade: #c9d1d9;
+  --color-poker-club: #3fb950;
+  --color-poker-heart: #f85149;
+
+  /* Border Radius */
+  --radius-vp: 8px;
+
+  /* Font Families */
+  --font-family-sans: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family-mono: "JetBrains Mono", Consolas, Monaco, monospace;
+
+  /* Layout & Spacing (Phase 10 & 11 additions) */
+  --section-spacing: 8rem;
+  --section-spacing-mobile: 5rem;
+  --sidebar-width: 40%;
+  --content-width: 60%;
+
+  /* Typography */
+  --line-height-relaxed: 1.8;
+
+  /* Effects */
+  --card-hover-lift: -4px;
+  --card-hover-shadow: 0 8px 24px rgba(0, 220, 130, 0.2);
+
+  /* Transitions */
+  --transition-smooth: all 0.3s ease;
+}
+
+body {
+  @apply bg-gh-bg text-gh-text font-sans antialiased;
+  transition: background-color 0.5s, color 0.5s;
+}
+
+/* VitePress 风格的滚动条 */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-gh-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-gh-border);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gh-text-muted);
+}
+
+/* Custom Cursor - Hide default cursor on desktop */
+@media (hover: hover) and (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+}
+
+/* Mobile Touch Feedback */
+@media (hover: none) {
+
+  a,
+  button,
+  .clickable,
+  .nav-item,
+  .post-card,
+  .project-card,
+  .experience-card {
+    position: relative;
+    overflow: hidden;
+  }
+
+  a::after,
+  button::after,
+  .clickable::after,
+  .nav-item::after,
+  .post-card::after,
+  .project-card::after,
+  .experience-card::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 220, 130, 0.3), transparent);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  a:active::after,
+  button:active::after,
+  .clickable:active::after,
+  .nav-item:active::after,
+  .post-card:active::after,
+  .project-card:active::after,
+  .experience-card:active::after {
+    animation: ripple 0.6s ease-out;
+  }
+
+  @keyframes ripple {
+    from {
+      width: 0;
+      height: 0;
+      opacity: 1;
+    }
+
+    to {
+      width: 200px;
+      height: 200px;
+      opacity: 0;
+    }
+  }
+}
