@@ -7,11 +7,14 @@
  * 素材对应：fangkuai(文章) → heitao(项目) → meihua(GitHub) → hongtao(关于)
  * 
  * 磁吸效果：小卡牌使用 useMagnetic hook，偏移幅度≤5px
+ * 
+ * 使用 Portal 渲染到 body 层级，避免被父元素的 overflow 截断
  */
 
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { useMagnetic } from '@/lib/hooks/useMagnetic';
 
@@ -71,7 +74,8 @@ function MagneticExternalNavCard({ item, index }: { item: NavigationItem; index:
   );
 }
 
-export default function NavigationCards({ className = '' }: NavigationCardsProps) {
+// 导航内容组件
+function NavigationContent({ className = '' }: { className?: string }) {
   const navigationItems: NavigationItem[] = [
     { id: 'articles', label: '文章', description: '文章合集', href: '/articles', image: '/fangkuai.png' },
     { id: 'projects', label: '项目', description: '项目列表', href: '#projects', image: '/heitao.png' },
@@ -93,4 +97,23 @@ export default function NavigationCards({ className = '' }: NavigationCardsProps
       </div>
     </nav>
   );
+}
+
+export default function NavigationCards({ className = '' }: NavigationCardsProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // 使用 Portal 将导航渲染到 body 层级
+  if (mounted && typeof document !== 'undefined') {
+    return createPortal(
+      <NavigationContent className={className} />,
+      document.body
+    );
+  }
+
+  // SSR 时返回 null，避免 hydration 错误
+  return null;
 }

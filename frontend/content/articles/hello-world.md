@@ -1,13 +1,13 @@
 ---
-title: "你好，世界"
-slug: "hello-world"
-date: "2024-12-01"
-status: "published"
-excerpt: "这是我的第一篇博客文章，欢迎来到我的个人博客。"
-cover_image: "/images/covers/hello-world.jpg"
+title: 你好，世界
+slug: hello-world
+date: 2024-12-01
+status: published
+excerpt: 这是我的第一篇博客文章，欢迎来到我的个人博客。
+cover_image: ""
 tags:
-  - "随笔"
-  - "生活"
+  - 随笔
+  - 生活
 ---
 
 # 你好，世界

@@ -14,7 +14,7 @@
   position: relative;
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
+  overflow: visible; /* 改为 visible，允许固定定位元素正常显示 */
   font-family: var(--pixel-font-family);
   background-color: #f5f2ef; /* 浅色水墨纸张色 */
   background-image: 
@@ -39,7 +39,7 @@
   justify-content: center;
   align-items: center;
   padding: 0;
-  overflow: hidden;
+  overflow: visible; /* 改为 visible */
 }
 
 /* 无侧边栏时的全宽布局 */
@@ -133,28 +133,7 @@
   gap: 8px;
 }
 
-.nav-card {
-  width: 80px;
-  height: 110px;
-  background: #f5f2ef;
-  border: 2px solid #666;
-  border-radius: 2px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-[data-theme="dark"] .nav-card {
-  background: #2c2c2c;
-  border-color: #999;
-}
-
-.nav-card:hover {
-  transform: translateY(-3px) rotate(1deg);
-  border-color: #4a7a96;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
+/* 注意：.nav-card 样式已移至 navigation-cards.css，避免重复定义 */
 
 .nav-card .poker-card-content {
   padding: 8px;

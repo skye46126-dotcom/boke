@@ -830,23 +830,68 @@
         return 'other';
       };
       
-      // 统计条目数量
+      // 统计条目数量 - 更精确的统计逻辑
       const countEntries = () => {
-        // 查找所有文章/条目卡片
-        const cards = document.querySelectorAll('[class*="Card"], [class*="ListItem"], [class*="EntryListing"] > div');
         let total = 0, draft = 0, published = 0;
         
-        cards.forEach(card => {
-          // 排除非条目元素
-          if (card.closest('[class*="Sidebar"]') || card.closest('header')) return;
-          const text = card.textContent || '';
-          // 检查是否是实际的条目（有标题文字）
-          if (text.trim().length > 0 && !text.includes('新增') && !text.includes('批量')) {
-            total++;
-            if (text.includes('草稿') || text.includes('draft')) draft++;
-            else published++;
+        // 方法1: 查找文章列表中的实际条目链接
+        // Decap CMS 的文章列表项通常是可点击的链接，指向编辑页面
+        const entryLinks = document.querySelectorAll('a[href*="/collections/articles/entries/"]');
+        
+        if (entryLinks.length > 0) {
+          total = entryLinks.length;
+          entryLinks.forEach(link => {
+            const card = link.closest('[class*="Card"]') || link.closest('[class*="ListItem"]') || link;
+            const text = card.textContent || '';
+            // 检查状态字段
+            if (text.includes('草稿') || text.toLowerCase().includes('draft')) {
+              draft++;
+            } else {
+              published++;
+            }
+          });
+        } else {
+          // 方法2: 备用 - 查找列表容器中的直接子元素
+          const listContainer = document.querySelector('[class*="EntryListing"] > div > div');
+          if (listContainer) {
+            const items = listContainer.querySelectorAll(':scope > div, :scope > a');
+            items.forEach(item => {
+              // 排除工具栏、按钮等
+              const text = item.textContent || '';
+              if (text.trim().length > 0 && 
+                  !text.includes('新增') && 
+                  !text.includes('批量') &&
+                  !text.includes('排序') &&
+                  !text.includes('筛选') &&
+                  item.querySelector('h2, h3, [class*="Title"]')) {
+                total++;
+                if (text.includes('草稿') || text.toLowerCase().includes('draft')) {
+                  draft++;
+                } else {
+                  published++;
+                }
+              }
+            });
           }
-        });
+        }
+        
+        // 如果还是没找到，尝试直接计算可见的文章卡片
+        if (total === 0) {
+          const visibleCards = document.querySelectorAll('[class*="ListCard"], [class*="EntryCard"]');
+          visibleCards.forEach(card => {
+            if (card.closest('[class*="Sidebar"]') || card.closest('header') || card.closest('nav')) return;
+            const hasTitle = card.querySelector('h2, h3, [class*="Title"], [class*="CardTitle"]');
+            if (hasTitle) {
+              total++;
+              const text = card.textContent || '';
+              if (text.includes('草稿') || text.toLowerCase().includes('draft')) {
+                draft++;
+              } else {
+                published++;
+              }
+            }
+          });
+        }
         
         return { total, draft, published };
       };
@@ -864,56 +909,20 @@
         if (titleEl.parentElement.querySelector('.stats-tags') || 
             titleEl.parentElement.querySelector('.stats-modules')) return;
         
-        const stats = countEntries();
-        
-        // 文章管理页面
+        // 文章管理页面 - 简化显示，不显示不准确的统计
         if (pageType === 'articles') {
-          const tagsHtml = `
-            <span class="stats-tags">
-              <span class="stats-tag">
-                <span class="stats-tag-label">草稿</span>
-                <span class="stats-tag-value">${stats.draft}篇</span>
-              </span>
-              <span class="stats-tag-divider">|</span>
-              <span class="stats-tag">
-                <span class="stats-tag-label">已发布</span>
-                <span class="stats-tag-value">${stats.published}篇</span>
-              </span>
-              <span class="stats-tag-divider">|</span>
-              <span class="stats-tag">
-                <span class="stats-tag-label">共</span>
-                <span class="stats-tag-value">${stats.total}篇</span>
-              </span>
-            </span>
-          `;
-          titleEl.insertAdjacentHTML('afterend', tagsHtml);
+          // 不再显示统计，因为 DOM 统计不准确
+          return;
         }
         
         // 相册管理页面
         if (pageType === 'gallery') {
-          const modulesHtml = `
-            <div class="stats-modules">
-              <span class="stats-module">
-                <span class="stats-module-icon">📁</span>
-                <span class="stats-module-label">相册</span>
-                <span class="stats-module-value">${stats.total}个</span>
-              </span>
-            </div>
-          `;
-          titleEl.insertAdjacentHTML('afterend', modulesHtml);
+          return; // 同样移除不准确的统计
         }
         
         // 长廊管理页面
         if (pageType === 'corridor') {
-          const tagsHtml = `
-            <span class="stats-tags">
-              <span class="stats-tag">
-                <span class="stats-tag-label">长廊作品</span>
-                <span class="stats-tag-value">${stats.total}幅</span>
-              </span>
-            </span>
-          `;
-          titleEl.insertAdjacentHTML('afterend', tagsHtml);
+          return; // 同样移除不准确的统计
         }
       };
       

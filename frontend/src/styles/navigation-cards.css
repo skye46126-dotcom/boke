@@ -35,13 +35,18 @@
   position: fixed;
   top: 20px;
   right: 20px;
-  z-index: 999;
+  z-index: 9999; /* 提高 z-index */
   display: flex;
   flex-direction: row-reverse;
   align-items: flex-start;
   gap: 8px;
   /* 允许溢出显示文字 */
   overflow: visible;
+  /* 确保不受父元素 transform 影响 */
+  transform: none !important;
+  /* 确保在所有主题下都可见 */
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 /* ========================================

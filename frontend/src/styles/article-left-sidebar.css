@@ -204,7 +204,7 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .toc-item {
@@ -213,25 +213,27 @@
 }
 
 /* 目录层级缩进 */
-.toc-item.level-2 { padding-left: 12px; }
-.toc-item.level-3 { padding-left: 24px; }
-.toc-item.level-4 { padding-left: 36px; }
-.toc-item.level-5 { padding-left: 48px; }
-.toc-item.level-6 { padding-left: 60px; }
+.toc-item.level-2 { padding-left: 0; }
+.toc-item.level-3 { padding-left: 12px; }
+.toc-item.level-4 { padding-left: 24px; }
+.toc-item.level-5 { padding-left: 36px; }
+.toc-item.level-6 { padding-left: 48px; }
 
 .toc-link {
   display: flex;
-  align-items: center;
-  padding: 8px 12px;
-  gap: 10px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  gap: 8px;
   text-decoration: none;
   color: var(--color-text-primary, #222);
   /* 【修复】使用系统字体 */
   font-family: var(--sidebar-font-family);
-  font-size: 15px;
+  font-size: 14px;
+  line-height: 1.4;
   -webkit-font-smoothing: antialiased;
   background: transparent;
   border: 1px solid transparent;
+  border-radius: 4px;
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   will-change: transform, box-shadow;
 }
@@ -272,21 +274,24 @@
 }
 
 .toc-number {
-  /* 【修复】使用系统字体 */
+  /* 【修复】使用系统字体，确保数字完整显示 */
   font-family: var(--sidebar-font-family);
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 600;
   color: var(--color-text-tertiary, #999);
-  min-width: 24px;
+  min-width: 22px;
+  flex-shrink: 0;
   -webkit-font-smoothing: antialiased;
+  opacity: 0.7;
 }
 
 .toc-item.active .toc-number {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.9);
+  opacity: 1;
 }
 
 [data-theme="dark"] .toc-item.active .toc-number {
-  color: rgba(26, 26, 26, 0.7);
+  color: rgba(26, 26, 26, 0.8);
 }
 
 .toc-text {
@@ -294,6 +299,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  min-width: 0;
 }
 
 /* ========================================
@@ -424,12 +430,13 @@
   }
 
   .toc-link {
-    font-size: 15px;
-    padding: 8px 10px;
+    font-size: 14px;
+    padding: 10px 12px;
   }
 
   .toc-number {
-    font-size: 14px;
+    font-size: 12px;
+    min-width: 22px;
   }
 
   .theme-label {

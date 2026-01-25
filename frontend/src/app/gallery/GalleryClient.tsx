@@ -60,6 +60,31 @@ const AlbumIcon = () => (
 );
 
 // ========================================
+// 主题切换按钮组件
+// ========================================
+
+function ThemeToggleButton() {
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  useEffect(() => {
+    const currentTheme = document.documentElement.getAttribute('data-theme') as 'light' | 'dark' || 'light';
+    setTheme(currentTheme);
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    setTheme(newTheme);
+  };
+
+  return (
+    <button className="pixel-toggle-btn" onClick={toggleTheme}>
+      <span>{theme === 'dark' ? '☀️' : '🌙'}</span>
+    </button>
+  );
+}
+
+// ========================================
 // 主组件
 // ========================================
 
@@ -103,22 +128,34 @@ export default function GalleryClient({
 
   return (
     <>
-      {/* 视图切换 - 像素按钮 */}
-      <div className="pixel-view-toggle">
-        <button
-          className={`pixel-toggle-btn ${viewMode === 'grid' ? 'active' : ''}`}
-          onClick={() => setViewMode('grid')}
-        >
-          <GridIcon />
-          <span>平铺</span>
-        </button>
-        <button
-          className={`pixel-toggle-btn ${viewMode === 'albums' ? 'active' : ''}`}
-          onClick={() => setViewMode('albums')}
-        >
-          <AlbumIcon />
-          <span>图片集</span>
-        </button>
+      {/* 工具栏 - 所有按钮在一行 */}
+      <div className="pixel-toolbar">
+        {/* 左侧：视图切换按钮 */}
+        <div className="pixel-view-toggle">
+          <button
+            className={`pixel-toggle-btn ${viewMode === 'grid' ? 'active' : ''}`}
+            onClick={() => setViewMode('grid')}
+          >
+            <GridIcon />
+            <span>平铺</span>
+          </button>
+          <button
+            className={`pixel-toggle-btn ${viewMode === 'albums' ? 'active' : ''}`}
+            onClick={() => setViewMode('albums')}
+          >
+            <AlbumIcon />
+            <span>图片集</span>
+          </button>
+        </div>
+
+        {/* 右侧：长廊模式 + 主题切换 */}
+        <div className="pixel-toolbar-right">
+          <Link href="/gallery/showcase" className="pixel-toggle-btn">
+            <span>🖼️</span>
+            <span>长廊</span>
+          </Link>
+          <ThemeToggleButton />
+        </div>
       </div>
 
       {/* 分类筛选 - 仅平铺视图 */}

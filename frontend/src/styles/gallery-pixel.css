@@ -66,16 +66,31 @@
 }
 
 /* ========================================
+ * 工具栏 - 包含所有控制按钮
+ * ======================================== */
+
+.pixel-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1800px;
+  margin: 0 auto 16px;
+  gap: 16px;
+}
+
+.pixel-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ========================================
  * 视图切换按钮 - 像素风格
  * ======================================== */
 
 .pixel-view-toggle {
   display: flex;
   gap: 8px;
-  margin-bottom: 16px;
-  max-width: 1800px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .pixel-toggle-btn {
@@ -129,6 +144,11 @@
 .pixel-toggle-btn svg {
   width: 16px;
   height: 16px;
+}
+
+/* Link 作为按钮时移除下划线 */
+a.pixel-toggle-btn {
+  text-decoration: none;
 }
 
 /* ========================================

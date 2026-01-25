@@ -171,25 +171,16 @@
 
 /* ========================================
  * 导航卡牌特殊样式 (Navigation Card Styles)
+ * 注意：主要样式在 navigation-cards.css 中定义
  * ======================================== */
 
-.nav-card {
-  cursor: pointer;
-  user-select: none;
-}
-
-/* 导航卡牌抖动动画 */
+/* 导航卡牌抖动动画 - 已禁用，避免与 navigation-cards.css 冲突 */
+/*
 @keyframes pixel-shake {
   0% { transform: translateY(0); }
   100% { transform: translateY(-2px); }
 }
-
-.nav-card:hover {
-  animation: pixel-shake 0.3s infinite alternate;
-  box-shadow: 0 0 4px var(--color-pixel-ink-stone-blue);
-  width: 85px;
-  height: 115px;
-}
+*/
 
 /* 导航卡牌点击闪烁动画 */
 @keyframes pixel-flash {
