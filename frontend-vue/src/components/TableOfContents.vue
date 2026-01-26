@@ -58,6 +58,19 @@ onMounted(() => {
 
     observer = new IntersectionObserver(
       (entries) => {
+        // Check if we're at the bottom first
+        const scrollHeight = document.documentElement.scrollHeight
+        const scrollTop = window.scrollY || window.pageYOffset
+        const clientHeight = window.innerHeight
+        const isNearBottom = (scrollHeight - scrollTop - clientHeight) < 100
+        
+        if (isNearBottom && props.headings.length > 0) {
+          // Prioritize the last heading when at bottom
+          const lastHeading = props.headings[props.headings.length - 1]
+          activeId.value = lastHeading.id
+          return
+        }
+        
         const visibleEntries = entries.filter(e => e.isIntersecting)
         if (visibleEntries.length) {
           const topEntry = visibleEntries.reduce((top, entry) => 
@@ -78,6 +91,27 @@ onMounted(() => {
     if (!activeId.value && headingElements.length > 0) {
       activeId.value = headingElements[0].id
     }
+    
+    // Listen to scroll to detect when at bottom of page
+    // This ensures the last heading gets highlighted
+    const handleScroll = () => {
+      const scrollHeight = document.documentElement.scrollHeight
+      const scrollTop = window.scrollY || window.pageYOffset
+      const clientHeight = window.innerHeight
+      
+      const isNearBottom = (scrollHeight - scrollTop - clientHeight) < 100
+      
+      if (isNearBottom && props.headings.length > 0) {
+        // Highlight the last heading when at bottom
+        const lastHeading = props.headings[props.headings.length - 1]
+        activeId.value = lastHeading.id
+      }
+    }
+    
+    window.addEventListener('scroll', handleScroll)
+    
+    // Store for cleanup
+    observer.scrollHandler = handleScroll
   }, 500) // Small delay to ensure content is rendered
 })
 
@@ -92,7 +126,12 @@ watch(activeId, () => {
 })
 
 onUnmounted(() => {
-  if (observer) observer.disconnect()
+  if (observer) {
+    observer.disconnect()
+    if (observer.scrollHandler) {
+      window.removeEventListener('scroll', observer.scrollHandler)
+    }
+  }
 })
 
 function scrollToHeading(id) {

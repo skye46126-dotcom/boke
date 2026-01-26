@@ -46,7 +46,9 @@ let observer = null
 
 onMounted(() => {
   // Get the scrollable container
-  const scrollContainer = document.querySelector('.main-content')
+  // Note: There are two .main-content elements, we need the second one (the scrollable one)
+  const containers = document.querySelectorAll('.main-content')
+  const scrollContainer = containers.length > 1 ? containers[1] : containers[0]
   
   if (!scrollContainer) {
     console.error('Scroll container .main-content not found')
@@ -55,6 +57,19 @@ onMounted(() => {
   
   observer = new IntersectionObserver(
     (entries) => {
+      // Check if we're at the bottom of the scroll container FIRST
+      // This takes priority over all other highlighting logic
+      const isAtBottom = Math.abs(
+        scrollContainer.scrollHeight - scrollContainer.scrollTop - scrollContainer.clientHeight
+      ) < 50  // Within 50px of bottom
+      
+      if (isAtBottom) {
+        // Force highlight the last navigation item when at bottom
+        const lastNavId = navItems[navItems.length - 1].id
+        activeSection.value = lastNavId
+        return
+      }
+      
       // Filter to only intersecting entries
       const intersecting = entries
         .filter(entry => entry.isIntersecting)
@@ -67,22 +82,7 @@ onMounted(() => {
       
       // If we have intersecting sections, find the most prominent one
       if (intersecting.length > 0) {
-        // Check if we're at the bottom of the scroll container
-        const isAtBottom = Math.abs(
-          scrollContainer.scrollHeight - scrollContainer.scrollTop - scrollContainer.clientHeight
-        ) < 50  // Within 50px of bottom
-        
-        if (isAtBottom) {
-          // If at bottom, prioritize the last section in navItems
-          const lastNavId = navItems[navItems.length - 1].id
-          const lastSection = intersecting.find(s => s.id === lastNavId)
-          if (lastSection) {
-            activeSection.value = lastNavId
-            return
-          }
-        }
-        
-        // Otherwise, find the section with highest visibility and closest to top
+        // Find the section with highest visibility and closest to top
         intersecting.sort((a, b) => {
           // Prioritize sections with significant visibility (>10%)
           if (Math.abs(a.ratio - b.ratio) > 0.1) {
@@ -110,19 +110,33 @@ onMounted(() => {
     }
   })
   
-  // Also listen to scroll events to catch edge cases
-  scrollContainer.addEventListener('scroll', () => {
-    const isAtBottom = Math.abs(
-      scrollContainer.scrollHeight - scrollContainer.scrollTop - scrollContainer.clientHeight
-    ) < 50
+  // Listen to container scroll to detect when at bottom
+  // This is especially important for the last section (Contact)
+  const handleScroll = () => {
+    // Check if we're near the bottom of the scroll container
+    const scrollHeight = scrollContainer.scrollHeight
+    const scrollTop = scrollContainer.scrollTop
+    const clientHeight = scrollContainer.clientHeight
     
-    if (isAtBottom) {
+    const isNearBottom = (scrollHeight - scrollTop - clientHeight) < 50
+    
+    if (isNearBottom) {
+      // Force highlight the last navigation item when at bottom
       const lastNavId = navItems[navItems.length - 1].id
       if (document.getElementById(lastNavId)) {
         activeSection.value = lastNavId
       }
     }
-  })
+  }
+  
+  scrollContainer.addEventListener('scroll', handleScroll)
+  
+  // Clean up on unmount
+  const cleanup = () => {
+    scrollContainer.removeEventListener('scroll', handleScroll)
+  }
+  
+  return cleanup
 })
 
 onUnmounted(() => {
