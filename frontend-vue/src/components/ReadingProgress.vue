@@ -2,7 +2,7 @@
   <div class="fixed top-0 left-0 right-0 h-0.5 bg-gh-border z-50">
     <div
       :style="{ width: `${progress}%` }"
-      class="h-full bg-gradient-to-r from-vp-c-brand via-vp-c-brand-light to-poker-club transition-all duration-150"
+      class="h-full bg-linear-to-r from-vp-c-brand via-vp-c-brand-light to-poker-club transition-all duration-150"
     ></div>
   </div>
 </template>

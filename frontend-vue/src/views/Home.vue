@@ -72,10 +72,6 @@ const activeSection = useScrollSpy({
   height: 100vh;
 }
 
-.content-section {
-  margin-bottom: 6rem;
-}
-
 /* Custom scrollbar for main content */
 .main-content::-webkit-scrollbar {
   width: 8px;

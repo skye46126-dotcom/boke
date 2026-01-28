@@ -1,13 +1,14 @@
 <template>
-  <div class="max-w-3xl mx-auto px-6 py-12">
+  <div class="max-w-3xl mx-auto px-6 py-12 relative">
+    <MouseSpotlight />
     <!-- Header -->
-    <header class="mb-12 text-center">
+    <header class="mb-12 text-center relative z-10">
       <h1 class="text-4xl font-bold mb-4">{{ personalInfo.name }}</h1>
       <p class="text-xl text-gh-text-muted">{{ personalInfo.title }}</p>
     </header>
 
     <!-- Content -->
-    <div class="prose max-w-none text-gh-text space-y-8 leading-relaxed">
+    <div class="prose max-w-none text-gh-text space-y-8 leading-relaxed relative z-10">
       <section>
         <h2 class="text-2xl font-semibold mb-4 border-b border-gh-border pb-2">About Me</h2>
         <p>
@@ -59,6 +60,7 @@
 <script setup>
 import { personalInfo, skills, socialLinks } from '@/data/portfolio'
 import { h } from 'vue'
+import MouseSpotlight from '@/components/shared/MouseSpotlight.vue'
 
 // Reusing the icon logic or importing components
 // For simplicity in this view, redefining a simple helper or we could duplicate the Sidebar logic

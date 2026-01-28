@@ -59,7 +59,7 @@
         >
           <div class="flex items-start gap-4">
             <!-- Issue Icon (Green Dot) -->
-            <svg class="w-5 h-5 text-vp-c-brand mt-1 flex-shrink-0" viewBox="0 0 16 16" fill="currentColor">
+            <svg class="w-5 h-5 text-vp-c-brand mt-1 shrink-0" viewBox="0 0 16 16" fill="currentColor">
               <path d="M8 9.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>
               <path fill-rule="evenodd" d="M8 0a8 8 0 100 16A8 8 0 008 0zM1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0z"/>
             </svg>
@@ -91,7 +91,7 @@
             </div>
 
             <!-- Arrow Icon -->
-            <svg class="w-5 h-5 text-gh-text-muted flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 text-gh-text-muted shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
             </svg>
           </div>

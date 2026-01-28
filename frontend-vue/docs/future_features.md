@@ -792,7 +792,7 @@ export default {
       class="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-96 bg-gh-card border border-gh-border rounded-vp shadow-vp-shadow-2 p-4 z-50"
     >
       <div class="flex items-start gap-3">
-        <Download class="w-5 h-5 text-vp-c-brand flex-shrink-0 mt-0.5" />
+        <Download class="w-5 h-5 text-vp-c-brand shrink-0 mt-0.5" />
         <div class="flex-1">
           <h3 class="font-semibold mb-1">Install App</h3>
           <p class="text-sm text-gh-text-muted mb-3">
@@ -901,7 +901,7 @@ function dismiss() {
   <div class="fixed top-0 left-0 right-0 h-0.5 bg-gh-border z-50">
     <div
       :style="{ width: `${progress}%` }"
-      class="h-full bg-gradient-to-r from-vp-c-brand via-vp-c-brand-light to-poker-club transition-all duration-150"
+      class="h-full bg-linear-to-r from-vp-c-brand via-vp-c-brand-light to-poker-club transition-all duration-150"
     ></div>
   </div>
 </template>

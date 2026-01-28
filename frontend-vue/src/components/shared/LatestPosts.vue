@@ -1,36 +1,41 @@
 <template>
-  <section id="blog" class="content-section">
-    <h2 class="section-title">Latest Posts</h2>
-    
+  <AppSection id="blog" title="Latest Posts">
     <LoadingState v-if="loading" message="Loading articles..." />
     <ErrorState v-else-if="error" :message="error" />
     
     <div v-else class="posts-grid">
-      <article
+      <BaseCard
         v-for="post in articles"
         :key="post.id"
-        class="post-card"
+        variant="border"
+        :hover="true"
+        :clickable="true"
+        class="post-item"
         @click="navigateToPost(post.slug)"
       >
-        <div class="post-date">{{ formatDate(post.date) }} · {{ post.reading_time || '5' }} min read</div>
-        <h3 class="post-title">{{ post.title }}</h3>
-        <p class="post-excerpt">{{ getExcerpt(post.content) }}</p>
-        <div class="read-more">
-          Continue Reading →
+        <div class="p-6">
+          <div class="post-date">{{ formatDate(post.date) }} · {{ post.reading_time || '5' }} min read</div>
+          <h3 class="post-title">{{ post.title }}</h3>
+          <p class="post-excerpt">{{ getExcerpt(post.content) }}</p>
+          <div class="read-more">
+            Continue Reading →
+          </div>
         </div>
-      </article>
+      </BaseCard>
     </div>
     
     <router-link to="/articles" class="view-all">
       View All Posts →
     </router-link>
-  </section>
+  </AppSection>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router'
 import { useArticles } from '@/composables/useArticles'
 import { formatDate, getExcerpt } from '@/lib/utils'
+import AppSection from '@/components/ui/AppSection.vue'
+import BaseCard from '@/components/ui/BaseCard.vue'
 import LoadingState from '@/components/ui/LoadingState.vue'
 import ErrorState from '@/components/ui/ErrorState.vue'
 
@@ -49,17 +54,6 @@ const navigateToPost = (slug) => {
 </script>
 
 <style scoped>
-.content-section {
-  margin-bottom: 6rem;
-}
-
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 2rem;
-  color: var(--color-gh-text);
-}
-
 .posts-grid {
   display: flex;
   flex-direction: column;
@@ -67,20 +61,8 @@ const navigateToPost = (slug) => {
   margin-bottom: 2rem;
 }
 
-.post-card {
-  padding: 1.5rem;
-  border-radius: var(--border-radius-vp);
-  border: 1px solid var(--color-gh-border);
-  background: var(--color-gh-card);
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.post-card:hover {
-  transform: translateY(-4px);
-  background: rgba(255, 255, 255, 0.05);
-  border-color: var(--color-vp-c-brand);
-  box-shadow: 0 8px 24px rgba(0, 220, 130, 0.2);
+.post-item {
+  width: 100%;
 }
 
 .post-date {
@@ -97,7 +79,7 @@ const navigateToPost = (slug) => {
   transition: color 0.3s ease;
 }
 
-.post-card:hover .post-title {
+.post-item:hover .post-title {
   color: var(--color-vp-c-brand);
 }
 

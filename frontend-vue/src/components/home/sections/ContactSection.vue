@@ -1,35 +1,21 @@
 <template>
-  <section id="contact" class="content-section">
-    <div class="section-inner">
-      <h2 class="section-title">Get In Touch</h2>
-      <p class="contact-text">
-        I'm always open to new opportunities and collaborations. 
-        Feel free to reach out if you'd like to work together!
-      </p>
-      <a :href="`mailto:${personalInfo.email}`" class="contact-button">
-        Let's Work Together →
-      </a>
-    </div>
-  </section>
+  <AppSection id="contact" title="Get In Touch">
+    <p class="contact-text">
+      I'm always open to new opportunities and collaborations. 
+      Feel free to reach out if you'd like to work together!
+    </p>
+    <a :href="`mailto:${personalInfo.email}`" class="contact-button">
+      Let's Work Together →
+    </a>
+  </AppSection>
 </template>
 
 <script setup>
+import AppSection from '@/components/ui/AppSection.vue'
 import { personalInfo } from '@/data/portfolio'
 </script>
 
 <style scoped>
-.content-section {
-  margin-bottom: 8rem;
-  scroll-margin-top: 2rem;
-}
-
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 2rem;
-  color: var(--color-gh-text);
-}
-
 .contact-text {
   color: var(--color-gh-text-muted);
   line-height: 1.8;
@@ -52,11 +38,5 @@ import { personalInfo } from '@/data/portfolio'
   background: var(--color-vp-c-brand-light);
   transform: translateY(-2px);
   box-shadow: 0 8px 16px rgba(0, 220, 130, 0.3);
-}
-
-@media (max-width: 768px) {
-  .content-section {
-    margin-bottom: 5rem;
-  }
 }
 </style>

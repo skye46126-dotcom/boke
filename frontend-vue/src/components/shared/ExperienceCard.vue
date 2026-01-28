@@ -10,11 +10,9 @@
       <div class="timeline-line" v-if="!isLast"></div>
     </div>
     
-    <!-- Glassmorphism Card -->
-    <div class="experience-glass-card">
-      <div class="glass-background"></div>
-      
-      <div class="glass-content">
+    <!-- Experience Card -->
+    <BaseCard class="experience-card-container" variant="glass">
+      <div class="card-padding">
         <!-- Period -->
         <div class="period">{{ period }}</div>
         
@@ -39,12 +37,13 @@
           </span>
         </div>
       </div>
-    </div>
+    </BaseCard>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import BaseCard from '@/components/ui/BaseCard.vue'
 
 const props = defineProps({
   period: {
@@ -121,24 +120,14 @@ onUnmounted(() => {
   margin-bottom: 2rem;
   opacity: 0;
   transform: translateX(-30px);
-  transition: none;
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
 /* Visible state with staggered animation */
 .timeline-item.is-visible {
-  animation: slide-in-left 0.6s ease-out forwards;
-  animation-delay: calc(var(--index) * 0.15s);
-}
-
-@keyframes slide-in-left {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: calc(var(--index) * 0.15s);
 }
 
 /* Timeline Marker */
@@ -151,7 +140,7 @@ onUnmounted(() => {
   align-items: center;
 }
 
-/* Timeline Dot (Green initially) */
+/* Timeline Dot */
 .timeline-dot {
   width: 12px;
   height: 12px;
@@ -199,53 +188,13 @@ onUnmounted(() => {
   );
 }
 
-/* Glassmorphism Card */
-.experience-glass-card {
-  position: relative;
+.experience-card-container {
   flex: 1;
   max-width: 600px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+}
+
+.card-padding {
   padding: 1.5rem;
-  overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  
-  /* Performance optimizations */
-  contain: layout style paint;
-  will-change: transform;
-}
-
-.experience-glass-card:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-4px);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
-}
-
-/* Fallback for browsers without backdrop-filter */
-@supports not (backdrop-filter: blur(6px)) {
-  .experience-glass-card {
-    background: rgba(22, 27, 34, 0.95);
-  }
-}
-
-.glass-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.glass-content {
-  position: relative;
-  z-index: 1;
 }
 
 /* Period */
@@ -351,8 +300,7 @@ onUnmounted(() => {
     display: none;
   }
   
-  .experience-glass-card {
-    max-width: 100%;
+  .card-padding {
     padding: 1.25rem;
   }
   

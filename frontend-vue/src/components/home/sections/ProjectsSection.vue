@@ -1,77 +1,53 @@
 <template>
-  <section id="projects" class="content-section">
-    <div class="section-inner">
-      <h2 class="section-title">Projects</h2>
+  <AppSection id="projects" title="Projects">
+    <!-- Featured Projects (IDE Link) -->
+    <div class="featured-projects">
+      <h3 class="subtle-title">Featured Work</h3>
       
-      <!-- Poker Cards (Preserved) -->
-      <div class="poker-cards">
-        <h3 class="subtle-title">Quick Links</h3>
-        <div class="poker-grid">
-          <PokerCard 
-            icon="◆" 
-            color="poker-diamond" 
-            title="Articles" 
-            description="Latest blog posts" 
-            href="/articles" 
-          />
-          <PokerCard 
-            icon="♠" 
-            color="poker-spade" 
-            title="Projects" 
-            description="Featured work" 
-            href="#projects" 
-          />
-          <PokerCard 
-            icon="♣" 
-            color="poker-club" 
-            title="GitHub" 
-            description="Open source" 
-            href="https://github.com" 
-          />
-          <PokerCard 
-            icon="♥" 
-            color="poker-heart" 
-            title="About" 
-            description="Get to know me" 
-            href="#about" 
-          />
+      <router-link to="/projects" class="block group">
+        <div class="bg-[#1e1e1e] border border-gh-border rounded-lg overflow-hidden shadow-2xl transition-all duration-300 group-hover:transform group-hover:-translate-y-1 group-hover:shadow-[0_10px_20px_rgba(0,0,0,0.3)] relative">
+          
+          <!-- Mock Window Header -->
+          <div class="h-8 bg-[#2d2d2d] flex items-center px-4 border-b border-[#1e1e1e]">
+            <div class="flex gap-2 mr-4">
+              <div class="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
+              <div class="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
+              <div class="w-3 h-3 rounded-full bg-[#27c93f]"></div>
+            </div>
+            <div class="text-xs text-gray-500 font-mono">projects.js - Visual Studio Code</div>
+          </div>
+          
+          <!-- Content Preview -->
+          <div class="p-8 flex flex-col items-center justify-center min-h-[200px] text-center bg-grid-pattern relative">
+            <div class="absolute inset-0 bg-linear-to-t from-[#1e1e1e] to-transparent opacity-80"></div>
+            
+            <div class="relative z-10 flex flex-col items-center">
+               <div class="w-16 h-16 mb-4 text-[#007acc] animate-pulse">
+                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.15 2.587L18.21.21a1.494 1.494 0 0 0-1.705.29l-9.46 8.63-4.12-3.128a1.5 1.5 0 0 0-1.797.09L.427 7.5a1.5 1.5 0 0 0 .16 2.374l10.329 8.024A1.5 1.5 0 0 0 11.93 18l11.66-13.68a1.5 1.5 0 0 0-.442-1.733zM9.54 17.14l-7.77-5.83 2.115-1.127 5.655 4.093v2.864z"/></svg>
+               </div>
+               <h4 class="text-2xl font-bold text-white mb-2 font-mono" id="launch-ide-mode">Launch IDE Mode</h4>
+               <p class="text-gray-400 max-w-sm mb-6">Explore my projects in a fully immersive, VS Code-like environment.</p>
+               <span class="inline-flex items-center gap-2 px-6 py-2 bg-[#007acc] text-white rounded font-medium text-sm group-hover:bg-[#0098ff] transition-colors">
+                  <span>Initialize Workspace</span>
+                  <span>→</span>
+               </span>
+            </div>
+          </div>
         </div>
-      </div>
-      
-      <!-- Featured Projects (Timeline Style) -->
-      <div class="featured-projects">
-        <h3 class="subtle-title">Featured Work</h3>
-        <div class="timeline-container">
-          <ProjectCard
-            v-for="(project, index) in projects"
-            :key="project.title"
-            :index="index"
-            :is-last="index === projects.length - 1"
-            v-bind="project"
-          />
-        </div>
-      </div>
+      </router-link>
     </div>
-  </section>
+  </AppSection>
 </template>
 
 <script setup>
-import PokerCard from '@/components/shared/PokerCard.vue'
-import ProjectCard from '@/components/home/ProjectCard.vue'
+import AppSection from '@/components/ui/AppSection.vue'
 import { projects } from '@/data/portfolio'
 </script>
 
 <style scoped>
-.content-section {
-  margin-bottom: 8rem;
-  scroll-margin-top: 2rem;
-}
-
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 2rem;
-  color: var(--color-gh-text);
+.bg-grid-pattern {
+  background-image: linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
 .subtle-title {
@@ -81,38 +57,7 @@ import { projects } from '@/data/portfolio'
   color: var(--color-gh-text-muted);
 }
 
-.poker-cards {
-  margin-bottom: 3rem;
-}
-
-.poker-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-}
-
 .featured-projects {
   margin-top: 3rem;
-}
-
-.timeline-container {
-  display: flex;
-  flex-direction: column;
-}
-
-@media (max-width: 768px) {
-  .content-section {
-    margin-bottom: 5rem;
-  }
-  
-  .poker-grid {
-    grid-template-columns: repeat(1, 1fr);
-  }
-}
-
-@media (max-width: 640px) {
-  .poker-grid {
-    grid-template-columns: repeat(1, 1fr);
-  }
 }
 </style>
