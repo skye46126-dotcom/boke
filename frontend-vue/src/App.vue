@@ -9,6 +9,7 @@
       <div class="header-content">
         <h1 class="pixel-font">MY PIXEL BLOG</h1>
         <nav class="pixel-nav">
+          <router-link to="/gallery" class="nav-card-small">Gallery</router-link>
           <router-link to="/" class="nav-card-small">Home</router-link>
           <router-link to="/about" class="nav-card-small">About</router-link>
         </nav>

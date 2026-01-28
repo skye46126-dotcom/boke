@@ -1,7 +1,7 @@
 {
   "name": "personal-blog",
   "version": "1.0.0",
-  "description": "Personal static blog with Next.js",
+  "description": "Personal blog with Vue 3 + Vite",
   "private": true,
   "workspaces": [
     "frontend"

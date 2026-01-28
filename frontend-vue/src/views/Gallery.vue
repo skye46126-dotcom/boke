@@ -9,26 +9,21 @@
             Developer
           </span>
         </router-link>
-        <div class="flex gap-6 items-center">
-          <router-link to="/articles" class="text-gh-text-muted hover:text-vp-c-brand transition">
-            Articles
-          </router-link>
-          <router-link to="/gallery" class="text-vp-c-brand font-medium">
-            Gallery
-          </router-link>
-          <a href="/#about" class="text-gh-text-muted hover:text-vp-c-brand transition">
-            About
-          </a>
-        </div>
+
       </nav>
     </header>
 
     <!-- Main Content -->
     <div class="container mx-auto px-6 py-12">
       <!-- Page Header -->
-      <div class="mb-8">
-        <h1 class="text-3xl font-bold mb-2">Photo Gallery</h1>
-        <p class="text-gh-text-muted">{{ images.length }} photos</p>
+      <div class="mb-8 flex items-end justify-between">
+        <div>
+          <h1 class="text-3xl font-bold mb-2">Photo Gallery</h1>
+          <p class="text-gh-text-muted">{{ images.length }} photos</p>
+        </div>
+        <div v-if="!supabase" class="px-3 py-1 bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 text-xs rounded-full font-medium">
+          ⚠️ Demo Mode
+        </div>
       </div>
 
       <!-- Loading State -->
@@ -58,7 +53,7 @@
           />
           
           <!-- Overlay on Hover -->
-          <div class="absolute inset-0 bg-gradient-to-t from-gh-bg/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+          <div class="absolute inset-0 bg-linear-to-t from-gh-bg/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
             <div class="absolute bottom-0 left-0 right-0 p-4">
               <h3 class="text-sm font-semibold text-gh-text truncate">{{ image.title }}</h3>
               <p v-if="image.description" class="text-xs text-gh-text-muted truncate mt-1">
@@ -219,13 +214,21 @@ const navigateNext = () => {
 
 onMounted(async () => {
   try {
-    const { data, error: fetchError } = await supabase
-      .from('gallery')
-      .select('*')
-      .order('created_at', { ascending: false })
+    if (!supabase) {
+      // Mock Mode
+      console.log('Supabase not configured, using mock data.')
+      images.value = mockImages
+      // Optional: Add a small delay to simulate loading
+      await new Promise(resolve => setTimeout(resolve, 500))
+    } else {
+      const { data, error: fetchError } = await supabase
+        .from('gallery')
+        .select('*')
+        .order('created_at', { ascending: false })
 
-    if (fetchError) throw fetchError
-    images.value = data || []
+      if (fetchError) throw fetchError
+      images.value = data || []
+    }
   } catch (err) {
     console.error('Error fetching gallery:', err)
     error.value = 'Failed to load gallery. Please check your database connection.'
@@ -237,8 +240,14 @@ onMounted(async () => {
 // Handle ESC key to close modal
 onMounted(() => {
   const handleEsc = (e) => {
-    if (e.key === 'Escape' && selectedImage.value) {
+    if (!selectedImage.value) return
+    
+    if (e.key === 'Escape') {
       closeModal()
+    } else if (e.key === 'ArrowLeft') {
+      navigatePrev()
+    } else if (e.key === 'ArrowRight') {
+      navigateNext()
     }
   }
   window.addEventListener('keydown', handleEsc)

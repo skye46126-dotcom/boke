@@ -1,18 +1,18 @@
 <template>
-  <div class="latest-posts">
+  <section id="blog" class="content-section">
     <h2 class="section-title">Latest Posts</h2>
     
-    <div v-if="loading" class="loading">Loading articles...</div>
-    <div v-else-if="error" class="error">{{ error }}</div>
+    <LoadingState v-if="loading" message="Loading articles..." />
+    <ErrorState v-else-if="error" :message="error" />
     
     <div v-else class="posts-grid">
       <article
-        v-for="post in posts"
+        v-for="post in articles"
         :key="post.id"
         class="post-card"
         @click="navigateToPost(post.slug)"
       >
-        <div class="post-date">{{ formatDate(post.created_at) }} · {{ post.reading_time || '5' }} min read</div>
+        <div class="post-date">{{ formatDate(post.date) }} · {{ post.reading_time || '5' }} min read</div>
         <h3 class="post-title">{{ post.title }}</h3>
         <p class="post-excerpt">{{ getExcerpt(post.content) }}</p>
         <div class="read-more">
@@ -24,63 +24,32 @@
     <router-link to="/articles" class="view-all">
       View All Posts →
     </router-link>
-  </div>
+  </section>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { supabase } from '@/lib/supabase'
+import { useArticles } from '@/composables/useArticles'
+import { formatDate, getExcerpt } from '@/lib/utils'
+import LoadingState from '@/components/ui/LoadingState.vue'
+import ErrorState from '@/components/ui/ErrorState.vue'
 
 const router = useRouter()
-const posts = ref([])
-const loading = ref(true)
-const error = ref(null)
 
-const fetchLatestPosts = async () => {
-  try {
-    const { data, error: fetchError } = await supabase
-      .from('articles')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(3)
-    
-    if (fetchError) throw fetchError
-    posts.value = data || []
-  } catch (err) {
-    console.error('Error fetching posts:', err)
-    error.value = 'Failed to load posts'
-  } finally {
-    loading.value = false
-  }
-}
-
-const formatDate = (dateString) => {
-  const date = new Date(dateString)
-  return date.toLocaleDateString('zh-CN', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
-}
-
-const getExcerpt = (content) => {
-  if (!content) return ''
-  const text = content.replace(/<[^>]*>/g, '').slice(0, 150)
-  return text + (content.length > 150 ? '...' : '')
-}
+// Use composable to fetch latest 3 articles
+const { articles, loading, error } = useArticles({
+  limit: 3,
+  orderBy: 'date',
+  ascending: false
+})
 
 const navigateToPost = (slug) => {
   router.push(`/articles/${slug}`)
 }
-
-onMounted(() => {
-  fetchLatestPosts()
-})
 </script>
 
 <style scoped>
-.latest-posts {
+.content-section {
   margin-bottom: 6rem;
 }
 
@@ -89,13 +58,6 @@ onMounted(() => {
   font-weight: 700;
   margin-bottom: 2rem;
   color: var(--color-gh-text);
-}
-
-.loading,
-.error {
-  color: var(--color-gh-text-muted);
-  text-align: center;
-  padding: 2rem;
 }
 
 .posts-grid {

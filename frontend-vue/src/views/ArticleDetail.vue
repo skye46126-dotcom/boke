@@ -71,6 +71,7 @@
 import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { supabase } from '../lib/supabase'
+import { extractTableOfContents, addHeadingIds } from '@/lib/utils'
 import ReadingProgress from '../components/ReadingProgress.vue'
 import TableOfContents from '../components/TableOfContents.vue'
 import Comments from '../components/Comments.vue'
@@ -100,24 +101,13 @@ const fetchArticle = async () => {
     const highlightedContent = await processCodeBlocks(data.content)
     article.value = { ...data, content: highlightedContent }
     
-    // Extract headings for table of contents
-    const parser = new DOMParser()
-    const doc = parser.parseFromString(highlightedContent, 'text/html')
-    const headings = doc.querySelectorAll('h2, h3')
-    tableOfContents.value = Array.from(headings).map(h => ({
-      id: h.id || h.textContent.toLowerCase().replace(/\s+/g, '-'),
-      text: h.textContent,
-      level: parseInt(h.tagName[1])
-    }))
+    // Extract headings for table of contents using utility
+    tableOfContents.value = extractTableOfContents(highlightedContent)
     
     // Add IDs to headings if they don't have them
     if (typeof document !== 'undefined') {
       setTimeout(() => {
-        document.querySelectorAll('.vp-doc h2, .vp-doc h3').forEach((heading, index) => {
-          if (!heading.id && tableOfContents.value[index]) {
-            heading.id = tableOfContents.value[index].id
-          }
-        })
+        addHeadingIds('.vp-doc', tableOfContents.value)
       }, 100)
     }
   } catch (err) {

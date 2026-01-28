@@ -44,14 +44,10 @@
       </button>
 
       <!-- Loading State -->
-      <div v-if="loading" class="text-center py-12">
-        <p class="text-gh-text-muted">Loading articles...</p>
-      </div>
+      <LoadingState v-if="loading" message="Loading articles..." />
 
       <!-- Error State -->
-      <div v-else-if="error" class="text-center py-12">
-        <p class="text-gh-text-muted">{{ error }}</p>
-      </div>
+      <ErrorState v-else-if="error" :message="error" />
 
       <!-- Articles List (GitHub Issues Style) -->
       <div v-else class="space-y-0 border border-gh-border rounded-vp overflow-hidden">
@@ -89,7 +85,7 @@
                   </span>
                 </div>
                 <span class="text-xs text-gh-text-muted">
-                  Updated {{ formatDate(article.date) }}
+                  Updated {{ formatRelativeDate(article.date) }}
                 </span>
               </div>
             </div>
@@ -106,48 +102,21 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { supabase } from '../lib/supabase'
+import { useArticles } from '@/composables/useArticles'
+import { formatRelativeDate } from '@/lib/utils'
 import { Search } from 'lucide-vue-next'
+import LoadingState from '@/components/ui/LoadingState.vue'
+import ErrorState from '@/components/ui/ErrorState.vue'
 
-const articles = ref([])
-const loading = ref(true)
-const error = ref(null)
+// Fetch all published articles
+const { articles, loading, error } = useArticles({
+  status: 'published',
+  orderBy: 'date',
+  ascending: false
+})
 
 const openSearch = () => {
   const event = new KeyboardEvent('keydown', { key: 'k', metaKey: true, ctrlKey: true })
   window.dispatchEvent(event)
 }
-
-const formatDate = (dateString) => {
-  const date = new Date(dateString)
-  const now = new Date()
-  const diffTime = Math.abs(now - date)
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
-  
-  if (diffDays === 0) return 'today'
-  if (diffDays === 1) return 'yesterday'
-  if (diffDays < 7) return `${diffDays} days ago`
-  if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`
-  if (diffDays < 365) return `${Math.floor(diffDays / 30)} months ago`
-  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
-}
-
-onMounted(async () => {
-  try {
-    const { data, error: fetchError } = await supabase
-      .from('articles')
-      .select('*')
-      .eq('status', 'published')
-      .order('date', { ascending: false })
-
-    if (fetchError) throw fetchError
-    articles.value = data
-  } catch (err) {
-    console.error('Error fetching articles:', err)
-    error.value = 'Failed to load articles. Please check your database connection.'
-  } finally {
-    loading.value = false
-  }
-})
 </script>
