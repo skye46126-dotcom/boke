@@ -84,6 +84,10 @@
                     {{ tag }}
                   </span>
                 </div>
+                <span class="text-xs text-gh-text-muted flex items-center gap-1">
+                  <Eye class="w-3 h-3 text-gh-text-muted" />
+                  {{ article.views || 0 }} views
+                </span>
                 <span class="text-xs text-gh-text-muted">
                   Updated {{ formatRelativeDate(article.date) }}
                 </span>
@@ -104,7 +108,7 @@
 <script setup>
 import { useArticles } from '@/composables/useArticles'
 import { formatRelativeDate } from '@/lib/utils'
-import { Search } from 'lucide-vue-next'
+import { Search, Eye } from 'lucide-vue-next'
 import LoadingState from '@/components/ui/LoadingState.vue'
 import ErrorState from '@/components/ui/ErrorState.vue'
 

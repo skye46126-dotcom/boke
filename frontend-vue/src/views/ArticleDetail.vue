@@ -42,6 +42,11 @@
                   month: 'long', 
                   day: 'numeric' 
                 }) }}</span>
+                <span>•</span>
+                <span class="flex items-center gap-1">
+                  <Eye class="w-4 h-4" />
+                  {{ article.views || 0 }} views
+                </span>
                 <span v-if="article.tags && article.tags.length">•</span>
                 <div v-if="article.tags && article.tags.length" class="flex gap-2">
                   <span 
@@ -75,6 +80,7 @@ import { extractTableOfContents, addHeadingIds } from '@/lib/utils'
 import ReadingProgress from '../components/ReadingProgress.vue'
 import TableOfContents from '../components/TableOfContents.vue'
 import Comments from '../components/Comments.vue'
+import { Eye } from 'lucide-vue-next'
 import { processCodeBlocks } from '../lib/shiki'
 
 const route = useRoute()
@@ -115,6 +121,13 @@ const fetchArticle = async () => {
       setTimeout(() => {
         addHeadingIds('.vp-doc', tableOfContents.value)
       }, 100)
+    }
+
+    // Increment view count
+    try {
+      await supabase.rpc('increment_article_views', { article_slug: route.params.slug })
+    } catch (viewErr) {
+      console.warn('Failed to increment view count:', viewErr)
     }
   } catch (err) {
     console.error('Error fetching article:', err)
