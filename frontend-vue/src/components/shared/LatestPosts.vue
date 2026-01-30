@@ -13,10 +13,10 @@
         class="post-item"
         @click="navigateToPost(post.slug)"
       >
-        <div class="p-6">
-          <div class="post-date">{{ formatDate(post.date) }} · {{ post.reading_time || '5' }} min read</div>
-          <h3 class="post-title">{{ post.title }}</h3>
-          <p class="post-excerpt">{{ getExcerpt(post.content) }}</p>
+        <div class="p-4 sm:p-6">
+          <div class="post-date text-xs sm:text-sm">{{ formatDate(post.date) }} · {{ post.reading_time || '5' }} min read</div>
+          <h3 class="post-title text-lg sm:text-xl">{{ post.title }}</h3>
+          <p class="post-excerpt text-sm sm:text-base">{{ getExcerpt(post.content) }}</p>
           <div class="read-more">
             Continue Reading →
           </div>

@@ -44,6 +44,12 @@ defineProps({
   padding: 0 1.5rem;
 }
 
+@media (max-width: 640px) {
+  .section-inner {
+    padding: 0 0.5rem;
+  }
+}
+
 .section-header {
   margin-bottom: 3rem;
 }

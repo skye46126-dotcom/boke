@@ -287,7 +287,7 @@ useHead({
 
 @media (max-width: 768px) {
   .main-content {
-    padding: 0 1rem;
+    padding: 0;
   }
 }
 

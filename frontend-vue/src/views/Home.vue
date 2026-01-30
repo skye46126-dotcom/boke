@@ -114,7 +114,7 @@ const activeSection = useScrollSpy({
 
 @media (max-width: 640px) {
   .main-content {
-    padding: 1.5rem 1rem;
+    padding: 1rem 0;
   }
 }
 </style>
