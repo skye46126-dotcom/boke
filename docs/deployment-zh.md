@@ -16,15 +16,18 @@ npm run build
 1. 确保你的代码已上传到 GitHub。
 2. 注册并登录 [Cloudflare 控制台](https://dash.cloudflare.com/)。
 
-### 步骤 B：创建项目
-1. 在左侧菜单选择 **Workers & Pages** -> **Create application** -> **Pages** -> **Connect to Git**。
-2. 选择你的 GitHub 仓库。
-3. **Build settings** 配置如下：
+### 步骤 B：创建项目 (请确保你在 Pages 界面，而不是 Workers)
+> [!IMPORTANT]
+> **注意**：从你的截图看，你目前在 **Workers** 界面。对于前端 Vue 项目，请使用 **Pages**。
+> **进入正确路径**：点击左侧菜单 **Workers & Pages** -> **Overview** -> 点击 **Pages** 标签页 -> 点击 **Connect to Git**。
+
+1. **Build settings** (如果你已经在 Pages 项目中)：
    - **Framework preset**: `Vite`
    - **Build command**: `npm run build`
-   - **Build output directory**: `dist`
-4. **Environment variables** (重要)：
-   - 点击 **Add variable**，添加 `VITE_SUPABASE_URL` 和 `VITE_SUPABASE_ANON_KEY`。
+   - **Build output directory**: `frontend-vue/dist`
+2. **Environment variables** (重要)：
+   - 在该页面的 **Environment variables (advanced)** 部分，点击 **Add variable**。
+   - 添加 `VITE_SUPABASE_URL` 和 `VITE_SUPABASE_ANON_KEY`。
 
 ### 步骤 C：绑定域名
 1. 部署完成后，在 Pages 项目页面点击 **Custom domains**。
