@@ -5,7 +5,7 @@
     
     <SearchDialog />
     
-    <header class="pixel-ink-header">
+    <header v-if="!$route.meta.hideHeader" class="pixel-ink-header">
       <div class="header-content">
         <h1 class="pixel-font">MY PIXEL BLOG</h1>
         <nav class="pixel-nav">
@@ -20,7 +20,7 @@
     <main class="main-content">
       <router-view></router-view>
     </main>
-    <footer class="pixel-ink-footer">
+    <footer v-if="!$route.meta.hideFooter" class="pixel-ink-footer">
       <p class="pixel-font">&copy; 2024 Pixel Blog. Powered by Vue & Supabase.</p>
     </footer>
     
@@ -145,6 +145,8 @@ useHead({
 }
 
 .pixel-ink-header {
+  position: relative;
+  z-index: 100;
   padding: 2rem;
   border-bottom: var(--pixel-border-width-thick) solid var(--color-pixel-ink-gray);
   margin-bottom: 2rem;

@@ -39,7 +39,9 @@ const routes = [
         name: 'ProjectsIDE',
         component: () => import('../views/ProjectsIDE.vue'),
         meta: {
-            title: 'VS Code - Projects'
+            title: 'VS Code - Projects',
+            hideHeader: true,
+            hideFooter: true
         }
     },
     {

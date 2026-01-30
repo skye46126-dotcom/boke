@@ -84,6 +84,12 @@ const error = ref(null)
 const tableOfContents = ref([])
 
 const fetchArticle = async () => {
+  if (!supabase) {
+    error.value = 'Database not configured'
+    loading.value = false
+    return
+  }
+
   loading.value = true
   error.value = null
   

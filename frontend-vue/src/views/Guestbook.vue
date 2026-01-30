@@ -53,7 +53,9 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  supabase.channel('public:guestbook').unsubscribe()
+  if (supabase) {
+    supabase.channel('guestbook-updates').unsubscribe()
+  }
 })
 
 // Actions
@@ -61,6 +63,12 @@ const openModal = () => isModalOpen.value = true
 const closeModal = () => isModalOpen.value = false
 
 const fetchGuestbook = async () => {
+  if (!supabase) {
+    console.warn('Supabase not configured, showing empty wall.')
+    loading.value = false
+    return
+  }
+
   try {
     const { data, error } = await supabase
       .from('guestbook')
@@ -78,19 +86,30 @@ const fetchGuestbook = async () => {
 }
 
 const subscribeToGuestbook = () => {
-  supabase
-    .channel('guestbook-updates')
-    .on(
-      'postgres_changes',
-      { event: 'INSERT', schema: 'public', table: 'guestbook' },
-      (payload) => {
-        entries.value.unshift(payload.new)
-      }
-    )
-    .subscribe()
+  if (!supabase) return
+
+  try {
+    supabase
+      .channel('guestbook-updates')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'guestbook' },
+        (payload) => {
+          entries.value.unshift(payload.new)
+        }
+      )
+      .subscribe()
+  } catch (err) {
+    console.error('Error subscribing to guestbook:', err)
+  }
 }
 
 const handleSubmit = async (formData) => {
+  if (!supabase) {
+    alert('Guestbook is in read-only mode (not configured).')
+    return
+  }
+
   submitting.value = true
   
   try {
