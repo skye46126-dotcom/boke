@@ -12,7 +12,7 @@
            <div class="w-3 h-3 rounded-full bg-[#27c93f]"></div>
         </div>
         <!-- Menu Items (Static) -->
-        <div class="flex gap-3 text-xs text-gray-300 ml-2">
+        <div class="hidden md:flex gap-3 text-xs text-gray-300 ml-2">
            <span>File</span>
            <span>Edit</span>
            <span>Selection</span>
@@ -23,7 +23,7 @@
            <span>Help</span>
         </div>
       </div>
-      <div class="text-xs text-gray-400">pixel-portfolio - Visual Studio Code</div>
+      <div class="text-xs text-gray-400 truncate px-2 text-center flex-1">pixel-portfolio - Visual Studio Code</div>
       <div class="w-10"></div> <!-- Spacer -->
     </div>
 
@@ -43,11 +43,11 @@
            <span>0 warnings</span>
         </div>
       </div>
-      <div class="flex items-center gap-4">
-         <span>Ln 1, Col 1</span>
-         <span>UTF-8</span>
+      <div class="flex items-center gap-4 overflow-hidden">
+         <span class="hidden sm:inline">Ln 1, Col 1</span>
+         <span class="hidden sm:inline">UTF-8</span>
          <span>JavaScript</span>
-         <span>Prettier</span>
+         <span class="hidden sm:inline">Prettier</span>
       </div>
     </div>
   </div>

@@ -37,7 +37,7 @@
       </div>
 
       <!-- Gallery Grid (GitHub Repo Style) -->
-      <div v-else class="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div v-else class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         <div
           v-for="image in images"
           :key="image.id"
@@ -103,23 +103,22 @@
                 </span>
               </div>
               
-              <!-- Navigation Buttons -->
-              <div class="flex gap-2 mt-4">
+              <div class="flex flex-wrap gap-2 mt-4">
                 <button
                   @click="navigatePrev"
-                  class="px-4 py-2 bg-gh-bg border border-gh-border rounded-vp hover:border-vp-c-brand transition"
+                  class="flex-1 sm:flex-none px-4 py-2 bg-gh-bg border border-gh-border rounded-vp hover:border-vp-c-brand transition text-sm"
                 >
                   ← Previous
                 </button>
                 <button
                   @click="navigateNext"
-                  class="px-4 py-2 bg-gh-bg border border-gh-border rounded-vp hover:border-vp-c-brand transition"
+                  class="flex-1 sm:flex-none px-4 py-2 bg-gh-bg border border-gh-border rounded-vp hover:border-vp-c-brand transition text-sm"
                 >
                   Next →
                 </button>
                 <button
                   @click="closeModal"
-                  class="ml-auto px-4 py-2 bg-gh-bg border border-gh-border rounded-vp hover:border-vp-c-brand transition"
+                  class="w-full sm:w-auto sm:ml-auto px-4 py-2 bg-gh-bg border border-gh-border rounded-vp hover:border-vp-c-brand transition text-sm"
                 >
                   Close
                 </button>

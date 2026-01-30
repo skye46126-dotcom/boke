@@ -19,8 +19,8 @@
       </div>
       
       <!-- 当前输入 -->
-      <div class="flex items-center">
-        <span class="text-gh-text-muted mr-2">$</span>
+      <div class="flex items-center gap-2">
+        <span class="text-gh-text-muted mr-1">$</span>
         <input
           v-model="currentInput"
           @keyup.enter="handleCommand"
@@ -29,7 +29,13 @@
           ref="terminalInput"
           class="flex-1 bg-transparent border-none outline-none text-gh-text font-mono"
           placeholder="输入 'help' 查看所有命令"
+          enterkeyhint="send"
         />
+        <!-- Mobile History Buttons -->
+        <div class="flex sm:hidden gap-1">
+          <button @click="navigateHistory(-1)" class="p-1 text-gh-text-muted hover:text-gh-text">↑</button>
+          <button @click="navigateHistory(1)" class="p-1 text-gh-text-muted hover:text-gh-text">↓</button>
+        </div>
       </div>
     </div>
   </div>
@@ -153,6 +159,9 @@ const scrollToBottom = () => {
 }
 
 onMounted(() => {
-  terminalInput.value?.focus()
+  // Only auto-focus on desktop to avoid triggering keyboard on mobile
+  if (window.innerWidth > 768) {
+    terminalInput.value?.focus()
+  }
 })
 </script>

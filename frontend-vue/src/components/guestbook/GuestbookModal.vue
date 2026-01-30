@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body">
     <Transition name="modal">
-      <div v-if="isOpen" class="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" @click.self="$emit('close')">
+      <div v-if="isOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" @click.self="$emit('close')">
         <div class="bg-gh-card w-full max-w-md rounded-vp border border-gh-border shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
           <div class="p-4 border-b border-gh-border flex justify-between items-center bg-gh-bg">
             <h3 class="font-bold">New Signature</h3>
@@ -13,7 +13,7 @@
               <PixelEditor ref="editorRef" />
             </div>
 
-            <div class="space-y-4 w-[320px] mx-auto">
+            <div class="space-y-4 w-full max-w-[320px] mx-auto px-1">
               <div>
                 <label class="block text-xs font-bold mb-1 ml-1 text-gh-text-muted">NICKNAME</label>
                 <input 

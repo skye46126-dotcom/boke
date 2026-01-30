@@ -70,6 +70,7 @@ const activeSection = useScrollSpy({
   overflow-y: auto;
   overflow-x: hidden;
   height: 100vh;
+  box-sizing: border-box;
 }
 
 /* Custom scrollbar for main content */
@@ -104,15 +105,16 @@ const activeSection = useScrollSpy({
   
   .main-content {
     width: 100%;
-    padding: 3rem 2rem;
+    padding: 2rem 1.5rem;
     overflow-y: visible;
     height: auto;
+    box-sizing: border-box;
   }
 }
 
 @media (max-width: 640px) {
   .main-content {
-    padding: 2rem 1.5rem;
+    padding: 1.5rem 1rem;
   }
 }
 </style>

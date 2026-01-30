@@ -1,9 +1,9 @@
 <template>
   <div class="pixel-editor flex flex-col items-center gap-4">
     <!-- Tools & Palette -->
-    <div class="flex items-start gap-4 justify-center w-full">
-      <!-- Color Palette: 4x4 Grid -->
-      <div class="palette grid grid-cols-4 gap-1 bg-gh-bg border border-gh-border p-2 rounded-lg shrink-0">
+    <div class="flex flex-wrap items-center gap-4 justify-center w-full px-2">
+      <!-- Color Palette: 4x4 Grid or wrap -->
+      <div class="palette grid grid-cols-8 sm:grid-cols-4 gap-1 bg-gh-bg border border-gh-border p-2 rounded-lg shrink-0">
         <button
           v-for="color in palette"
           :key="color"
@@ -18,7 +18,7 @@
       <div class="tools flex gap-2">
         <button 
           @click="clearCanvas"
-          class="px-3 py-1 text-xs border border-gh-border rounded bg-gh-card hover:bg-gh-bg transition"
+          class="px-4 py-2 text-xs border border-gh-border rounded bg-gh-card hover:bg-gh-bg transition active:scale-95"
         >
           🗑️ Clear
         </button>
@@ -30,13 +30,18 @@
       class="canvas-grid grid border border-gh-border shadow-lg cursor-crosshair touch-none select-none"
       :style="{
         gridTemplateColumns: `repeat(${size}, 1fr)`,
+        maxWidth: '100%',
         width: '320px',
-        height: '320px'
+        aspectRatio: '1/1',
+        height: 'auto'
       }"
       @mousedown="startDrawing"
       @mouseenter="handleMouseEnter"
       @mouseup="stopDrawing"
       @mouseleave="stopDrawing"
+      @touchstart.passive="handleTouchStart"
+      @touchmove.prevent="handleTouchMove"
+      @touchend="stopDrawing"
     >
       <div
         v-for="(pixel, index) in pixels"
@@ -101,9 +106,32 @@ const stopDrawing = () => {
 }
 
 const drawPixel = (index) => {
-  if (isDrawing.value || event.type === 'mousedown') {
-    pixels[index] = selectedColor.value
-    emit('update:pixels', pixels)
+  if (isDrawing.value || (event && event.type === 'mousedown')) {
+    if (pixels[index] !== selectedColor.value) {
+      pixels[index] = selectedColor.value
+      emit('update:pixels', pixels)
+    }
+  }
+}
+
+const handleTouchStart = (e) => {
+  isDrawing.value = true
+  handleTouchMove(e)
+}
+
+const handleTouchMove = (e) => {
+  if (!isDrawing.value) return
+  
+  const touch = e.touches[0]
+  const element = document.elementFromPoint(touch.clientX, touch.clientY)
+  
+  if (element && element.classList.contains('pixel')) {
+    // Find the index of the pixel element
+    const pixelElements = Array.from(e.currentTarget.querySelectorAll('.pixel'))
+    const index = pixelElements.indexOf(element)
+    if (index !== -1) {
+      drawPixel(index)
+    }
   }
 }
 

@@ -262,7 +262,7 @@ useHead({
   .header-content {
     flex-direction: column;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.5rem;
   }
 
   .pixel-nav {
@@ -283,6 +283,12 @@ useHead({
   margin: 0 auto;
   width: 100%;
   padding: 0 2rem;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 0 1rem;
+  }
 }
 
 .pixel-ink-footer {
