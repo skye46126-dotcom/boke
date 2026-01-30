@@ -4,15 +4,15 @@
   "description": "Personal blog with Vue 3 + Vite",
   "private": true,
   "workspaces": [
-    "frontend"
+    "frontend-vue"
   ],
   "scripts": {
-    "dev": "npm run dev --workspace=frontend",
+    "dev": "npm run dev --workspace=frontend-vue",
     "dev:cms": "npx decap-server",
     "dev:all": "concurrently \"npm run dev\" \"npm run dev:cms\"",
-    "build": "npm run build --workspace=frontend",
-    "start": "npm run start --workspace=frontend",
-    "test": "npm run test --workspace=frontend"
+    "build": "npm run build --workspace=frontend-vue",
+    "start": "npm run start --workspace=frontend-vue",
+    "test": "npm run test --workspace=frontend-vue"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
