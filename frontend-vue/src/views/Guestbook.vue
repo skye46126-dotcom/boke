@@ -3,19 +3,20 @@
     <MouseSpotlight />
     <div class="container mx-auto max-w-4xl relative z-10">
       <!-- Header -->
-      <div class="flex items-center justify-between mb-12">
+      <div class="flex items-start justify-between gap-4 mb-12">
         <div>
-          <h1 class="text-3xl font-bold mb-2 flex items-center gap-3">
+          <h1 class="text-2xl sm:text-3xl font-bold mb-2 flex items-center gap-3">
             <span class="w-8 h-8 bg-vp-c-brand rounded pixel-icon"></span>
-            Pixel Guestbook
+            <span class="truncate">Pixel Guestbook</span>
           </h1>
-          <p class="text-gh-text-muted">Leave your mark! Draw a pixel art and sign the wall.</p>
+          <p class="text-gh-text-muted text-xs sm:text-base pr-4">Leave your mark! Draw a pixel art and sign the wall.</p>
         </div>
         <button
           @click="openModal"
-          class="code-btn px-6 py-3 rounded font-bold transition-all"
+          class="code-btn px-3 sm:px-6 py-2.5 sm:py-3 rounded font-bold transition-all whitespace-nowrap shrink-0 mt-1 sm:mt-0"
         >
-          $ sign_guestbook.sh
+          <span class="sm:hidden">$ sign_</span>
+          <span class="hidden sm:inline">$ sign_guestbook.sh</span>
         </button>
       </div>
 

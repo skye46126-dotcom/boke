@@ -1,8 +1,15 @@
 <template>
-  <div class="ide-sidebar bg-[#252526] border-r border-[#2d2d2d] hidden md:flex flex-col shrink-0 relative" :style="{ width: width + 'px' }">
-    <div class="p-2 text-xs font-bold text-gray-400 uppercase tracking-wider flex justify-between items-center group cursor-pointer hover:text-white" @click="$emit('toggle-explorer')">
+  <div 
+    class="ide-sidebar bg-[#252526] border-r border-[#2d2d2d] flex flex-col shrink-0 relative transition-all duration-300 ease-in-out" 
+    :class="[
+      isMobileOpen ? 'fixed inset-y-0 left-0 z-50 w-[280px] flex shadow-2xl' : 'hidden lg:flex',
+    ]"
+    :style="!isMobileOpen ? { width: width + 'px' } : {}"
+  >
+    <div class="p-3 text-xs font-bold text-gray-400 uppercase tracking-wider flex justify-between items-center group cursor-pointer hover:text-white border-b border-[#2d2d2d] lg:border-none" @click="$emit('toggle-explorer')">
        <span>Explorer</span>
-       <span class="opacity-0 group-hover:opacity-100">...</span>
+       <button @click.stop="$emit('close-mobile')" class="lg:hidden text-lg p-1 hover:bg-[#37373d] rounded">×</button>
+       <span class="hidden lg:block opacity-0 group-hover:opacity-100">...</span>
     </div>
     
     <div class="flex-1 overflow-y-auto select-none">
@@ -68,10 +75,11 @@ defineProps({
   projects: Array,
   expandedFolders: Object,
   activeTabId: String,
-  width: Number
+  width: Number,
+  isMobileOpen: Boolean
 })
 
-const emit = defineEmits(['toggle-folder', 'open-file', 'resize-start', 'toggle-explorer'])
+const emit = defineEmits(['toggle-folder', 'open-file', 'resize-start', 'toggle-explorer', 'close-mobile'])
 
 const toggleFolder = (id) => emit('toggle-folder', id)
 </script>

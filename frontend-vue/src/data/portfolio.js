@@ -3,7 +3,8 @@ export const personalInfo = {
     name: 'chenc',
     title: 'Full-Stack Developer && Product Manager',
     tagline: 'Building the web, one line at a time.',
-    email: 'skye46126@gmail.com'
+    email: 'skye46126@gmail.com',
+    avatar: '/images/avatar.jpg'
 }
 
 // Social Links

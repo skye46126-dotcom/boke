@@ -3,6 +3,9 @@
     <div class="sidebar-content">
       <!-- Personal Info -->
       <div class="personal-info">
+        <div class="avatar-container">
+          <img :src="personalInfo.avatar" :alt="personalInfo.name" class="avatar-pixel" />
+        </div>
         <h1 class="name">{{ personalInfo.name }}</h1>
         <h2 class="title">{{ personalInfo.title }}</h2>
         <p class="tagline">{{ personalInfo.tagline }}</p>
@@ -107,6 +110,27 @@ const getSocialIcon = (name) => {
   margin-bottom: 3rem;
 }
 
+.avatar-container {
+  margin-bottom: 2rem;
+  width: 120px;
+  height: 120px;
+}
+
+.avatar-pixel {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 4px solid var(--color-gh-text);
+  box-shadow: 8px 8px 0px var(--color-gh-border);
+  image-rendering: pixelated; /* Optional: if the image is small/pixel art */
+  transition: all 0.3s ease;
+}
+
+.avatar-pixel:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 12px 12px 0px var(--color-vp-c-brand);
+}
+
 .name {
   font-size: 3rem;
   font-weight: 700;
@@ -125,6 +149,66 @@ const getSocialIcon = (name) => {
   font-size: 1.125rem;
   color: var(--color-gh-text-muted);
   line-height: 1.6;
+}
+
+/* Mobile Responsive */
+@media (max-width: 1023px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    padding: 6rem 2rem 3rem;
+    display: block; /* Remove flex centering */
+    text-align: center;
+    background: linear-gradient(to bottom, var(--color-gh-bg), transparent);
+  }
+  
+  .sidebar-content {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .avatar-container {
+    margin-left: auto;
+    margin-right: auto;
+    width: 140px;
+    height: 140px;
+  }
+  
+  .name {
+    font-size: 2.5rem;
+  }
+  
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .tagline {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .nav-menu {
+    align-items: center;
+    border-left: none;
+    margin-top: 2rem;
+  }
+
+  .nav-item {
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    padding-left: 0;
+    padding-bottom: 0.25rem;
+  }
+
+  .nav-item:hover, .nav-item.active {
+    border-left-color: transparent;
+    border-bottom-color: var(--color-vp-c-brand);
+  }
+
+  .social-links {
+    justify-content: center;
+  }
 }
 
 /* Navigation Menu */

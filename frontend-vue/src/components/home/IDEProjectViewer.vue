@@ -7,8 +7,17 @@
       <!-- Title Bar / Controls -->
       <div class="ide-header flex items-center justify-between bg-[#1e1e1e] border-b border-[#2d2d2d] px-2 h-10 shrink-0 select-none">
         <div class="flex items-center gap-4">
+          <!-- Mobile Sidebar Toggle -->
+          <button 
+            @click="isMobileExplorerOpen = !isMobileExplorerOpen"
+            class="lg:hidden p-2 hover:bg-[#2d2d2d] rounded transition-colors text-gray-400"
+            title="Toggle Explorer"
+          >
+            <span class="text-lg">📁</span>
+          </button>
+
           <!-- Tabs (Scrollable) -->
-          <div class="flex items-center h-full overflow-x-auto no-scrollbar max-w-[calc(100vw-200px)]">
+          <div class="flex items-center h-full overflow-x-auto no-scrollbar max-w-[calc(100vw-120px)] lg:max-w-[calc(100vw-200px)]">
             <button 
               v-for="tab in openTabs" 
               :key="tab.id"
@@ -47,10 +56,12 @@
         :expandedFolders="expandedFolders"
         :activeTabId="activeTabId"
         :width="sidebarWidth"
+        :isMobileOpen="isMobileExplorerOpen"
         @toggle-folder="toggleProjectFolder"
         @open-file="openFile"
         @resize-start="startResize"
         @toggle-explorer="toggleExplorer"
+        @close-mobile="isMobileExplorerOpen = false"
       />
     </template>
 
@@ -97,7 +108,8 @@ const activeTabId = ref(null)
 const openTabs = ref([])
 const activeTab = computed(() => openTabs.value.find(t => t.id === activeTabId.value))
 
-// Runner State
+// UI State
+const isMobileExplorerOpen = ref(false)
 const isTerminalOpen = ref(false)
 const isRunning = ref(false)
 const terminalLogs = ref([])
