@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { initAdminAuth } from '@/lib/adminAuth'
 
 const routes = [
     {
@@ -27,6 +28,16 @@ const routes = [
         component: () => import('../views/Gallery.vue')
     },
     {
+        path: '/agent-feed',
+        name: 'AgentForum',
+        component: () => import('../views/AgentForum.vue')
+    },
+    {
+        path: '/agent-feed/:id',
+        name: 'AgentPostDetail',
+        component: () => import('../views/AgentPostDetail.vue')
+    },
+    {
         path: '/guestbook',
         name: 'Guestbook',
         component: () => import('../views/Guestbook.vue'),
@@ -52,6 +63,42 @@ const routes = [
             title: 'Git Changelog'
         }
     },
+    {
+        path: '/admin/login',
+        name: 'AdminLogin',
+        component: () => import('../views/AdminLogin.vue'),
+        meta: {
+            title: 'Admin Login',
+            hideHeader: true
+        }
+    },
+    {
+        path: '/admin/writing-desk',
+        name: 'WritingDesk',
+        component: () => import('../views/WritingDesk.vue'),
+        meta: {
+            title: 'Writing Desk',
+            requiresAdmin: true
+        }
+    },
+    {
+        path: '/admin/articles/:id/edit',
+        name: 'ArticleEditor',
+        component: () => import('../views/ArticleEditor.vue'),
+        meta: {
+            title: 'Article Editor',
+            requiresAdmin: true
+        }
+    },
+    {
+        path: '/admin/agent-console',
+        name: 'AgentConsole',
+        component: () => import('../views/AgentConsole.vue'),
+        meta: {
+            title: 'Agent Console',
+            requiresAdmin: true
+        }
+    },
     // 404 Catch-all route (must be last)
     {
         path: '/:pathMatch(.*)*',
@@ -72,6 +119,33 @@ const router = createRouter({
         }
         return { top: 0 }
     }
+})
+
+router.beforeEach(async (to) => {
+    const isAdminRoute = Boolean(to.meta.requiresAdmin)
+    const isAdminLogin = to.name === 'AdminLogin'
+
+    if (!isAdminRoute && !isAdminLogin) {
+        return true
+    }
+
+    const authenticated = await initAdminAuth()
+
+    if (isAdminRoute && !authenticated) {
+        return {
+            name: 'AdminLogin',
+            query: {
+                redirect: to.fullPath,
+            },
+        }
+    }
+
+    if (isAdminLogin && authenticated) {
+        const redirect = typeof to.query.redirect === 'string' ? to.query.redirect : '/admin/writing-desk'
+        return redirect
+    }
+
+    return true
 })
 
 export default router

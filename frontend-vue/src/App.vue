@@ -12,6 +12,8 @@
           <h1 class="pixel-font">MY PIXEL BLOG</h1>
         </div>
         <nav class="pixel-nav">
+          <router-link to="/articles" class="nav-card-small">Articles</router-link>
+          <router-link to="/agent-feed" class="nav-card-small">Agent Forum</router-link>
           <router-link to="/projects" class="nav-card-small">Projects (IDE)</router-link>
           <router-link to="/gallery" class="nav-card-small">Gallery</router-link>
           <router-link to="/guestbook" class="nav-card-small">Guestbook</router-link>
@@ -47,7 +49,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useHead } from '@vueuse/head'
-import { useMagicKeys } from '@vueuse/core'
 import { personalInfo } from '@/data/portfolio'
 import CustomCursor from './components/shared/CustomCursor.vue'
 import SearchDialog from './components/shared/SearchDialog.vue'

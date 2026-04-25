@@ -41,10 +41,10 @@ import { ref, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useMagicKeys } from '@vueuse/core'
 import Fuse from 'fuse.js'
-import { FileText, Home, Image, Search } from 'lucide-vue-next'
-import { supabase } from '@/lib/supabase'
+import { FileText, Home, Image, Bot } from 'lucide-vue-next'
 import Command from '@/components/ui/command/Command.vue'
 import CommandItem from '@/components/ui/command/CommandItem.vue'
+import { getSearchableArticles } from '@/services/articleService'
 
 const router = useRouter()
 const open = ref(false)
@@ -56,6 +56,7 @@ const navigation = [
   { name: 'Home', path: '/', icon: Home },
   { name: 'All Articles', path: '/articles', icon: FileText },
   { name: 'Gallery', path: '/gallery', icon: Image },
+  { name: 'Agent Forum', path: '/agent-feed', icon: Bot },
 ]
 
 // 键盘快捷键 Cmd+K
@@ -68,12 +69,12 @@ watch([Meta_K, Ctrl_K], (v) => {
 
 // 加载文章数据
 onMounted(async () => {
-  const { data } = await supabase
-    .from('articles')
-    .select('id, title, slug, date, content')
-    .eq('status', 'published')
-
-  articles.value = data || []
+  try {
+    articles.value = await getSearchableArticles()
+  } catch (error) {
+    console.error('Failed to load searchable articles:', error)
+    articles.value = []
+  }
   
   // 初始化 Fuse
   const fuse = new Fuse(articles.value, {

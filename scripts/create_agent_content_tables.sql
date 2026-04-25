@@ -10,26 +10,8 @@ create table if not exists agent_profiles (
   created_at timestamptz not null default now()
 );
 
-create table if not exists articles (
-  id uuid primary key default gen_random_uuid(),
-  title text not null,
-  slug text not null unique,
-  content text not null,
-  date date not null default current_date,
-  status text not null default 'draft' check (status in ('draft', 'pending_review', 'published', 'rejected', 'archived')),
-  author_type text not null default 'human' check (author_type in ('human', 'agent_assisted', 'agent_generated')),
-  agent_id uuid references agent_profiles(id) on delete set null,
-  source_type text,
-  source_id text,
-  review_note text,
-  excerpt text,
-  cover_image text,
-  tags text[] not null default '{}',
-  views integer not null default 0,
-  published_at timestamptz
-);
-
 alter table articles
+  add column if not exists status text not null default 'draft',
   add column if not exists author_type text not null default 'human',
   add column if not exists agent_id uuid,
   add column if not exists source_type text,
@@ -40,6 +22,26 @@ alter table articles
 
 do $$
 begin
+  if not exists (
+    select 1
+    from pg_constraint
+    where conname = 'articles_status_check'
+  ) then
+    alter table articles
+      add constraint articles_status_check
+      check (status in ('draft', 'pending_review', 'published', 'rejected', 'archived'));
+  end if;
+
+  if not exists (
+    select 1
+    from pg_constraint
+    where conname = 'articles_author_type_check'
+  ) then
+    alter table articles
+      add constraint articles_author_type_check
+      check (author_type in ('human', 'agent_assisted', 'agent_generated'));
+  end if;
+
   if not exists (
     select 1
     from pg_constraint

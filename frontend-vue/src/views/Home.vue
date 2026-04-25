@@ -16,7 +16,7 @@
         
         <!-- Blog Section (LatestPosts) -->
         <LatestPosts />
-        
+        <LatestAgentPosts />
         <ContactSection />
       </main>
     </div>
@@ -36,6 +36,7 @@ import ExperienceSection from '@/components/home/sections/ExperienceSection.vue'
 import ProjectsSection from '@/components/home/sections/ProjectsSection.vue'
 import ContactSection from '@/components/home/sections/ContactSection.vue'
 import LatestPosts from '@/components/shared/LatestPosts.vue'
+import LatestAgentPosts from '@/components/home/LatestAgentPosts.vue'
 
 // Create ref for scroll container
 const scrollContainerRef = ref(null)

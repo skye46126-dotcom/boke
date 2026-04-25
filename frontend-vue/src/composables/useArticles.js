@@ -1,5 +1,8 @@
-import { ref, computed } from 'vue'
-import { supabase } from '@/lib/supabase'
+import { ref } from 'vue'
+import {
+    getArticleBySlug,
+    getPublishedArticles,
+} from '@/services/articleService'
 
 /**
  * Composable for fetching and managing articles data
@@ -8,9 +11,8 @@ import { supabase } from '@/lib/supabase'
 export function useArticles(options = {}) {
     const {
         limit = null,
-        orderBy = 'date',  // Changed from 'created_at' to match actual DB schema
+        orderBy = 'date',
         ascending = false,
-        status = 'published'
     } = options
 
     const articles = ref([])
@@ -25,25 +27,11 @@ export function useArticles(options = {}) {
         error.value = null
 
         try {
-            let query = supabase
-                .from('articles')
-                .select('*')
-                .order(orderBy, { ascending })
-
-            // Add status filter if provided
-            if (status) {
-                query = query.eq('status', status)
-            }
-
-            // Add limit if provided
-            if (limit) {
-                query = query.limit(limit)
-            }
-
-            const { data, error: fetchError } = await query
-
-            if (fetchError) throw fetchError
-            articles.value = data || []
+            articles.value = await getPublishedArticles({
+                limit,
+                orderBy,
+                ascending,
+            })
         } catch (err) {
             console.error('Error fetching articles:', err)
             error.value = err.message || 'Failed to load articles'
@@ -85,16 +73,7 @@ export function useArticle(slug) {
         error.value = null
 
         try {
-            const { data, error: fetchError } = await supabase
-                .from('articles')
-                .select('*')
-                .eq('slug', slug.value || slug)
-                .single()
-
-            if (fetchError) throw fetchError
-            if (!data) throw new Error('Article not found')
-
-            article.value = data
+            article.value = await getArticleBySlug(slug.value || slug)
         } catch (err) {
             console.error('Error fetching article:', err)
             error.value = err.message || 'Failed to load article'

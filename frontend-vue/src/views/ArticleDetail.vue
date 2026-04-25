@@ -73,74 +73,44 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { supabase } from '../lib/supabase'
 import { extractTableOfContents, addHeadingIds } from '@/lib/utils'
 import ReadingProgress from '../components/ReadingProgress.vue'
 import TableOfContents from '../components/TableOfContents.vue'
 import Comments from '../components/Comments.vue'
 import { Eye } from 'lucide-vue-next'
 import { processCodeBlocks } from '../lib/shiki'
+import { useArticleDetail } from '@/composables/useArticleDetail'
 
 const route = useRoute()
-const article = ref(null)
-const loading = ref(true)
-const error = ref(null)
+const slugRef = ref(route.params.slug)
+const { article, loading, error } = useArticleDetail(slugRef)
 const tableOfContents = ref([])
 
 const fetchArticle = async () => {
-  if (!supabase) {
-    error.value = 'Database not configured'
-    loading.value = false
+  if (!article.value?.content) {
     return
   }
 
-  loading.value = true
-  error.value = null
-  
-  try {
-    const { data, error: fetchError } = await supabase
-      .from('articles')
-      .select('*')
-      .eq('slug', route.params.slug)
-      .single()
+  const highlightedContent = await processCodeBlocks(article.value.content)
+  article.value = { ...article.value, content: highlightedContent }
+  tableOfContents.value = extractTableOfContents(highlightedContent)
 
-    if (fetchError) throw fetchError
-    if (!data) throw new Error('Article not found')
-    
-    // Process code blocks with Shiki
-    const highlightedContent = await processCodeBlocks(data.content)
-    article.value = { ...data, content: highlightedContent }
-    
-    // Extract headings for table of contents using utility
-    tableOfContents.value = extractTableOfContents(highlightedContent)
-    
-    // Add IDs to headings if they don't have them
-    if (typeof document !== 'undefined') {
-      setTimeout(() => {
-        addHeadingIds('.vp-doc', tableOfContents.value)
-      }, 100)
-    }
-
-    // Increment view count
-    try {
-      await supabase.rpc('increment_article_views', { article_slug: route.params.slug })
-    } catch (viewErr) {
-      console.warn('Failed to increment view count:', viewErr)
-    }
-  } catch (err) {
-    console.error('Error fetching article:', err)
-    error.value = err.message || 'Failed to load article'
-  } finally {
-    loading.value = false
+  if (typeof document !== 'undefined') {
+    setTimeout(() => {
+      addHeadingIds('.vp-doc', tableOfContents.value)
+    }, 100)
   }
 }
 
-onMounted(fetchArticle)
+watch(() => route.params.slug, (slug) => {
+  slugRef.value = slug
+})
 
-// Watch for route changes
-watch(() => route.params.slug, fetchArticle)
+watch(() => article.value?.id, () => {
+  fetchArticle()
+}, { immediate: true })
 </script>
 
 <style>
