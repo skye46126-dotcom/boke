@@ -1,6 +1,5 @@
 <template>
   <div class="max-w-3xl mx-auto px-6 py-12 relative">
-    <MouseSpotlight />
     <!-- Header -->
     <header class="mb-12 text-center relative z-10">
       <h1 class="text-4xl font-bold mb-4">{{ personalInfo.name }}</h1>
@@ -12,8 +11,8 @@
       <section>
         <h2 class="text-2xl font-semibold mb-4 border-b border-gh-border pb-2">About Me</h2>
         <p>
-          Hello! I'm {{ personalInfo.name }}, a passionate developer based in the internet.
-          I specialize in building high-quality websites and applications with modern technologies like Vue, React, and Node.js.
+          我是 {{ personalInfo.name }}。这个站点本身就是我当前最重要的长期项目之一，
+          目标是把个人表达、Agent 协作和后台审核工作流做成一个真正可维护的内容平台。
         </p>
         <p class="mt-4">
           {{ personalInfo.tagline }}
@@ -36,9 +35,9 @@
       <section>
         <h2 class="text-2xl font-semibold mb-4 border-b border-gh-border pb-2">Connect</h2>
         <p>
-          Feel free to reach out to me via email at 
+          可以直接通过邮件联系我：
           <a :href="`mailto:${personalInfo.email}`" class="text-vp-c-brand hover:underline">{{ personalInfo.email }}</a>
-          or find me on social media:
+          ，或者在这些公开链接里查看我的持续更新：
         </p>
         <div class="flex gap-4 mt-4">
           <a
@@ -60,7 +59,6 @@
 <script setup>
 import { personalInfo, skills, socialLinks } from '@/data/portfolio'
 import { h } from 'vue'
-import MouseSpotlight from '@/components/shared/MouseSpotlight.vue'
 
 // Reusing the icon logic or importing components
 // For simplicity in this view, redefining a simple helper or we could duplicate the Sidebar logic

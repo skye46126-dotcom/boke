@@ -1,61 +1,38 @@
 <template>
-  <AppSection id="about" title="About">
+  <AppSection id="about" title="About Me">
     <div class="about-content">
       <div class="about-text">
         <p class="intro">
-          你好！我是 <strong>{{ personalInfo.name }}</strong>，一名 {{ personalInfo.title }}。
-          我热爱使用现代技术栈构建优雅、高效的 Web 应用程序。
+          你好，我是 <strong>chenc</strong>。<br />
+          我关注产品结构、全栈实现和 Agent 协作工作流，正在把个人博客迭代成一个可持续维护的内容平台。
         </p>
         
-        <h3 class="subsection-title">💻 技术专长</h3>
+        <h3 class="subsection-title">[ 产品结构 ]</h3>
         <p>
-          我专注于全栈开发，擅长使用 <strong>Vue.js</strong>、<strong>React</strong> 和 
-          <strong>TypeScript</strong> 构建现代化的前端应用。后端方面，熟练使用 
-          <strong>Node.js</strong> 和 <strong>Python</strong>，对数据库设计和 API 开发
-          有深入理解。
+          拆清内容边界、页面层级和迭代优先级。
         </p>
+
+        <h3 class="subsection-title">[ 工程实现 ]</h3>
         <p>
-          我相信技术是用来解决问题的工具，而不是目的本身。选择合适的技术栈，
-          写出简洁可维护的代码，是我一直追求的目标。
-        </p>
-        
-        <h3 class="subsection-title">🚀 工作经历</h3>
-        <p>
-          拥有 <strong>{{ experiences[0]?.period || '多年' }}</strong> 的开发经验，
-          曾在 <strong>{{ experiences[0]?.company || '多家' }}公司</strong> 担任核心开发角色。
-          在工作中，我不仅注重技术实现，更关注用户体验和产品质量。
-        </p>
-        <p>
-          参与过多个大型项目的架构设计和开发，从需求分析到上线部署，积累了丰富的实战经验。
-          特别擅长性能优化、代码重构和团队协作。
+          使用 <strong>Vue 3</strong> / <strong>Vite</strong> / <strong>Tailwind CSS</strong> /
+          <strong>Node.js</strong> / <strong>Supabase</strong> / <strong>Python</strong> /
+          <strong>rust</strong> 构建产品功能。
         </p>
         
-        <h3 class="subsection-title">💡 个人理念</h3>
+        <h3 class="subsection-title">[ Agent 工作流 ]</h3>
         <p>
-          <em>"代码是写给人读的，只是顺便让机器执行。"</em> —— 这是我一直坚持的开发理念。
-          我认为优秀的代码应该像散文一样易读，逻辑清晰，注释恰当。
-        </p>
-        <p>
-          热爱学习新技术，关注行业动态，乐于分享技术经验。
-          业余时间喜欢阅读技术博客、参与开源项目，持续提升自己的技术能力。
+          设计 Agent Forum、自动发布、审核流程和后台写入 API。
         </p>
         
-        <p class="cta">
-          💬 想了解更多？可以通过下方的 Terminal 与我互动，或查看我的
-          <a href="/#projects" class="inline-link">项目作品</a>。
+        <h3 class="subsection-title">理念：</h3>
+        <p>
+          站点本身就是作品集。比起写一份夸张履历，我更希望直接展示真实的构建过程。
         </p>
       </div>
       
       <!-- Terminal Component -->
       <div class="terminal-wrapper">
         <Terminal />
-      </div>
-      
-      <!-- Skills -->
-      <div class="skills">
-        <span v-for="skill in skills" :key="skill" class="skill-tag">
-          {{ skill }}
-        </span>
       </div>
     </div>
   </AppSection>
@@ -64,7 +41,6 @@
 <script setup>
 import Terminal from '@/components/shared/Terminal.vue'
 import AppSection from '@/components/ui/AppSection.vue'
-import { personalInfo, skills, experiences } from '@/data/portfolio'
 </script>
 
 <style scoped>
@@ -93,45 +69,7 @@ import { personalInfo, skills, experiences } from '@/data/portfolio'
   font-weight: 600;
 }
 
-.about-text em {
-  color: var(--color-gh-text);
-  font-style: italic;
-}
-
-.about-text .cta {
-  margin-top: 2rem;
-  font-size: 1rem;
-  color: var(--color-gh-text);
-}
-
-.inline-link {
-  color: var(--color-vp-c-brand);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.3s ease;
-}
-
-.inline-link:hover {
-  border-bottom-color: var(--color-vp-c-brand);
-}
-
 .terminal-wrapper {
   margin: 2rem 0;
-}
-
-.skills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 2rem;
-}
-
-.skill-tag {
-  font-size: 0.875rem;
-  padding: 0.5rem 1rem;
-  border-radius: 9999px;
-  background: rgba(0, 220, 130, 0.1);
-  color: var(--color-vp-c-brand);
-  border: 1px solid rgba(0, 220, 130, 0.3);
 }
 </style>

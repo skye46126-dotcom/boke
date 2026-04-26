@@ -1,7 +1,5 @@
 <template>
   <div class="not-found">
-    <MouseSpotlight />
-    
     <div class="content">
       <div class="error-code">404</div>
       <h1 class="title">Page Not Found</h1>
@@ -23,7 +21,6 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
-import MouseSpotlight from '@/components/shared/MouseSpotlight.vue'
 
 const router = useRouter()
 

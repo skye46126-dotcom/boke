@@ -1,6 +1,6 @@
 <template>
   <div class="flex-1 flex flex-col overflow-hidden h-full">
-    <div v-if="!activeTab" class="flex-1 flex flex-col items-center justify-center text-gray-600 select-none">
+    <div v-if="!activeTab" class="flex-1 flex flex-col items-center justify-center px-6 text-center text-gray-600 select-none">
        <div class="text-4xl mb-4 opacity-20">⌨</div>
        <p>Select a file to start editing</p>
     </div>
@@ -8,12 +8,12 @@
     <div v-else class="flex-1 overflow-y-auto font-mono text-sm relative custom-scrollbar pb-20" :key="activeTab.id">
         <div class="flex min-h-full">
            <!-- Line Numbers -->
-           <div class="w-12 text-right pr-4 text-gray-600 text-xs select-none bg-[#1e1e1e] shrink-0 pt-4">
+           <div class="w-10 sm:w-12 text-right pr-2 sm:pr-4 text-gray-600 text-[11px] sm:text-xs select-none bg-[#1e1e1e] shrink-0 pt-3 sm:pt-4">
               <div v-for="n in lineCount" :key="n" class="leading-6 h-6">{{ n }}</div>
            </div>
            
            <!-- Code Content (Shiki) -->
-           <div class="flex-1 pt-4 pr-4">
+           <div class="flex-1 min-w-0 pt-3 sm:pt-4 pr-3 sm:pr-4">
               <div v-if="!highlightedCode" class="text-gray-500 animate-pulse">Loading highlight...</div>
               <div v-else v-html="highlightedCode" class="shiki-code relative"></div>
               <!-- Blinking Cursor (Simulated at end) -->
@@ -46,55 +46,22 @@ onMounted(async () => {
   if (props.activeTab) updateHighlight()
 })
 
-const formatVarName = (name) => name.replace(/\s+/g, '').replace(/[^a-zA-Z0-9]/g, '')
-
 const generateContent = (tab) => {
-   const proj = tab.project
-   if (tab.type === 'js') {
-     return `import { ${proj.technologies.slice(0,3).join(', ')} } from 'libs';
+  if (!tab?.file) return ''
+  if (tab.file.type === 'json') {
+    return typeof tab.file.content === 'string'
+      ? tab.file.content
+      : JSON.stringify(tab.file.content, null, 2)
+  }
 
-// ${proj.description}
-export const ${formatVarName(proj.title)} = () => {
-  console.log('Project initialized!');
-  
-  return (
-    <div className="awesome-project">
-      {/* TODO: Build something amazing */}
-      <h1>${proj.title}</h1>
-      <p>Powered by ${proj.technologies[0]}</p>
-    </div>
-  );
-}`
-   } else if (tab.type === 'json') {
-     return JSON.stringify({
-       name: proj.title.replace(/\s+/g, '-').toLowerCase(),
-       version: "1.0.0",
-       private: true,
-       dependencies: proj.technologies.reduce((acc, t) => ({...acc, [t.toLowerCase()]: "^latest"}), {}),
-       scripts: { dev: "vite", build: "vite build" }
-     }, null, 2)
-   } else if (tab.type === 'md') {
-     return `# ${proj.title} ${proj.emoji}
-
-> ${proj.description}
-
-## Features
-- Built with ${proj.technologies.join(' + ')}
-- High performance
-- Responsive design
-
-${proj.demo ? `[Try Demo](${proj.demo})` : ''}
-${proj.github ? `[View Source](${proj.github})` : ''}
-`
-   }
-   return ''
+  return tab.file.content || ''
 }
 
 const updateHighlight = async () => {
   if (!props.activeTab || !highlighter) return
   
   const code = generateContent(props.activeTab)
-  const lang = props.activeTab.type === 'js' ? 'javascript' : props.activeTab.type === 'md' ? 'markdown' : 'json'
+  const lang = props.activeTab.file?.type === 'json' ? 'json' : 'markdown'
   
   highlightedCode.value = highlighter.codeToHtml(code, {
     lang,
@@ -115,8 +82,14 @@ watch(() => props.activeTab, updateHighlight, { deep: true })
   background-color: transparent !important;
   margin: 0;
   padding: 0;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.5;
+}
+
+@media (min-width: 640px) {
+  :deep(.shiki) {
+    font-size: 14px;
+  }
 }
 
 :deep(pre) {

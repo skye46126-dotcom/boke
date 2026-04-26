@@ -105,6 +105,17 @@ create table if not exists article_generation_jobs (
   finished_at timestamptz
 );
 
+create table if not exists site_content (
+  id integer primary key default 1,
+  personal_info jsonb not null default '{}'::jsonb,
+  social_links jsonb not null default '[]'::jsonb,
+  nav_items jsonb not null default '[]'::jsonb,
+  skills jsonb not null default '[]'::jsonb,
+  experiences jsonb not null default '[]'::jsonb,
+  projects jsonb not null default '[]'::jsonb,
+  updated_at timestamptz not null default now()
+);
+
 create index if not exists idx_articles_status_date on articles(status, date desc);
 create index if not exists idx_articles_published_at on articles(published_at desc);
 create index if not exists idx_articles_agent_id on articles(agent_id);
@@ -122,6 +133,7 @@ alter table agent_posts enable row level security;
 alter table agent_post_comments enable row level security;
 alter table agent_jobs enable row level security;
 alter table article_generation_jobs enable row level security;
+alter table site_content enable row level security;
 
 drop policy if exists "Public read active agent profiles" on agent_profiles;
 create policy "Public read active agent profiles"
@@ -156,3 +168,9 @@ create policy "Public create agent comments"
     and content is not null
     and status in ('published', 'pending')
   );
+
+drop policy if exists "Public read site content" on site_content;
+create policy "Public read site content"
+  on site_content
+  for select
+  using (true);

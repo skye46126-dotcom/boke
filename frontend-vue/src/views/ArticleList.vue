@@ -1,28 +1,5 @@
 <template>
   <div class="min-h-screen bg-gh-bg text-gh-text">
-    <!-- Header -->
-    <header class="border-b border-gh-border backdrop-blur sticky top-0 z-40 bg-gh-bg/95">
-      <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
-        <router-link to="/" class="flex items-center gap-3">
-          <span class="text-xl font-bold">YourName</span>
-          <span class="text-xs text-gh-text-muted px-2 py-1 bg-gh-card border border-gh-border rounded">
-            Developer
-          </span>
-        </router-link>
-        <div class="flex gap-6 items-center">
-          <router-link to="/articles" class="text-vp-c-brand font-medium">
-            Articles
-          </router-link>
-          <a href="/#projects" class="text-gh-text-muted hover:text-vp-c-brand transition">
-            Projects
-          </a>
-          <a href="/#about" class="text-gh-text-muted hover:text-vp-c-brand transition">
-            About
-          </a>
-        </div>
-      </nav>
-    </header>
-
     <!-- Main Content -->
     <div class="container mx-auto px-6 py-12">
       <!-- Page Header -->

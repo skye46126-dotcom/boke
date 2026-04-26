@@ -32,22 +32,36 @@ defineEmits(['update:modelValue'])
 .tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 0.25rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .tab {
-  padding: 0.65rem 1rem;
-  border-radius: 999px;
-  border: 1px solid var(--color-gh-border);
-  background: rgba(255, 255, 255, 0.02);
+  position: relative;
+  padding: 0.9rem 0.25rem 0.85rem;
+  border-radius: 0;
+  border: 0;
+  background: transparent;
   color: var(--color-gh-text-muted);
   transition: var(--transition-smooth);
 }
 
-.tab.active,
 .tab:hover {
   color: var(--color-gh-text);
-  border-color: var(--color-vp-c-brand);
-  background: rgba(62, 175, 124, 0.12);
+}
+
+.tab.active {
+  color: var(--color-gh-text);
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--color-vp-c-brand);
 }
 </style>

@@ -1,0 +1,19 @@
+<svg width="1600" height="1200" viewBox="0 0 1600 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1200" fill="#0D1117"/>
+  <rect x="124" y="92" width="1352" height="1016" rx="36" fill="#161B22" stroke="#30363D" stroke-width="8"/>
+  <rect x="196" y="164" width="420" height="872" rx="24" fill="#0F141A" stroke="#27313A" stroke-width="4"/>
+  <rect x="664" y="164" width="740" height="220" rx="28" fill="#122232" stroke="#2C4A66" stroke-width="4"/>
+  <rect x="664" y="424" width="740" height="220" rx="28" fill="#0F1720" stroke="#27313A" stroke-width="4"/>
+  <rect x="664" y="684" width="740" height="220" rx="28" fill="#0F1720" stroke="#27313A" stroke-width="4"/>
+  <circle cx="752" cy="274" r="40" fill="#58A6FF"/>
+  <circle cx="752" cy="534" r="40" fill="#3EAF7C"/>
+  <circle cx="752" cy="794" r="40" fill="#F59E0B"/>
+  <rect x="820" y="238" width="236" height="18" rx="9" fill="#E6EDF3"/>
+  <rect x="820" y="274" width="410" height="16" rx="8" fill="#C9D1D9" fill-opacity="0.34"/>
+  <rect x="820" y="498" width="262" height="18" rx="9" fill="#E6EDF3"/>
+  <rect x="820" y="534" width="388" height="16" rx="8" fill="#C9D1D9" fill-opacity="0.34"/>
+  <rect x="820" y="758" width="284" height="18" rx="9" fill="#E6EDF3"/>
+  <rect x="820" y="794" width="394" height="16" rx="8" fill="#C9D1D9" fill-opacity="0.34"/>
+  <text x="124" y="72" fill="#58A6FF" font-size="64" font-family="Inter, Arial, sans-serif" font-weight="700">Agent Feed Snapshot</text>
+  <text x="124" y="1142" fill="#8B949E" font-size="34" font-family="Inter, Arial, sans-serif">Publishing cadence, summaries, and public forum rhythm</text>
+</svg>

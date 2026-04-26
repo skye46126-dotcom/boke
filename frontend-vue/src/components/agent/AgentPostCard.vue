@@ -1,41 +1,52 @@
 <template>
   <router-link :to="`/agent-feed/${post.id}`" class="card-link">
     <BaseCard variant="border" :hover="true" :clickable="true" class="post-card">
-      <div class="post-header">
-        <span class="type">{{ post.post_type }}</span>
-        <span class="meta">{{ formatDate(post.published_at || post.created_at) }}</span>
-      </div>
-      <h3 class="title">{{ post.title }}</h3>
-      <p class="summary">{{ post.summary }}</p>
+      <div class="post-shell">
+        <img :src="post.agent?.avatar_url || '/images/avatar.jpg'" :alt="post.agent?.name || 'Agent'" class="avatar" />
 
-      <div class="footer">
-        <div class="agent">
-          <span class="agent-name">{{ post.agent?.name || 'Agent' }}</span>
-          <span class="agent-role">{{ post.agent?.role || 'assistant' }}</span>
-        </div>
-        <div class="stats">
-          <span>{{ post.view_count || 0 }} views</span>
-          <span>{{ post.comment_count || 0 }} comments</span>
-        </div>
-      </div>
+        <div class="post-body">
+          <div class="post-header">
+            <div class="identity">
+              <strong class="agent-name">{{ post.agent?.name || 'Agent' }}</strong>
+              <span class="agent-handle">{{ agentHandle }}</span>
+              <span class="meta-dot">·</span>
+              <span class="meta">{{ formatDate(post.published_at || post.created_at) }}</span>
+              <span class="meta-dot">·</span>
+              <span class="type">{{ post.post_type }}</span>
+            </div>
+          </div>
 
-      <div v-if="post.tags?.length" class="tags">
-        <span v-for="tag in post.tags" :key="tag" class="tag">{{ tag }}</span>
+          <h3 class="title">{{ post.title }}</h3>
+          <p class="summary">{{ previewText }}</p>
+
+          <div v-if="post.tags?.length" class="tags">
+            <span v-for="tag in post.tags" :key="tag" class="tag">#{{ tag }}</span>
+          </div>
+
+          <div class="footer">
+            <span>💬 {{ post.comment_count || 0 }}</span>
+            <span>👁 {{ post.view_count || 0 }}</span>
+          </div>
+        </div>
       </div>
     </BaseCard>
   </router-link>
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import BaseCard from '@/components/ui/BaseCard.vue'
-import { formatDate } from '@/lib/utils'
+import { formatAgentHandle, formatDate, getExcerpt } from '@/lib/utils'
 
-defineProps({
+const props = defineProps({
   post: {
     type: Object,
     required: true,
   },
 })
+
+const agentHandle = computed(() => formatAgentHandle(props.post.agent || { id: props.post.agent_id }))
+const previewText = computed(() => props.post.summary || getExcerpt(props.post.content || '', 140))
 </script>
 
 <style scoped>
@@ -44,67 +55,103 @@ defineProps({
 }
 
 .post-card {
-  padding: 1.5rem;
+  padding: 1rem 1.1rem;
+  border-radius: 20px;
+}
+
+.post-shell {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 0.9rem;
+}
+
+.avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 1px solid var(--color-gh-border);
+}
+
+.post-body {
+  min-width: 0;
 }
 
 .post-header,
+.identity,
 .footer,
-.stats,
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-.post-header,
-.footer {
-  justify-content: space-between;
+  gap: 0.4rem 0.55rem;
   align-items: center;
 }
 
-.type {
-  color: var(--color-vp-c-brand);
-  font-size: 0.85rem;
-}
-
-.meta,
-.summary,
-.agent-role,
-.stats {
+.identity {
   color: var(--color-gh-text-muted);
-}
-
-.title {
-  margin-top: 1rem;
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: var(--color-gh-text);
-}
-
-.summary {
-  margin-top: 0.85rem;
-  line-height: 1.7;
-}
-
-.footer {
-  margin-top: 1.25rem;
+  font-size: 0.92rem;
 }
 
 .agent-name {
   color: var(--color-gh-text);
-  font-weight: 600;
-  margin-right: 0.5rem;
+  font-weight: 700;
+}
+
+.agent-handle,
+.meta,
+.meta-dot {
+  color: var(--color-gh-text-muted);
+}
+
+.type {
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(62, 175, 124, 0.12);
+  color: var(--color-vp-c-brand);
+  font-size: 0.78rem;
+}
+
+.title {
+  margin-top: 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-gh-text);
+  line-height: 1.4;
+}
+
+.summary {
+  margin-top: 0.55rem;
+  line-height: 1.7;
+  color: var(--color-gh-text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.footer {
+  margin-top: 0.9rem;
+  color: var(--color-gh-text-muted);
+  font-size: 0.92rem;
 }
 
 .tags {
-  margin-top: 1rem;
+  margin-top: 0.85rem;
 }
 
 .tag {
-  padding: 0.3rem 0.65rem;
-  border-radius: 999px;
-  border: 1px solid var(--color-gh-border);
-  color: var(--color-gh-text-muted);
+  color: var(--color-vp-c-brand);
   font-size: 0.8rem;
+}
+
+@media (max-width: 640px) {
+  .post-shell {
+    grid-template-columns: 44px minmax(0, 1fr);
+  }
+
+  .avatar {
+    width: 44px;
+    height: 44px;
+  }
 }
 </style>

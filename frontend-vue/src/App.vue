@@ -2,6 +2,7 @@
   <div class="min-h-screen bg-gh-bg text-gh-text text-sm font-sans antialiased">
     <!-- Custom Cursor -->
     <CustomCursor />
+    <MouseSpotlight />
     
     <SearchDialog />
     
@@ -9,15 +10,18 @@
       <div class="header-content">
         <div class="header-logo">
           <img :src="personalInfo.avatar" :alt="personalInfo.name" class="header-avatar" />
-          <h1 class="pixel-font">MY PIXEL BLOG</h1>
+          <div class="header-title">
+            <h1 class="pixel-font header-title-text">Skye's Space</h1>
+            <p class="header-tagline">Thoughts, projects, agents & daily fragments.</p>
+          </div>
         </div>
         <nav class="pixel-nav">
+          <router-link to="/" class="nav-card-small">Home</router-link>
           <router-link to="/articles" class="nav-card-small">Articles</router-link>
-          <router-link to="/agent-feed" class="nav-card-small">Agent Forum</router-link>
           <router-link to="/projects" class="nav-card-small">Projects (IDE)</router-link>
+          <router-link to="/agent-feed" class="nav-card-small">Agent Feed</router-link>
           <router-link to="/gallery" class="nav-card-small">Gallery</router-link>
           <router-link to="/guestbook" class="nav-card-small">Guestbook</router-link>
-          <router-link to="/" class="nav-card-small">Home</router-link>
           <router-link to="/about" class="nav-card-small">About</router-link>
         </nav>
       </div>
@@ -26,7 +30,7 @@
       <router-view></router-view>
     </main>
     <footer v-if="!$route.meta.hideFooter" class="pixel-ink-footer">
-      <p class="pixel-font">&copy; 2024 Pixel Blog. Powered by Vue & Supabase.</p>
+      <p class="pixel-font">&copy; {{ currentYear }} Skye's Space. Powered by Vue & Supabase.</p>
     </footer>
     
     <!-- Back to Top Button -->
@@ -51,6 +55,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useHead } from '@vueuse/head'
 import { personalInfo } from '@/data/portfolio'
 import CustomCursor from './components/shared/CustomCursor.vue'
+import MouseSpotlight from './components/shared/MouseSpotlight.vue'
 import SearchDialog from './components/shared/SearchDialog.vue'
 import BackToTop from './components/shared/BackToTop.vue'
 import Terminal from './components/shared/Terminal.vue'
@@ -59,6 +64,7 @@ import TerminalGestureFeedback from './components/shared/TerminalGestureFeedback
 // Terminal State
 const isTerminalOpen = ref(false)
 const isGestureActive = ref(false)
+const currentYear = new Date().getFullYear()
 
 const toggleTerminal = () => {
   isTerminalOpen.value = !isTerminalOpen.value
@@ -138,11 +144,11 @@ onUnmounted(() => {
 
 // Global SEO Configuration
 useHead({
-  title: 'chenc - Full Stack Developer && Product Manager',
+  title: "Skye's Space",
   meta: [
     {
       name: 'description',
-      content: '个人技术博客，分享前端开发、Vue.js、TypeScript 等技术经验'
+      content: 'Thoughts, projects, agents & daily fragments.'
     },
     {
       name: 'keywords',
@@ -151,11 +157,11 @@ useHead({
     // Open Graph
     {
       property: 'og:title',
-      content: 'chenc - Full Stack Developer && Product Manager'
+      content: "Skye's Space"
     },
     {
       property: 'og:description',
-      content: '个人技术博客，分享前端开发经验与项目实践'
+      content: 'Thoughts, projects, agents & daily fragments.'
     },
     {
       property: 'og:type',
@@ -176,11 +182,11 @@ useHead({
     },
     {
       name: 'twitter:title',
-      content: 'chenc - Full Stack Developer && Product Manager'
+      content: "Skye's Space"
     },
     {
       name: 'twitter:description',
-      content: '个人技术博客，分享前端开发经验'
+      content: 'Thoughts, projects, agents & daily fragments.'
     }
   ],
   link: [
@@ -221,6 +227,28 @@ useHead({
   align-items: center;
   gap: 0.75rem;
   flex-shrink: 0;
+}
+
+.header-title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.header-title-text {
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+
+.header-tagline {
+  font-size: 0.75rem;
+  line-height: 1.2;
+  color: var(--color-pixel-ink-gray);
+  opacity: 0.85;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .header-avatar {
@@ -264,6 +292,21 @@ useHead({
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
+  }
+
+  .header-logo {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .header-title {
+    align-items: center;
+    text-align: center;
+  }
+
+  .header-tagline {
+    white-space: normal;
+    text-overflow: initial;
   }
 
   .pixel-nav {

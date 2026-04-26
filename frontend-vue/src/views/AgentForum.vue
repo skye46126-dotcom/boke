@@ -1,61 +1,45 @@
 <template>
-  <div class="page-shell">
-    <div class="page-container">
-      <AgentForumHero />
+  <div class="feed-shell">
+    <div class="feed-container">
+      <div class="feed-layout">
+        <section class="feed-main">
+          <AgentForumHero />
 
-      <div class="page-toolbar">
-        <div class="toolbar-main">
-          <AgentPostTabs
-            v-model="selectedType"
-            :types="availableTypes"
-          />
-          <input
-            v-model.trim="keyword"
-            type="text"
-            class="search-input"
-            placeholder="按标题、摘要或标签搜索 Agent 动态"
-          />
-        </div>
-        <button
-          v-if="selectedTag"
-          type="button"
-          class="active-tag"
-          @click="clearTag"
-        >
-          Tag: {{ selectedTag }} ×
-        </button>
-      </div>
+          <div class="feed-toolbar">
+            <AgentPostTabs
+              v-model="selectedType"
+              :types="availableTypes"
+            />
 
-      <div v-if="!loading && !error" class="stats-row">
-        <div class="stat-card">
-          <span>Published Posts</span>
-          <strong>{{ filteredPosts.length }}</strong>
-        </div>
-        <div class="stat-card">
-          <span>Active Tags</span>
-          <strong>{{ availableTags.length }}</strong>
-        </div>
-        <div class="stat-card">
-          <span>Active Agents</span>
-          <strong>{{ agents.length }}</strong>
-        </div>
-      </div>
+            <div class="toolbar-row">
+              <p v-if="selectedTag" class="active-filter">
+                正在查看 #{{ selectedTag }}
+                <button type="button" class="clear-button" @click="clearTag">清除</button>
+              </p>
+              <input
+                v-model.trim="keyword"
+                type="text"
+                class="search-input"
+                placeholder="搜索标题、摘要或标签"
+              />
+            </div>
+          </div>
 
-      <div class="page-layout">
-        <section>
-          <LoadingState v-if="loading" message="Loading agent posts..." />
+          <LoadingState v-if="loading" message="Loading agent feed..." />
           <ErrorState v-else-if="error" :message="error" />
           <EmptyState
             v-else-if="!filteredPosts.length"
             title="暂无 Agent 动态"
-            description="等 Agent 发布公开动态后，这里会展示项目观察、文章摘要和站点更新。"
+            description="等 Agent 发布公开动态后，这里会出现新的观察、草稿提醒和站点更新。"
           />
           <AgentPostList v-else :posts="filteredPosts" />
         </section>
 
         <AgentSidebar
+          class="feed-side"
           :agents="agents"
           :tags="availableTags"
+          :stats="feedStats"
           @select-tag="handleSelectTag"
         />
       </div>
@@ -87,6 +71,12 @@ const {
   loadPosts,
 } = useAgentPosts()
 const keyword = ref('')
+
+const feedStats = computed(() => ({
+  posts: filteredPosts.value.length,
+  agents: agents.value.length,
+  tags: availableTags.value.length,
+}))
 
 const filteredPosts = computed(() => {
   const search = keyword.value.toLowerCase()
@@ -133,80 +123,92 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.page-shell {
+.feed-shell {
   background: var(--color-gh-bg);
   min-height: 100vh;
 }
 
-.page-container {
-  max-width: 1280px;
+.feed-container {
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 3rem 1.5rem 5rem;
+  padding: 1.5rem 1.25rem 4rem;
 }
 
-.page-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 2rem;
+.feed-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 1.5rem;
+  align-items: start;
 }
 
-.toolbar-main {
+.feed-main {
   display: grid;
   gap: 1rem;
-  flex: 1;
+  min-width: 0;
+}
+
+.feed-side {
+  position: sticky;
+  top: 88px;
+}
+
+.feed-toolbar {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.toolbar-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
 }
 
 .search-input {
-  width: 100%;
-  padding: 0.85rem 1rem;
-  border-radius: 16px;
-  border: 1px solid var(--color-gh-border);
-  background: rgba(255, 255, 255, 0.03);
-  color: var(--color-gh-text);
-}
-
-.active-tag {
-  padding: 0.65rem 0.9rem;
+  width: min(280px, 100%);
+  padding: 0.8rem 0.95rem;
   border-radius: 999px;
   border: 1px solid var(--color-gh-border);
-  color: var(--color-gh-text-muted);
-}
-
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.stat-card {
-  display: grid;
-  gap: 0.3rem;
-  padding: 1rem 1.1rem;
-  border-radius: 18px;
-  border: 1px solid var(--color-gh-border);
   background: rgba(255, 255, 255, 0.03);
+  color: var(--color-gh-text);
+}
+
+.active-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
   color: var(--color-gh-text-muted);
 }
 
-.stat-card strong {
-  color: var(--color-gh-text);
-  font-size: 1.75rem;
-}
-
-.page-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
-  gap: 1.25rem;
-  margin-top: 1.5rem;
+.clear-button {
+  border: 0;
+  background: transparent;
+  color: var(--color-vp-c-brand);
+  cursor: pointer;
 }
 
 @media (max-width: 1024px) {
-  .stats-row,
-  .page-layout {
+  .feed-layout {
     grid-template-columns: 1fr;
+  }
+
+  .feed-side {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .feed-container {
+    padding-inline: 1rem;
+  }
+
+  .toolbar-row {
+    display: grid;
+  }
+
+  .search-input {
+    width: 100%;
   }
 }
 </style>

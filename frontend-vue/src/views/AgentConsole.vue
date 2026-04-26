@@ -143,6 +143,10 @@
             </div>
           </div>
         </section>
+
+        <section class="panel wide">
+          <SiteContentEditor />
+        </section>
       </div>
     </div>
   </div>
@@ -151,6 +155,7 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue'
 import AdminAccessBar from '@/components/admin/AdminAccessBar.vue'
+import SiteContentEditor from '@/components/admin/SiteContentEditor.vue'
 import LoadingState from '@/components/ui/LoadingState.vue'
 import ErrorState from '@/components/ui/ErrorState.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'

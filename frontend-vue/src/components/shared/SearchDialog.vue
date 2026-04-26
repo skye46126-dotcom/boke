@@ -56,7 +56,7 @@ const navigation = [
   { name: 'Home', path: '/', icon: Home },
   { name: 'All Articles', path: '/articles', icon: FileText },
   { name: 'Gallery', path: '/gallery', icon: Image },
-  { name: 'Agent Forum', path: '/agent-feed', icon: Bot },
+  { name: 'Agent Feed', path: '/agent-feed', icon: Bot },
 ]
 
 // 键盘快捷键 Cmd+K

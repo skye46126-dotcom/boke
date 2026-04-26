@@ -1,8 +1,5 @@
 <template>
   <div class="portfolio-home">
-    <!-- Mouse Spotlight Effect -->
-    <MouseSpotlight />
-    
     <!-- Desktop: Left-Right Split Layout -->
     <div class="layout-container">
       <!-- Left Sidebar (Fixed) -->
@@ -11,12 +8,11 @@
       <!-- Right Content (Scrollable) -->
       <main ref="scrollContainerRef" class="main-content">
         <AboutSection />
-        <ExperienceSection />
         <ProjectsSection />
-        
-        <!-- Blog Section (LatestPosts) -->
+        <ExperienceSection />
         <LatestPosts />
         <LatestAgentPosts />
+        <TechStackSection />
         <ContactSection />
       </main>
     </div>
@@ -29,11 +25,11 @@ import { navItems } from '@/data/portfolio'
 import { useScrollSpy } from '@/composables/useScrollSpy'
 
 // Import components
-import MouseSpotlight from '@/components/shared/MouseSpotlight.vue'
 import Sidebar from '@/components/home/Sidebar.vue'
 import AboutSection from '@/components/home/sections/AboutSection.vue'
 import ExperienceSection from '@/components/home/sections/ExperienceSection.vue'
 import ProjectsSection from '@/components/home/sections/ProjectsSection.vue'
+import TechStackSection from '@/components/home/sections/TechStackSection.vue'
 import ContactSection from '@/components/home/sections/ContactSection.vue'
 import LatestPosts from '@/components/shared/LatestPosts.vue'
 import LatestAgentPosts from '@/components/home/LatestAgentPosts.vue'

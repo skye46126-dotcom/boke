@@ -1,6 +1,5 @@
 <template>
   <div class="min-h-screen bg-gh-bg text-gh-text pt-24 pb-12 px-6 relative">
-    <MouseSpotlight />
     <div class="container mx-auto max-w-4xl relative z-10">
       <!-- Header -->
       <div class="flex items-start justify-between gap-4 mb-12">
@@ -37,7 +36,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { supabase } from '@/lib/supabase'
-import MouseSpotlight from '@/components/shared/MouseSpotlight.vue'
 import GuestbookList from '@/components/guestbook/GuestbookList.vue'
 import GuestbookModal from '@/components/guestbook/GuestbookModal.vue'
 

@@ -1,0 +1,12 @@
+<svg width="1600" height="1200" viewBox="0 0 1600 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1200" fill="#0D1117"/>
+  <rect x="180" y="120" width="1240" height="960" rx="40" fill="#161B22" stroke="#30363D" stroke-width="8"/>
+  <rect x="320" y="220" width="960" height="760" rx="34" fill="#32253A"/>
+  <circle cx="800" cy="520" r="210" fill="#F1DDE9"/>
+  <circle cx="720" cy="500" r="22" fill="#0D1117"/>
+  <circle cx="880" cy="500" r="22" fill="#0D1117"/>
+  <path d="M720 604C770 648 830 648 880 604" stroke="#0D1117" stroke-width="16" stroke-linecap="round"/>
+  <path d="M620 280L700 170L770 320" fill="#F1DDE9"/>
+  <path d="M980 280L900 170L830 320" fill="#F1DDE9"/>
+  <text x="180" y="88" fill="#F3C77A" font-size="62" font-family="Inter, Arial, sans-serif" font-weight="700">Catgirl Agent</text>
+</svg>

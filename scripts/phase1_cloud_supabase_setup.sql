@@ -93,6 +93,17 @@ create table if not exists article_generation_jobs (
   finished_at timestamptz
 );
 
+create table if not exists site_content (
+  id integer primary key default 1,
+  personal_info jsonb not null default '{}'::jsonb,
+  social_links jsonb not null default '[]'::jsonb,
+  nav_items jsonb not null default '[]'::jsonb,
+  skills jsonb not null default '[]'::jsonb,
+  experiences jsonb not null default '[]'::jsonb,
+  projects jsonb not null default '[]'::jsonb,
+  updated_at timestamptz not null default now()
+);
+
 create index if not exists idx_articles_status_date on articles(status, date desc);
 create index if not exists idx_agent_posts_status_published_at on agent_posts(status, published_at desc);
 create index if not exists idx_agent_post_comments_post_id_created_at on agent_post_comments(post_id, created_at asc);
@@ -103,6 +114,7 @@ alter table agent_posts enable row level security;
 alter table agent_post_comments enable row level security;
 alter table agent_jobs enable row level security;
 alter table article_generation_jobs enable row level security;
+alter table site_content enable row level security;
 
 drop policy if exists "Public read active agent profiles" on agent_profiles;
 create policy "Public read active agent profiles"
@@ -133,6 +145,12 @@ create policy "Public create agent comments"
   on agent_post_comments
   for insert
   with check (nickname is not null and content is not null and status in ('published', 'pending'));
+
+drop policy if exists "Public read site content" on site_content;
+create policy "Public read site content"
+  on site_content
+  for select
+  using (true);
 
 insert into agent_profiles (id, name, avatar_url, description, role, is_active)
 values
@@ -284,3 +302,90 @@ on conflict (id) do update set
   content = excluded.content,
   status = excluded.status,
   created_at = excluded.created_at;
+
+insert into site_content (
+  id, personal_info, social_links, nav_items, skills, experiences, projects, updated_at
+)
+values (
+  1,
+  jsonb_build_object(
+    'name', 'chenc',
+    'title', '全栈开发者 / 产品驱动工程实践',
+    'tagline', '围绕内容平台、Agent 工作流与交互式作品集，把想法做成可维护的软件。',
+    'email', 'skye46126@gmail.com',
+    'avatar', '/images/avatar.jpg'
+  ),
+  jsonb_build_array(
+    jsonb_build_object('name', 'GitHub', 'url', 'https://github.com/skye46126-dotcom', 'icon', 'github', 'ariaLabel', 'Visit GitHub profile'),
+    jsonb_build_object('name', 'Twitter', 'url', 'https://x.com/skyechenyue', 'icon', 'twitter', 'ariaLabel', 'Visit Twitter profile'),
+    jsonb_build_object('name', 'LinkedIn', 'url', 'https://www.linkedin.com/in/tom-skye-4062883a5/', 'icon', 'linkedin', 'ariaLabel', 'Visit LinkedIn profile'),
+    jsonb_build_object('name', 'Email', 'url', 'mailto:skye46126@gmail.com', 'icon', 'email', 'ariaLabel', 'Send email')
+  ),
+  jsonb_build_array(
+    jsonb_build_object('id', 'about', 'label', 'About'),
+    jsonb_build_object('id', 'experience', 'label', 'Experience'),
+    jsonb_build_object('id', 'projects', 'label', 'Projects'),
+    jsonb_build_object('id', 'blog', 'label', 'Blog'),
+    jsonb_build_object('id', 'contact', 'label', 'Contact')
+  ),
+  to_jsonb(array['Vue 3','Vite','Node.js','JavaScript','TypeScript','Python','PostgreSQL','Supabase','Tailwind CSS','Shiki','PWA']),
+  jsonb_build_array(
+    jsonb_build_object(
+      'period', '2025 - 至今',
+      'title', '个人内容平台与 Agent 工作流搭建',
+      'company', 'boke / Independent Project',
+      'description', jsonb_build_array(
+        '围绕 Articles、Agent Forum、Writing Desk、Agent Console 做内容分层，避免博客退化成混乱信息流。',
+        '把前端查询逻辑拆到 services/composables，并补上后台审核、草稿生成、发布驳回与密码登录链路。',
+        '基于云端 Supabase 设计第一阶段表结构、RLS 和初始化脚本，同时补齐本地 API 层承接管理写入。'
+      ),
+      'technologies', jsonb_build_array('Vue 3', 'Vite', 'Supabase', 'Node.js', 'PostgreSQL')
+    ),
+    jsonb_build_object(
+      'period', '2024 - 2025',
+      'title', '交互式作品集与内容体验设计',
+      'company', 'Personal Portfolio',
+      'description', jsonb_build_array(
+        '实现像素风首页、IDE 模式项目展示、全局终端交互和文章阅读体验，统一为同一个作品集叙事。',
+        '整合留言板、图集、搜索、目录、高亮、PWA 等能力，让展示层和内容层有清晰边界。',
+        '持续把占位数据替换为真实项目数据，减少虚构履历和模板化表达。'
+      ),
+      'technologies', jsonb_build_array('Vue 3', 'Tailwind CSS', 'Shiki', 'PWA', 'Supabase')
+    )
+  ),
+  jsonb_build_array(
+    jsonb_build_object(
+      'title', 'Boke 内容平台',
+      'description', '一个正在持续重构的个人内容平台，核心目标是把正式文章、Agent 动态、访客留言和后台审核工作流清晰分层。',
+      'emoji', '📝',
+      'technologies', jsonb_build_array('Vue 3', 'Vite', 'Supabase', 'Tailwind CSS'),
+      'github', 'https://github.com/skye46126-dotcom/boke',
+      'demo', null
+    ),
+    jsonb_build_object(
+      'title', 'Agent Forum & Writing Desk',
+      'description', '围绕 Agent 发帖、草稿生成、人工审核和后台管理搭建的内容生产工作流，当前已具备第一阶段真实接入能力。',
+      'emoji', '🤖',
+      'technologies', jsonb_build_array('Supabase', 'Node.js', 'REST API', 'Vue 3'),
+      'github', 'https://github.com/skye46126-dotcom/boke',
+      'demo', null
+    ),
+    jsonb_build_object(
+      'title', 'Pixel Portfolio IDE Experience',
+      'description', '把个人作品集做成像素风主页与 VS Code 风格项目浏览器，保留终端交互、项目树和内容浏览的统一体验。',
+      'emoji', '🎛️',
+      'technologies', jsonb_build_array('Vue 3', 'Shiki', 'Custom UI', 'PWA'),
+      'github', 'https://github.com/skye46126-dotcom/boke',
+      'demo', null
+    )
+  ),
+  now()
+)
+on conflict (id) do update set
+  personal_info = excluded.personal_info,
+  social_links = excluded.social_links,
+  nav_items = excluded.nav_items,
+  skills = excluded.skills,
+  experiences = excluded.experiences,
+  projects = excluded.projects,
+  updated_at = excluded.updated_at;

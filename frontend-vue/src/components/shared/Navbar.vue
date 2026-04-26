@@ -56,8 +56,10 @@ const isMobileMenuOpen = ref(false)
 
 const navItems = [
   { name: 'Home', path: '/' },
+  { name: 'Articles', path: '/articles' },
   { name: 'Projects (IDE)', path: '/projects' }, // Links to full screen IDE
-  { name: 'Changelog', path: '/changelog' },
+  { name: 'Agent Feed', path: '/agent-feed' },
+  { name: 'Gallery', path: '/gallery' },
   { name: 'Guestbook', path: '/guestbook' },
   { name: 'About', path: '/about' }
 ]

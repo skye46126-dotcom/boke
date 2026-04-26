@@ -1,0 +1,11 @@
+<svg width="1600" height="1200" viewBox="0 0 1600 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1200" fill="#0D1117"/>
+  <rect x="120" y="120" width="1360" height="960" rx="34" fill="#161B22" stroke="#30363D" stroke-width="8"/>
+  <rect x="220" y="260" width="1160" height="660" rx="28" fill="#0D1117"/>
+  <path d="M300 360L360 420L300 480" stroke="#3EAF7C" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M420 420H760" stroke="#E6EDF3" stroke-width="16" stroke-linecap="round"/>
+  <path d="M300 560H1040" stroke="#58A6FF" stroke-width="12" stroke-linecap="round"/>
+  <path d="M300 620H1180" stroke="#C9D1D9" stroke-width="12" stroke-linecap="round" stroke-opacity="0.28"/>
+  <path d="M300 680H980" stroke="#F59E0B" stroke-width="12" stroke-linecap="round"/>
+  <text x="120" y="88" fill="#58A6FF" font-size="62" font-family="Inter, Arial, sans-serif" font-weight="700">Deployment Terminal</text>
+</svg>

@@ -114,6 +114,31 @@ function normalizeAgentPost(row) {
   }
 }
 
+function normalizeSiteContent(row) {
+  return {
+    personalInfo: row?.personal_info || {},
+    socialLinks: row?.social_links || [],
+    navItems: row?.nav_items || [],
+    skills: row?.skills || [],
+    experiences: row?.experiences || [],
+    projects: row?.projects || [],
+  }
+}
+
+function getFriendlySiteContentError(error) {
+  const message = error?.message || ''
+  if (
+    message.includes("Could not find the table 'public.site_content'") ||
+    message.includes('relation "public.site_content" does not exist') ||
+    error?.code === 'PGRST205' ||
+    error?.code === '42P01'
+  ) {
+    return 'The site_content table is missing in Supabase. Run scripts/phase1_cloud_supabase_setup.sql first.'
+  }
+
+  return message
+}
+
 async function requireAdmin(req) {
   const password = (req.headers['x-admin-password'] || '').trim()
 
@@ -145,6 +170,20 @@ async function handleHealth(_req, res) {
     supabaseUrlConfigured: Boolean(supabaseUrl),
     serviceRoleConfigured: Boolean(supabaseServiceRoleKey),
   })
+}
+
+async function handleGetSiteContent(_req, res) {
+  const { data, error } = await adminDb
+    .from('site_content')
+    .select('*')
+    .eq('id', 1)
+    .single()
+
+  if (error) {
+    return sendJson(res, 400, { error: getFriendlySiteContentError(error) })
+  }
+
+  sendJson(res, 200, { data: normalizeSiteContent(data) })
 }
 
 async function handleAgentPostDraft(req, res) {
@@ -567,6 +606,41 @@ async function handleAdminConsoleSnapshot(req, res) {
   })
 }
 
+async function handleAdminGetSiteContent(req, res) {
+  await requireAdmin(req)
+  return handleGetSiteContent(req, res)
+}
+
+async function handleAdminUpdateSiteContent(req, res) {
+  await requireAdmin(req)
+  const body = await readJsonBody(req)
+
+  const payload = {
+    personal_info: body.personalInfo || {},
+    social_links: body.socialLinks || [],
+    nav_items: body.navItems || [],
+    skills: body.skills || [],
+    experiences: body.experiences || [],
+    projects: body.projects || [],
+    updated_at: new Date().toISOString(),
+  }
+
+  const { data, error } = await adminDb
+    .from('site_content')
+    .upsert({
+      id: 1,
+      ...payload,
+    })
+    .select('*')
+    .single()
+
+  if (error) {
+    return sendJson(res, 400, { error: getFriendlySiteContentError(error) })
+  }
+
+  sendJson(res, 200, { data: normalizeSiteContent(data) })
+}
+
 const server = createServer(async (req, res) => {
   if (!req.url || !req.method) {
     return notFound(res)
@@ -582,6 +656,10 @@ const server = createServer(async (req, res) => {
   try {
     if (pathname === '/api/health' && req.method === 'GET') {
       return await handleHealth(req, res)
+    }
+
+    if (pathname === '/api/site-content' && req.method === 'GET') {
+      return await handleGetSiteContent(req, res)
     }
 
     if (pathname === '/api/agent/posts/draft' && req.method === 'POST') {
@@ -614,6 +692,14 @@ const server = createServer(async (req, res) => {
 
     if (pathname === '/api/admin/console-snapshot' && req.method === 'GET') {
       return await handleAdminConsoleSnapshot(req, res)
+    }
+
+    if (pathname === '/api/admin/site-content' && req.method === 'GET') {
+      return await handleAdminGetSiteContent(req, res)
+    }
+
+    if (pathname === '/api/admin/site-content' && req.method === 'PATCH') {
+      return await handleAdminUpdateSiteContent(req, res)
     }
 
     const articleMatch = pathname.match(/^\/api\/admin\/articles\/([^/]+)$/)

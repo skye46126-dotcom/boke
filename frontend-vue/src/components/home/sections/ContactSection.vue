@@ -1,11 +1,11 @@
 <template>
-  <AppSection id="contact" title="Get In Touch">
+  <AppSection id="contact" title="Contact">
     <p class="contact-text">
-      I'm always open to new opportunities and collaborations. 
-      Feel free to reach out if you'd like to work together!
+      如果你对这个内容平台、Agent 工作流、前端重构或产品实现方式感兴趣，
+      可以直接邮件联系我。合作、交流、反馈都欢迎。
     </p>
     <a :href="`mailto:${personalInfo.email}`" class="contact-button">
-      Let's Work Together →
+      Send Email →
     </a>
   </AppSection>
 </template>

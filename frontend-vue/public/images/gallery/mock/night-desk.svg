@@ -1,0 +1,16 @@
+<svg width="1600" height="1200" viewBox="0 0 1600 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1200" fill="#07111A"/>
+  <rect x="0" y="720" width="1600" height="480" fill="#0D1117"/>
+  <circle cx="1260" cy="250" r="126" fill="#A7C4FF" fill-opacity="0.14"/>
+  <rect x="264" y="370" width="520" height="290" rx="18" fill="#111827" stroke="#2C3340" stroke-width="4"/>
+  <rect x="986" y="448" width="210" height="188" rx="18" fill="#161B22" stroke="#30363D" stroke-width="4"/>
+  <rect x="216" y="700" width="1168" height="56" rx="8" fill="#1A2430"/>
+  <rect x="360" y="650" width="232" height="22" rx="11" fill="#F3C77A"/>
+  <rect x="1130" y="662" width="84" height="84" rx="16" fill="#223146"/>
+  <path d="M340 488H676" stroke="#3EAF7C" stroke-width="14" stroke-linecap="round"/>
+  <path d="M340 534H598" stroke="#58A6FF" stroke-width="14" stroke-linecap="round"/>
+  <path d="M1034 516H1148" stroke="#E6EDF3" stroke-width="12" stroke-linecap="round"/>
+  <path d="M1034 558H1106" stroke="#C9D1D9" stroke-opacity="0.34" stroke-width="12" stroke-linecap="round"/>
+  <text x="216" y="96" fill="#F3C77A" font-size="64" font-family="Inter, Arial, sans-serif" font-weight="700">Night Desk</text>
+  <text x="216" y="1142" fill="#8B949E" font-size="34" font-family="Inter, Arial, sans-serif">A quiet life moment between planning and shipping</text>
+</svg>

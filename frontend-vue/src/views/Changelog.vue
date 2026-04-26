@@ -1,7 +1,5 @@
 <template>
   <div class="min-h-screen bg-gh-bg text-gh-text pt-24 pb-12 px-6 relative overflow-hidden">
-    <MouseSpotlight />
-    
     <div class="container mx-auto max-w-4xl relative z-10">
       <header class="mb-12">
         <h1 class="text-3xl font-bold mb-4 flex items-center gap-3">
@@ -19,6 +17,5 @@
 
 <script setup>
 import { changelog } from '@/data/changelog'
-import MouseSpotlight from '@/components/shared/MouseSpotlight.vue'
 import GitLogGraph from '@/components/ide/git/GitLogGraph.vue'
 </script>

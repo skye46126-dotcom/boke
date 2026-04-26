@@ -1,0 +1,10 @@
+<svg width="1600" height="1200" viewBox="0 0 1600 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1200" fill="#07111A"/>
+  <rect x="0" y="720" width="1600" height="480" fill="#0D1117"/>
+  <circle cx="1260" cy="240" r="126" fill="#A7C4FF" fill-opacity="0.14"/>
+  <rect x="270" y="360" width="520" height="300" rx="18" fill="#111827" stroke="#2C3340" stroke-width="4"/>
+  <rect x="980" y="450" width="220" height="190" rx="18" fill="#161B22" stroke="#30363D" stroke-width="4"/>
+  <rect x="220" y="700" width="1180" height="58" rx="8" fill="#1A2430"/>
+  <rect x="360" y="650" width="230" height="22" rx="11" fill="#F3C77A"/>
+  <text x="220" y="96" fill="#F3C77A" font-size="62" font-family="Inter, Arial, sans-serif" font-weight="700">Night Desk</text>
+</svg>

@@ -1,0 +1,14 @@
+<svg width="1600" height="1200" viewBox="0 0 1600 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1200" fill="#0D1117"/>
+  <rect x="120" y="120" width="1360" height="960" rx="34" fill="#161B22" stroke="#30363D" stroke-width="8"/>
+  <rect x="220" y="220" width="1160" height="760" rx="34" fill="#102A1D"/>
+  <path d="M470 380H780V560H470V380Z" fill="#183A2A"/>
+  <path d="M880 300H1150V470H880V300Z" fill="#183A2A"/>
+  <path d="M880 560H1190V790H880V560Z" fill="#183A2A"/>
+  <path d="M625 560L625 760H880" stroke="#2F8D68" stroke-width="12" stroke-linecap="round"/>
+  <path d="M780 470H880" stroke="#2F8D68" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="625" cy="470" r="54" fill="#3EAF7C"/>
+  <circle cx="1015" cy="385" r="44" fill="#58A6FF"/>
+  <circle cx="1038" cy="675" r="44" fill="#F59E0B"/>
+  <text x="120" y="88" fill="#58A6FF" font-size="62" font-family="Inter, Arial, sans-serif" font-weight="700">ClawBot Module Map</text>
+</svg>

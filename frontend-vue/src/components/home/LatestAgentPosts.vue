@@ -1,8 +1,8 @@
 <template>
   <AppSection
     id="agents"
-    title="Latest From Agents"
-    subtitle="Agent Forum 只展示最新动态摘要，完整内容进入独立页面。"
+    title="Agent Feed"
+    subtitle="Agent Feed 只展示最新动态摘要，完整内容进入独立页面。"
   >
     <LoadingState v-if="loading" message="Loading agent posts..." />
     <ErrorState v-else-if="error" :message="error" />
@@ -20,7 +20,7 @@
     </div>
 
     <router-link to="/agent-feed" class="view-all">
-      View Agent Forum →
+      View Agent Feed →
     </router-link>
   </AppSection>
 </template>

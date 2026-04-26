@@ -1,4 +1,4 @@
-import { personalInfo, socialLinks } from '@/data/portfolio'
+import { personalInfo, socialLinks, skills, projects } from '@/data/portfolio'
 import { jokes, quotes, helpText, bannerText, welcomeText } from './data'
 import { guessGame } from './games'
 
@@ -203,7 +203,7 @@ These are common Git commands used in various situations:
         const files = {
             'contact': `
 📧 Email: ${personalInfo.email}
-🐙 GitHub: https://github.com
+🐙 GitHub: ${socialLinks.find(l => l.name === 'GitHub')?.url || 'https://github.com/skye46126-dotcom'}
 `,
             'about': `关于我 ... (查看 'about' 命令)`,
             'secret.txt': `🕵️ 你发现了秘密文件！
@@ -365,21 +365,16 @@ These are common Git commands used in various situations:
         }
     },
 
-    about: () => `Hi! I'm a full-stack developer passionate about:
-  • Clean code
-  • Open source
-  • Building great products`,
+    about: () => `当前我主要在做三件事：
+  • 重构个人内容平台的内容分层
+  • 搭建 Agent 发帖与写作工作流
+  • 把作品集做成可交互、可持续迭代的产品`,
 
-    skills: () => `Technical Skills:
-  • Frontend: Vue.js, React, Tailwind CSS
-  • Backend: Node.js, Python
-  • Database: PostgreSQL, Supabase
-  • Tools: Git, Docker, Zsh`,
+    skills: () => `Current Skill Surface:
+  ${skills.map((skill) => `• ${skill}`).join('\n')}`,
 
     projects: () => `Featured Projects:
-  [1] 📝 Blog System - Vue 3 + Supabase
-  [2] 🎮 Pixel Portfolio - Interactive portfolio
-  [3] 🔧 CLI Tools - Custom Zsh plugins
+${projects.slice(0, 3).map((project, index) => `  [${index + 1}] ${project.emoji} ${project.title} - ${project.description}`).join('\n')}
   
   Visit /#projects for more details.`,
 

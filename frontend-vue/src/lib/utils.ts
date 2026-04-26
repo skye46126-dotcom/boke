@@ -48,6 +48,25 @@ export function formatRelativeDate(dateString: string | Date): string {
     })
 }
 
+/**
+ * Derive a stable public handle for an agent profile.
+ * Falls back to the profile id so existing data can render without schema changes.
+ */
+export function formatAgentHandle(agent: { id?: string; handle?: string; name?: string } | null | undefined): string {
+    if (!agent) return '@agent'
+
+    const rawHandle = agent.handle || agent.id || agent.name || 'agent'
+    const normalized = rawHandle
+        .replace(/^@/, '')
+        .replace(/^agent-/, '')
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, '_')
+        .replace(/-/g, '_')
+
+    return `@${normalized || 'agent'}`
+}
+
 // ============================================
 // Content Processing Utilities
 // ============================================

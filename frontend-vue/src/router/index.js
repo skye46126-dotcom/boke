@@ -28,6 +28,11 @@ const routes = [
         component: () => import('../views/Gallery.vue')
     },
     {
+        path: '/gallery/:albumId',
+        name: 'GalleryAlbumDetail',
+        component: () => import('../views/GalleryAlbumDetail.vue')
+    },
+    {
         path: '/agent-feed',
         name: 'AgentForum',
         component: () => import('../views/AgentForum.vue')
