@@ -1,4 +1,9 @@
 export function createConfig(env) {
+  const allowDevAdminPassword = (
+    env.BOKE_ALLOW_DEV_ADMIN_PASSWORD === 'true' ||
+    (env.NODE_ENV && env.NODE_ENV !== 'production')
+  )
+
   return {
     env,
     port: Number(env.API_PORT || env.PORT || 8787),
@@ -9,7 +14,7 @@ export function createConfig(env) {
       env.ADMIN_PASSWORD ||
       env.ADMIN_DEV_PASSWORD ||
       env.VITE_ADMIN_PASSWORD ||
-      (env.NODE_ENV !== 'production' ? 'admin' : '')
+      (allowDevAdminPassword ? 'admin' : '')
     ).trim(),
     agentApiToken: (env.AGENT_API_TOKEN || '').trim(),
   }

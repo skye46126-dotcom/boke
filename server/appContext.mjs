@@ -1,4 +1,3 @@
-import { loadEnv } from './lib/env.mjs'
 import { createConfig, validateConfig } from './lib/config.mjs'
 import { createAdminDb } from './lib/supabaseAdmin.mjs'
 import { createAuthMiddleware } from './middleware/auth.mjs'
@@ -19,8 +18,8 @@ import { createGalleryService } from './services/contentHub/galleryService.mjs'
 import { createSiteContentService } from './services/contentHub/siteContentService.mjs'
 import { createAdminConsoleService } from './services/contentHub/adminConsoleService.mjs'
 
-export function createAppContext(cwd = process.cwd()) {
-  const env = loadEnv(cwd)
+export function createAppContextFromEnv(envInput = {}) {
+  const env = { ...envInput }
   const config = createConfig(env)
   validateConfig(config)
 
@@ -95,3 +94,5 @@ export function createAppContext(cwd = process.cwd()) {
     services,
   }
 }
+
+export const createAppContext = createAppContextFromEnv

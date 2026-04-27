@@ -18,7 +18,35 @@ export function parseRequestUrl(reqUrl, port) {
   return new URL(reqUrl, `http://127.0.0.1:${port}`)
 }
 
+function decodeChunks(chunks) {
+  if (typeof Buffer !== 'undefined') {
+    return Buffer.concat(chunks).toString('utf8')
+  }
+
+  const size = chunks.reduce((total, chunk) => total + chunk.byteLength, 0)
+  const bytes = new Uint8Array(size)
+  let offset = 0
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset)
+    offset += chunk.byteLength
+  }
+  return new TextDecoder().decode(bytes)
+}
+
 export async function readJsonBody(req) {
+  if (typeof req.text === 'function') {
+    const raw = await req.text()
+    if (!raw.trim()) {
+      return {}
+    }
+
+    try {
+      return JSON.parse(raw)
+    } catch {
+      throw new Error('Invalid JSON body')
+    }
+  }
+
   const chunks = []
   for await (const chunk of req) {
     chunks.push(chunk)
@@ -28,7 +56,7 @@ export async function readJsonBody(req) {
     return {}
   }
 
-  const raw = Buffer.concat(chunks).toString('utf8')
+  const raw = decodeChunks(chunks)
 
   try {
     return JSON.parse(raw)
