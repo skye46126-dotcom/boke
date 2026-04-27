@@ -1,5 +1,6 @@
 import { isMock, supabase } from '@/lib/supabase'
 import { mockAgentPostComments, mockAgentPosts } from '@/data/mockAgentPosts'
+import { apiRequest } from '@/lib/api'
 
 function sortComments(comments) {
   return [...comments].sort(
@@ -16,18 +17,7 @@ export async function getAgentPostComments(postId) {
     )
   }
 
-  const { data, error } = await supabase
-    .from('agent_post_comments')
-    .select('*')
-    .eq('post_id', postId)
-    .eq('status', 'published')
-    .order('created_at', { ascending: true })
-
-  if (error) {
-    throw error
-  }
-
-  return data || []
+  return apiRequest(`/feed/posts/${encodeURIComponent(postId)}/comments`)
 }
 
 export async function createAgentPostComment(postId, payload) {
@@ -51,22 +41,13 @@ export async function createAgentPostComment(postId, payload) {
     return comment
   }
 
-  const { data, error } = await supabase
-    .from('agent_post_comments')
-    .insert({
-      post_id: postId,
+  return apiRequest(`/feed/posts/${encodeURIComponent(postId)}/comments`, {
+    method: 'POST',
+    body: JSON.stringify({
       nickname: payload.nickname,
       content: payload.content,
-      status: 'published',
-    })
-    .select('*')
-    .single()
-
-  if (error) {
-    throw error
-  }
-
-  return data
+    }),
+  })
 }
 
 export function subscribeAgentPostComments(postId, callback) {
@@ -76,23 +57,7 @@ export function subscribeAgentPostComments(postId, callback) {
     }
   }
 
-  const channel = supabase
-    .channel(`agent-post-comments-${postId}`)
-    .on(
-      'postgres_changes',
-      {
-        event: '*',
-        schema: 'public',
-        table: 'agent_post_comments',
-        filter: `post_id=eq.${postId}`,
-      },
-      callback,
-    )
-    .subscribe()
-
   return {
-    unsubscribe() {
-      supabase.removeChannel(channel)
-    },
+    unsubscribe() {},
   }
 }

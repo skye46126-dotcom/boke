@@ -5,7 +5,7 @@
 
       <section class="hero">
         <p class="eyebrow">Agent Console</p>
-        <h1>运行状态、待审核内容和失败任务集中在这里。</h1>
+        <h1>运行状态、待审核内容、事件审计和适配器契约集中在这里。</h1>
       </section>
 
       <div v-if="!loading && !error" class="summary-grid">
@@ -24,6 +24,10 @@
         <div class="summary-card">
           <span>Generation Jobs</span>
           <strong>{{ snapshot.generationJobs.length }}</strong>
+        </div>
+        <div class="summary-card">
+          <span>Pending Galleries</span>
+          <strong>{{ snapshot.pendingGalleryAlbums.length }}</strong>
         </div>
       </div>
 
@@ -61,6 +65,31 @@
               <div class="actions">
                 <button @click="handlePublishPost(post.id)">发布</button>
                 <button @click="handleRejectPost(post.id)">驳回</button>
+              </div>
+            </BaseCard>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>Pending Gallery Albums</h2>
+          <EmptyState
+            v-if="!snapshot.pendingGalleryAlbums.length"
+            title="没有待审核画廊"
+            description="Agent 提交的 gallery 相册会在这里集中显示。"
+          />
+          <div v-else class="panel-list">
+            <BaseCard
+              v-for="album in snapshot.pendingGalleryAlbums"
+              :key="album.id"
+              variant="border"
+              class="panel-card"
+            >
+              <p class="muted">{{ album.category }} · {{ album.status }}</p>
+              <h3>{{ album.title }}</h3>
+              <p class="muted">{{ album.description || '暂无说明' }}</p>
+              <div class="actions">
+                <button @click="handlePublishGalleryAlbum(album.id)">发布</button>
+                <button @click="handleRejectGalleryAlbum(album.id)">驳回</button>
               </div>
             </BaseCard>
           </div>
@@ -145,6 +174,44 @@
         </section>
 
         <section class="panel wide">
+          <h2>Content Hub Events</h2>
+          <EmptyState
+            v-if="!contentHubEvents.length"
+            title="暂无事件记录"
+            description="内容聚合层的事件审计会显示在这里。"
+          />
+          <div v-else class="job-table">
+            <div v-for="event in contentHubEvents" :key="event.id" class="job-row">
+              <div>
+                <strong>{{ event.action }}</strong>
+                <p class="muted">{{ event.entity_type }} · {{ event.entity_id }}</p>
+                <p class="muted">{{ event.actor_type }} · {{ event.source_type || 'no-source' }}</p>
+              </div>
+              <span class="status">{{ event.status }}</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel wide">
+          <h2>Adapter Contract</h2>
+          <div v-if="adapterContract" class="panel-list">
+            <BaseCard variant="border" class="panel-card">
+              <p class="muted">{{ adapterContract.name }}</p>
+              <h3>{{ adapterContract.version }}</h3>
+              <p class="muted">
+                Feed / Articles / Gallery routes are now unified under the content hub.
+              </p>
+              <pre class="contract-preview">{{ JSON.stringify(adapterContract, null, 2) }}</pre>
+            </BaseCard>
+          </div>
+          <EmptyState
+            v-else
+            title="未读取到契约"
+            description="管理端可以通过 /api/admin/adapter-contract 查看当前适配器契约。"
+          />
+        </section>
+
+        <section class="panel wide">
           <SiteContentEditor />
         </section>
       </div>
@@ -162,14 +229,20 @@ import EmptyState from '@/components/ui/EmptyState.vue'
 import BaseCard from '@/components/ui/BaseCard.vue'
 import AgentProfileCard from '@/components/agent/AgentProfileCard.vue'
 import {
+  getAdapterContract,
   getAgentConsoleSnapshot,
+  getContentHubEvents,
   publishAgentPost,
+  publishGalleryAlbum,
+  rejectGalleryAlbum,
   rejectAgentPost,
   retryAgentJob,
 } from '@/services/agentAdminService'
 
 const loading = ref(true)
 const error = ref(null)
+const contentHubEvents = ref([])
+const adapterContract = ref(null)
 const snapshot = reactive({
   profiles: [],
   jobs: [],
@@ -177,6 +250,7 @@ const snapshot = reactive({
   pendingPosts: [],
   pendingArticles: [],
   generationJobs: [],
+  pendingGalleryAlbums: [],
 })
 
 const loadSnapshot = async () => {
@@ -184,13 +258,20 @@ const loadSnapshot = async () => {
   error.value = null
 
   try {
-    const data = await getAgentConsoleSnapshot()
+    const [data, events, contract] = await Promise.all([
+      getAgentConsoleSnapshot(),
+      getContentHubEvents(50),
+      getAdapterContract(),
+    ])
     snapshot.profiles = data.profiles
     snapshot.jobs = data.jobs
     snapshot.failedJobs = data.failedJobs
     snapshot.pendingPosts = data.pendingPosts
     snapshot.pendingArticles = data.pendingArticles
     snapshot.generationJobs = data.generationJobs || []
+    snapshot.pendingGalleryAlbums = data.pendingGalleryAlbums || []
+    contentHubEvents.value = events || []
+    adapterContract.value = contract || null
   } catch (err) {
     error.value = err.message || 'Failed to load agent console'
   } finally {
@@ -210,6 +291,16 @@ const handleRejectPost = async (id) => {
 
 const handleRetryJob = async (id) => {
   await retryAgentJob(id)
+  await loadSnapshot()
+}
+
+const handlePublishGalleryAlbum = async (id) => {
+  await publishGalleryAlbum(id)
+  await loadSnapshot()
+}
+
+const handleRejectGalleryAlbum = async (id) => {
+  await rejectGalleryAlbum(id, '相册内容还需要进一步人工整理。')
   await loadSnapshot()
 }
 
@@ -259,7 +350,7 @@ h1 {
 
 .summary-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 1rem;
   margin-top: 1rem;
 }
@@ -332,6 +423,19 @@ h1 {
 
 .status {
   color: var(--color-vp-c-brand);
+}
+
+.contract-preview {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 16px;
+  border: 1px solid var(--color-gh-border);
+  background: rgba(0, 0, 0, 0.18);
+  color: var(--color-gh-text-muted);
+  font-size: 0.8rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 @media (max-width: 1024px) {

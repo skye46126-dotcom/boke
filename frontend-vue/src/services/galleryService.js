@@ -1,5 +1,6 @@
 import { isMock, supabase } from '@/lib/supabase'
 import { galleryCategories, mockAlbums, mockPhotos } from '@/data/mockGallery'
+import { apiRequest } from '@/lib/api'
 
 export { galleryCategories }
 
@@ -125,15 +126,12 @@ async function fetchAllAlbums() {
     return mockAlbums.map(normalizeAlbum)
   }
 
-  const { data, error } = await supabase
-    .from('gallery_albums')
-    .select('*')
-
-  if (error) {
-    throw error
-  }
-
-  return (data || []).map(normalizeAlbum)
+  const data = await apiRequest('/gallery/albums')
+  return (data || []).map((album) => ({
+    ...normalizeAlbum(album),
+    photos: (album.photos || []).map(normalizePhoto),
+    photo_count: Number.isFinite(album.photo_count) ? album.photo_count : (album.photos || []).length,
+  }))
 }
 
 async function fetchAllPhotos() {
@@ -141,15 +139,10 @@ async function fetchAllPhotos() {
     return mockPhotos.map(normalizePhoto)
   }
 
-  const { data, error } = await supabase
-    .from('gallery')
-    .select('*')
-
-  if (error) {
-    throw error
-  }
-
-  return (data || []).map(normalizePhoto)
+  const albums = await fetchAllAlbums()
+  return albums
+    .flatMap((album) => album.photos || [])
+    .map(normalizePhoto)
 }
 
 export function getCategoryMeta(categoryId) {
@@ -204,10 +197,11 @@ export function buildRelatedLink(typeOrItem, relatedIdValue = null) {
 }
 
 export async function getGalleryAlbums() {
-  const [albums, photos] = await Promise.all([
-    fetchAllAlbums(),
-    fetchAllPhotos(),
-  ])
+  if (!(isMock || !supabase)) {
+    return fetchAllAlbums()
+  }
+
+  const [albums, photos] = await Promise.all([fetchAllAlbums(), fetchAllPhotos()])
 
   return enrichAlbumsWithPhotos(albums, photos)
 }
@@ -221,6 +215,15 @@ export async function getAlbumsByCategory(category = 'all') {
 export async function getGalleryAlbumById(albumId) {
   if (!albumId) {
     return null
+  }
+
+  if (!(isMock || !supabase)) {
+    const album = await apiRequest(`/gallery/albums/${encodeURIComponent(albumId)}`)
+    return album ? {
+      ...normalizeAlbum(album),
+      photos: (album.photos || []).map(normalizePhoto),
+      photo_count: Number.isFinite(album.photo_count) ? album.photo_count : (album.photos || []).length,
+    } : null
   }
 
   const [albums, photos] = await Promise.all([

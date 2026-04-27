@@ -1,5 +1,6 @@
 import { isMock, supabase } from '@/lib/supabase'
 import { mockArticles } from '@/data/mockArticles'
+import { apiRequest } from '@/lib/api'
 
 function sortByField(items, orderBy = 'date', ascending = false) {
   return [...items].sort((left, right) => {
@@ -31,23 +32,19 @@ export async function getPublishedArticles(options = {}) {
     return limit ? sorted.slice(0, limit) : sorted
   }
 
-  let query = supabase
-    .from('articles')
-    .select('*')
-    .eq('status', 'published')
-    .order(orderBy, { ascending })
-
+  const params = new URLSearchParams()
   if (limit) {
-    query = query.limit(limit)
+    params.set('limit', String(limit))
+  }
+  if (orderBy) {
+    params.set('orderBy', orderBy)
+  }
+  if (ascending) {
+    params.set('ascending', 'true')
   }
 
-  const { data, error } = await query
-
-  if (error) {
-    throw error
-  }
-
-  return data || []
+  const query = params.toString()
+  return apiRequest(`/articles${query ? `?${query}` : ''}`)
 }
 
 export async function getSearchableArticles() {
@@ -55,16 +52,7 @@ export async function getSearchableArticles() {
     return mockArticles.filter((article) => article.status === 'published')
   }
 
-  const { data, error } = await supabase
-    .from('articles')
-    .select('id, title, slug, date, content')
-    .eq('status', 'published')
-
-  if (error) {
-    throw error
-  }
-
-  return data || []
+  return apiRequest('/articles/search')
 }
 
 export async function getArticleBySlug(slug) {
@@ -80,18 +68,7 @@ export async function getArticleBySlug(slug) {
     return article
   }
 
-  const { data, error } = await supabase
-    .from('articles')
-    .select('*')
-    .eq('slug', slug)
-    .eq('status', 'published')
-    .single()
-
-  if (error) {
-    throw error
-  }
-
-  return data
+  return apiRequest(`/articles/${encodeURIComponent(slug)}`)
 }
 
 export async function incrementArticleViews(articleId, slug) {
@@ -103,23 +80,12 @@ export async function incrementArticleViews(articleId, slug) {
     return
   }
 
-  const { data, error: fetchError } = await supabase
-    .from('articles')
-    .select('views')
-    .eq(slug ? 'slug' : 'id', slug || articleId)
-    .single()
-
-  if (fetchError) {
-    console.warn('Failed to fetch article views:', fetchError)
-    return
-  }
-
-  const { error } = await supabase
-    .from('articles')
-    .update({ views: (data?.views || 0) + 1 })
-    .eq(slug ? 'slug' : 'id', slug || articleId)
-
-  if (error) {
+  const target = slug || articleId
+  try {
+    await apiRequest(`/articles/${encodeURIComponent(target)}/views`, {
+      method: 'POST',
+    })
+  } catch (error) {
     console.warn('Failed to increment article views:', error)
   }
 }

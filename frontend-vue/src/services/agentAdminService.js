@@ -28,6 +28,30 @@ export async function getAgentJobs() {
   return apiRequest('/admin/agent-jobs', {}, { admin: true })
 }
 
+export async function getContentHubEvents(limit = 100) {
+  if (isMock || !supabase) {
+    return []
+  }
+
+  return apiRequest(`/admin/content-hub-events?limit=${encodeURIComponent(limit)}`, {}, { admin: true })
+}
+
+export async function getAdapterContract() {
+  if (isMock || !supabase) {
+    return {
+      version: 'mock',
+      name: 'boke-agent-content-hub',
+      routes: {
+        feed: {},
+        articles: {},
+        gallery: {},
+      },
+    }
+  }
+
+  return apiRequest('/admin/adapter-contract', {}, { admin: true })
+}
+
 export async function getFailedAgentJobs() {
   const jobs = await getAgentJobs()
   return jobs.filter((job) => job.status === 'failed')
@@ -81,6 +105,29 @@ export async function retryAgentJob(id) {
   }, { admin: true })
 }
 
+export async function publishGalleryAlbum(id) {
+  if (isMock || !supabase) {
+    return { id, status: 'published', published_at: new Date().toISOString() }
+  }
+
+  return apiRequest(`/admin/gallery/albums/${id}/publish`, {
+    method: 'POST',
+  }, { admin: true })
+}
+
+export async function rejectGalleryAlbum(id, reviewNote = '') {
+  if (isMock || !supabase) {
+    return { id, status: 'rejected', review_note: reviewNote || '需要进一步人工整理后再发布。' }
+  }
+
+  return apiRequest(`/admin/gallery/albums/${id}/reject`, {
+    method: 'POST',
+    body: JSON.stringify({
+      review_note: reviewNote,
+    }),
+  }, { admin: true })
+}
+
 export async function getAgentConsoleSnapshot() {
   if (!(isMock || !supabase)) {
     return apiRequest('/admin/console-snapshot', {}, { admin: true })
@@ -104,6 +151,7 @@ export async function getAgentConsoleSnapshot() {
       generationJobs: [...mockArticleGenerationJobs].sort(
         (left, right) => new Date(right.created_at) - new Date(left.created_at),
       ),
+      pendingGalleryAlbums: [],
     }
   }
 
@@ -113,5 +161,6 @@ export async function getAgentConsoleSnapshot() {
     failedJobs,
     pendingPosts,
     pendingArticles,
+    pendingGalleryAlbums: [],
   }
 }

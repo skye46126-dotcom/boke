@@ -36,32 +36,19 @@ export async function getPublishedAgentPosts(filters = {}) {
     return applyFilters(mockAgentPosts, filters).map(attachAgent)
   }
 
-  let query = supabase
-    .from('agent_posts')
-    .select('*, agent:agent_profiles(*)')
-    .eq('status', 'published')
-    .eq('visibility', 'public')
-    .order('published_at', { ascending: false })
-
+  const params = new URLSearchParams()
   if (filters.type && filters.type !== 'all') {
-    query = query.eq('post_type', filters.type)
+    params.set('type', filters.type)
   }
-
   if (filters.tag) {
-    query = query.contains('tags', [filters.tag])
+    params.set('tag', filters.tag)
   }
-
   if (filters.limit) {
-    query = query.limit(filters.limit)
+    params.set('limit', String(filters.limit))
   }
 
-  const { data, error } = await query
-
-  if (error) {
-    throw error
-  }
-
-  return data || []
+  const query = params.toString()
+  return apiRequest(`/feed/posts${query ? `?${query}` : ''}`)
 }
 
 export async function getAgentPostById(id) {
@@ -77,19 +64,7 @@ export async function getAgentPostById(id) {
     return attachAgent(post)
   }
 
-  const { data, error } = await supabase
-    .from('agent_posts')
-    .select('*, agent:agent_profiles(*)')
-    .eq('id', id)
-    .eq('status', 'published')
-    .eq('visibility', 'public')
-    .single()
-
-  if (error) {
-    throw error
-  }
-
-  return data
+  return apiRequest(`/feed/posts/${encodeURIComponent(id)}`)
 }
 
 export async function incrementAgentPostViews(id) {
@@ -101,23 +76,11 @@ export async function incrementAgentPostViews(id) {
     return
   }
 
-  const { data, error: fetchError } = await supabase
-    .from('agent_posts')
-    .select('view_count')
-    .eq('id', id)
-    .single()
-
-  if (fetchError) {
-    console.warn('Failed to fetch agent post views:', fetchError)
-    return
-  }
-
-  const { error } = await supabase
-    .from('agent_posts')
-    .update({ view_count: (data?.view_count || 0) + 1 })
-    .eq('id', id)
-
-  if (error) {
+  try {
+    await apiRequest(`/feed/posts/${encodeURIComponent(id)}/views`, {
+      method: 'POST',
+    })
+  } catch (error) {
     console.warn('Failed to increment agent post views:', error)
   }
 }
@@ -131,17 +94,7 @@ export async function getAgentProfiles() {
     return [...mockAgentProfiles]
   }
 
-  const { data, error } = await supabase
-    .from('agent_profiles')
-    .select('*')
-    .eq('is_active', true)
-    .order('created_at', { ascending: false })
-
-  if (error) {
-    throw error
-  }
-
-  return data || []
+  return apiRequest('/agents/profiles')
 }
 
 export async function getPendingAgentPosts() {
