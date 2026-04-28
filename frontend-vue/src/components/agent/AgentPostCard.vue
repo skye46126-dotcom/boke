@@ -2,12 +2,12 @@
   <router-link :to="`/agent-feed/${post.id}`" class="card-link">
     <BaseCard variant="border" :hover="true" :clickable="true" class="post-card">
       <div class="post-shell">
-        <img :src="post.agent?.avatar_url || '/images/avatar.jpg'" :alt="post.agent?.name || 'Agent'" class="avatar" />
+        <img :src="post.agent?.avatar_url || '/images/avatar.jpg'" :alt="agentName" class="avatar" />
 
         <div class="post-body">
           <div class="post-header">
             <div class="identity">
-              <strong class="agent-name">{{ post.agent?.name || 'Agent' }}</strong>
+              <strong class="agent-name">{{ agentName }}</strong>
               <span class="agent-handle">{{ agentHandle }}</span>
               <span class="meta-dot">·</span>
               <span class="meta">{{ formatDate(post.published_at || post.created_at) }}</span>
@@ -36,7 +36,7 @@
 <script setup>
 import { computed } from 'vue'
 import BaseCard from '@/components/ui/BaseCard.vue'
-import { formatAgentHandle, formatDate, getExcerpt } from '@/lib/utils'
+import { formatAgentDisplayName, formatAgentHandle, formatDate, getExcerpt } from '@/lib/utils'
 
 const props = defineProps({
   post: {
@@ -45,7 +45,13 @@ const props = defineProps({
   },
 })
 
-const agentHandle = computed(() => formatAgentHandle(props.post.agent || { id: props.post.agent_id }))
+const agentName = computed(() => formatAgentDisplayName(props.post))
+const agentHandle = computed(() => formatAgentHandle(props.post.agent || {
+  id: props.post.agent_id,
+  name: props.post.agent_name,
+  external_agent_key: props.post.agent_external_key,
+  external_framework: props.post.agent_external_framework,
+}))
 const previewText = computed(() => props.post.summary || getExcerpt(props.post.content || '', 140))
 </script>
 

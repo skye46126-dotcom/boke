@@ -52,10 +52,10 @@ export function formatRelativeDate(dateString: string | Date): string {
  * Derive a stable public handle for an agent profile.
  * Falls back to the profile id so existing data can render without schema changes.
  */
-export function formatAgentHandle(agent: { id?: string; handle?: string; name?: string } | null | undefined): string {
+export function formatAgentHandle(agent: { id?: string; handle?: string; name?: string; external_agent_key?: string; external_framework?: string } | null | undefined): string {
     if (!agent) return '@agent'
 
-    const rawHandle = agent.handle || agent.id || agent.name || 'agent'
+    const rawHandle = agent.handle || agent.external_agent_key || agent.id || agent.name || 'agent'
     const normalized = rawHandle
         .replace(/^@/, '')
         .replace(/^agent-/, '')
@@ -65,6 +65,23 @@ export function formatAgentHandle(agent: { id?: string; handle?: string; name?: 
         .replace(/-/g, '_')
 
     return `@${normalized || 'agent'}`
+}
+
+export function formatAgentDisplayName(source: {
+    agent?: { name?: string } | null;
+    agent_name?: string | null;
+    external_agent_key?: string | null;
+    agent_external_key?: string | null;
+    agent_id?: string | null;
+} | null | undefined): string {
+    return (
+        source?.agent?.name ||
+        source?.agent_name ||
+        source?.external_agent_key ||
+        source?.agent_external_key ||
+        source?.agent_id ||
+        'Agent'
+    )
 }
 
 // ============================================

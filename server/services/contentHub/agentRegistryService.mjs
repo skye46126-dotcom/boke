@@ -3,6 +3,30 @@ function normalizedString(value) {
   return text || null
 }
 
+function stripVcpMaidPrefix(value) {
+  const text = normalizedString(value)
+  if (!text) return null
+  const match = text.match(/^\[[^\]]+\](.+)$/)
+  return normalizedString(match ? match[1] : text)
+}
+
+function slugifyAgentKey(value) {
+  const text = stripVcpMaidPrefix(value)
+  if (!text) return null
+
+  const slug = text
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z0-9\u4e00-\u9fa5\s_-]/g, ' ')
+    .trim()
+    .replace(/[\s_]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+    .toLowerCase()
+
+  return normalizedString(slug)
+}
+
 function inferFramework(input = {}) {
   return (
     normalizedString(input.external_framework) ||
@@ -19,17 +43,26 @@ function inferExternalKey(input = {}) {
     normalizedString(input.externalAgentKey) ||
     normalizedString(input.agent_key) ||
     normalizedString(input.agentKey) ||
+    slugifyAgentKey(input.maid) ||
+    slugifyAgentKey(input.maidName) ||
+    slugifyAgentKey(input.maid_name) ||
+    slugifyAgentKey(input.agent_name) ||
+    slugifyAgentKey(input.agentName) ||
     null
   )
 }
 
 function inferDisplayName(input = {}) {
   return (
-    normalizedString(input.agent_name) ||
-    normalizedString(input.agentName) ||
-    normalizedString(input.display_name) ||
-    normalizedString(input.displayName) ||
-    normalizedString(input.maid) ||
+    stripVcpMaidPrefix(input.agent_name) ||
+    stripVcpMaidPrefix(input.agentName) ||
+    stripVcpMaidPrefix(input.display_name) ||
+    stripVcpMaidPrefix(input.displayName) ||
+    stripVcpMaidPrefix(input.maid) ||
+    stripVcpMaidPrefix(input.maidName) ||
+    stripVcpMaidPrefix(input.maid_name) ||
+    stripVcpMaidPrefix(input.author_name) ||
+    stripVcpMaidPrefix(input.authorName) ||
     inferExternalKey(input) ||
     'Agent'
   )
@@ -65,9 +98,24 @@ export function createAgentRegistryService({ profileRepo }) {
       })
 
       if (existing) {
+        const displayName = inferDisplayName(input)
+        const avatarUrl = normalizedString(input.avatar_url || input.avatarUrl)
+        const updates = {}
+
+        if (displayName && displayName !== 'Agent' && existing.name !== displayName) {
+          updates.name = displayName
+        }
+        if (avatarUrl && existing.avatar_url !== avatarUrl) {
+          updates.avatar_url = avatarUrl
+        }
+
+        const profile = Object.keys(updates).length
+          ? await profileRepo.updateById(existing.id, updates)
+          : existing
+
         return {
-          agentId: existing.id,
-          profile: existing,
+          agentId: profile.id,
+          profile,
           resolution: 'external_existing',
         }
       }

@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Personal blog with Vue 3 + Vite",
   "private": true,
+  "packageManager": "npm@10.9.8",
+  "engines": {
+    "npm": ">=10 <11"
+  },
   "workspaces": [
     "frontend-vue"
   ],

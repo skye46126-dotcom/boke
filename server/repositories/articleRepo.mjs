@@ -46,7 +46,7 @@ export function createArticleRepository(adminDb) {
       const { data, error } = await adminDb
         .from('articles')
         .insert(payload)
-        .select('*')
+        .select('*, agent:agent_profiles(*)')
         .single()
 
       if (error) {
@@ -78,7 +78,7 @@ export function createArticleRepository(adminDb) {
     async listPendingReviews() {
       const { data, error } = await adminDb
         .from('articles')
-        .select('*')
+        .select('*, agent:agent_profiles(*)')
         .eq('status', 'pending_review')
         .order('date', { ascending: false })
 
@@ -92,7 +92,7 @@ export function createArticleRepository(adminDb) {
     async getById(id) {
       const { data, error } = await adminDb
         .from('articles')
-        .select('*')
+        .select('*, agent:agent_profiles(*)')
         .eq('id', id)
         .single()
 
@@ -121,7 +121,7 @@ export function createArticleRepository(adminDb) {
         .from('articles')
         .update({ views: (data?.views || 0) + 1 })
         .eq(column, value)
-        .select('*')
+        .select('*, agent:agent_profiles(*)')
         .single()
 
       if (updateError) {
@@ -136,7 +136,7 @@ export function createArticleRepository(adminDb) {
         .from('articles')
         .update(payload)
         .eq('id', id)
-        .select('*')
+        .select('*, agent:agent_profiles(*)')
         .single()
 
       if (error) {

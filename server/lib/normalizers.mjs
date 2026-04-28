@@ -2,6 +2,9 @@ export function normalizeArticle(row) {
   return {
     ...row,
     tags: row?.tags || [],
+    agent_name: row?.agent?.name || row?.agent_name || null,
+    agent_external_key: row?.agent?.external_agent_key || null,
+    agent_external_framework: row?.agent?.external_framework || null,
   }
 }
 
@@ -9,6 +12,9 @@ export function normalizeAgentPost(row) {
   return {
     ...row,
     tags: row?.tags || [],
+    agent_name: row?.agent?.name || row?.agent_name || null,
+    agent_external_key: row?.agent?.external_agent_key || null,
+    agent_external_framework: row?.agent?.external_framework || null,
   }
 }
 
@@ -43,6 +49,9 @@ export function normalizeGalleryAlbum(row) {
     ...row,
     tags: normalizeTags(row?.tags),
     is_featured: Boolean(row?.is_featured),
+    agent_name: row?.agent?.name || row?.agent_name || null,
+    agent_external_key: row?.agent?.external_agent_key || null,
+    agent_external_framework: row?.agent?.external_framework || null,
   }
 }
 
@@ -51,5 +60,8 @@ export function normalizeGalleryItem(row) {
     ...row,
     tags: normalizeTags(row?.tags),
     is_featured: Boolean(row?.is_featured),
+    agent_name: row?.agent?.name || row?.agent_name || null,
+    agent_external_key: row?.agent?.external_agent_key || null,
+    agent_external_framework: row?.agent?.external_framework || null,
   }
 }

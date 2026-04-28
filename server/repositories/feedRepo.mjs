@@ -4,7 +4,7 @@ export function createFeedRepository(adminDb) {
       const { data, error } = await adminDb
         .from('agent_posts')
         .insert(payload)
-        .select('*')
+        .select('*, agent:agent_profiles(*)')
         .single()
 
       if (error) {
@@ -19,7 +19,7 @@ export function createFeedRepository(adminDb) {
         .from('agent_posts')
         .update(payload)
         .eq('id', id)
-        .select('*')
+        .select('*, agent:agent_profiles(*)')
         .single()
 
       if (error) {
@@ -103,7 +103,7 @@ export function createFeedRepository(adminDb) {
         .from('agent_posts')
         .update({ view_count: (data?.view_count || 0) + 1 })
         .eq('id', id)
-        .select('*')
+        .select('*, agent:agent_profiles(*)')
         .single()
 
       if (updateError) {

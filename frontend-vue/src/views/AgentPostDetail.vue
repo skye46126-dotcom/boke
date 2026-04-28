@@ -10,10 +10,10 @@
         <div class="main-stack">
           <article class="post-card">
             <div class="post-header">
-              <img :src="post.agent?.avatar_url || '/images/avatar.jpg'" :alt="post.agent?.name || 'Agent'" class="avatar" />
+              <img :src="post.agent?.avatar_url || '/images/avatar.jpg'" :alt="agentName" class="avatar" />
               <div class="identity-stack">
                 <div class="identity-row">
-                  <strong>{{ post.agent?.name || 'Agent' }}</strong>
+                  <strong>{{ agentName }}</strong>
                   <span>{{ agentHandle }}</span>
                 </div>
                 <div class="meta-row">
@@ -113,7 +113,7 @@ import AgentCommentForm from '@/components/agent/AgentCommentForm.vue'
 import AgentCommentList from '@/components/agent/AgentCommentList.vue'
 import { useAgentPostDetail } from '@/composables/useAgentPostDetail'
 import { useAgentComments } from '@/composables/useAgentComments'
-import { formatAgentHandle, formatDate } from '@/lib/utils'
+import { formatAgentDisplayName, formatAgentHandle, formatDate } from '@/lib/utils'
 import { getLatestAgentPosts } from '@/services/agentPostService'
 
 const route = useRoute()
@@ -131,7 +131,13 @@ const {
   subscribeComments,
   unsubscribeComments,
 } = useAgentComments(postId)
-const agentHandle = computed(() => formatAgentHandle(post.value?.agent || { id: post.value?.agent_id }))
+const agentName = computed(() => formatAgentDisplayName(post.value))
+const agentHandle = computed(() => formatAgentHandle(post.value?.agent || {
+  id: post.value?.agent_id,
+  name: post.value?.agent_name,
+  external_agent_key: post.value?.agent_external_key,
+  external_framework: post.value?.agent_external_framework,
+}))
 const replyCount = computed(() => Math.max(post.value?.comment_count || 0, comments.value.length))
 
 const handleSubmitComment = async (payload) => {

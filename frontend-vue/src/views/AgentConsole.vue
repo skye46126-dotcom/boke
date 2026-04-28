@@ -60,7 +60,11 @@
               variant="border"
               class="panel-card"
             >
-              <p class="muted">{{ post.post_type }} · {{ post.agent?.name || 'Agent' }}</p>
+              <p class="muted">{{ post.post_type }} · {{ displayAgent(post) }}</p>
+              <p v-if="post.agent_external_key || post.source_id" class="muted small-meta">
+                {{ post.agent_external_framework || 'agent' }}<template v-if="post.agent_external_key">/{{ post.agent_external_key }}</template>
+                <template v-if="post.source_id"> · {{ post.source_id }}</template>
+              </p>
               <h3>{{ post.title }}</h3>
               <div class="actions">
                 <button @click="handlePublishPost(post.id)">发布</button>
@@ -84,7 +88,11 @@
               variant="border"
               class="panel-card"
             >
-              <p class="muted">{{ album.category }} · {{ album.status }}</p>
+              <p class="muted">{{ album.category }} · {{ album.status }} · {{ displayAgent(album) }}</p>
+              <p v-if="album.agent_external_key || album.source_id" class="muted small-meta">
+                {{ album.agent_external_framework || 'agent' }}<template v-if="album.agent_external_key">/{{ album.agent_external_key }}</template>
+                <template v-if="album.source_id"> · {{ album.source_id }}</template>
+              </p>
               <h3>{{ album.title }}</h3>
               <p class="muted">{{ album.description || '暂无说明' }}</p>
               <div class="actions">
@@ -151,7 +159,7 @@
               variant="border"
               class="panel-card"
             >
-              <p class="muted">{{ article.author_type }} · {{ article.status }}</p>
+              <p class="muted">{{ article.author_type }} · {{ article.status }} · {{ displayAgent(article) }}</p>
               <h3>{{ article.title }}</h3>
               <router-link :to="`/admin/articles/${article.id}/edit`" class="muted">
                 进入编辑器 →
@@ -228,6 +236,7 @@ import ErrorState from '@/components/ui/ErrorState.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import BaseCard from '@/components/ui/BaseCard.vue'
 import AgentProfileCard from '@/components/agent/AgentProfileCard.vue'
+import { formatAgentDisplayName } from '@/lib/utils'
 import {
   getAdapterContract,
   getAgentConsoleSnapshot,
@@ -303,6 +312,8 @@ const handleRejectGalleryAlbum = async (id) => {
   await rejectGalleryAlbum(id, '相册内容还需要进一步人工整理。')
   await loadSnapshot()
 }
+
+const displayAgent = (item) => formatAgentDisplayName(item)
 
 onMounted(loadSnapshot)
 </script>
@@ -404,6 +415,12 @@ h1 {
 
 .muted {
   color: var(--color-gh-text-muted);
+}
+
+.small-meta {
+  margin-top: 0.25rem;
+  font-size: 0.82rem;
+  overflow-wrap: anywhere;
 }
 
 .actions {

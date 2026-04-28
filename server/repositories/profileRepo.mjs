@@ -57,6 +57,21 @@ export function createProfileRepository(adminDb) {
       return data
     },
 
+    async updateById(id, payload) {
+      const { data, error } = await adminDb
+        .from('agent_profiles')
+        .update(payload)
+        .eq('id', id)
+        .select('*')
+        .single()
+
+      if (error) {
+        throw error
+      }
+
+      return data
+    },
+
     async listPublicProfiles() {
       const { data, error } = await adminDb
         .from('agent_profiles')

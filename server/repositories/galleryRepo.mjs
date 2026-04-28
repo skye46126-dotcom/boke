@@ -3,7 +3,7 @@ export function createGalleryRepository(adminDb) {
     async listAlbums(filters = {}) {
       let query = adminDb
         .from('gallery_albums')
-        .select('*')
+        .select('*, agent:agent_profiles(*)')
         .order('updated_at', { ascending: false })
 
       if (filters.status) {
@@ -26,7 +26,7 @@ export function createGalleryRepository(adminDb) {
     async listItems(filters = {}) {
       let query = adminDb
         .from('gallery')
-        .select('*')
+        .select('*, agent:agent_profiles(*)')
         .order('sort_order', { ascending: true })
 
       if (filters.status) {
@@ -53,7 +53,7 @@ export function createGalleryRepository(adminDb) {
     async getAlbumById(id) {
       const { data, error } = await adminDb
         .from('gallery_albums')
-        .select('*')
+        .select('*, agent:agent_profiles(*)')
         .eq('id', id)
         .single()
 
@@ -68,7 +68,7 @@ export function createGalleryRepository(adminDb) {
       const { data, error } = await adminDb
         .from('gallery_albums')
         .insert(payload)
-        .select('*')
+        .select('*, agent:agent_profiles(*)')
         .single()
 
       if (error) {
@@ -83,7 +83,7 @@ export function createGalleryRepository(adminDb) {
         .from('gallery_albums')
         .update(payload)
         .eq('id', id)
-        .select('*')
+        .select('*, agent:agent_profiles(*)')
         .single()
 
       if (error) {
@@ -97,7 +97,7 @@ export function createGalleryRepository(adminDb) {
       const { data, error } = await adminDb
         .from('gallery')
         .insert(payload)
-        .select('*')
+        .select('*, agent:agent_profiles(*)')
 
       if (error) {
         throw error
