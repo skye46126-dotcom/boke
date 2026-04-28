@@ -18,6 +18,10 @@ export function getStatusCodeForError(error) {
     return 401
   }
 
+  if (message.startsWith('Agent is not allowed')) {
+    return 403
+  }
+
   if (
     message.includes('required') ||
     message === 'Invalid JSON body' ||

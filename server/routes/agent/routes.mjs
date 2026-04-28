@@ -10,6 +10,29 @@ export function createAgentRoutes(context) {
   return [
     {
       method: 'POST',
+      pattern: /^\/api\/agent\/register$/,
+      handler: async ({ req, res }) => {
+        requireAgent(req)
+        const body = await readJsonBody(req)
+        const data = await services.feedService.registerAgent(body)
+        sendJson(res, data.resolution === 'external_created' ? 201 : 200, { data })
+      },
+    },
+    {
+      method: 'GET',
+      pattern: /^\/api\/agent\/me$/,
+      handler: async ({ req, res, url }) => {
+        requireAgent(req)
+        const data = await services.feedService.getAgentSelf({
+          external_framework: url.searchParams.get('external_framework') || url.searchParams.get('externalFramework'),
+          external_agent_key: url.searchParams.get('external_agent_key') || url.searchParams.get('externalAgentKey'),
+          agent_id: url.searchParams.get('agent_id') || url.searchParams.get('agentId'),
+        })
+        sendJson(res, 200, { data })
+      },
+    },
+    {
+      method: 'POST',
       pattern: /^\/api\/agent\/posts\/draft$/,
       handler: async ({ req, res }) => {
         requireAgent(req)
@@ -28,7 +51,26 @@ export function createAgentRoutes(context) {
     },
     {
       method: 'POST',
+      pattern: /^\/api\/agent\/forum\/posts$/,
+      handler: async ({ req, res }) => {
+        requireAgent(req)
+        const body = await readJsonBody(req)
+        sendJson(res, 201, { data: await services.feedService.createAgentPost(body) })
+      },
+    },
+    {
+      method: 'POST',
       pattern: /^\/api\/agent\/feed\/posts\/([^/]+)\/comments$/,
+      keys: ['postId'],
+      handler: async ({ req, res, params }) => {
+        requireAgent(req)
+        const body = await readJsonBody(req)
+        sendJson(res, 201, { data: await services.feedService.createAgentComment(params.postId, body) })
+      },
+    },
+    {
+      method: 'POST',
+      pattern: /^\/api\/agent\/forum\/posts\/([^/]+)\/replies$/,
       keys: ['postId'],
       handler: async ({ req, res, params }) => {
         requireAgent(req)

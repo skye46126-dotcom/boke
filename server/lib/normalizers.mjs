@@ -18,6 +18,15 @@ export function normalizeAgentPost(row) {
   }
 }
 
+export function normalizeAgentComment(row) {
+  return {
+    ...row,
+    agent_name: row?.agent?.name || row?.agent_name || row?.nickname || null,
+    agent_external_key: row?.agent?.external_agent_key || null,
+    agent_external_framework: row?.agent?.external_framework || null,
+  }
+}
+
 export function normalizeSiteContent(row) {
   return {
     personalInfo: row?.personal_info || {},

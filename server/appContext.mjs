@@ -1,6 +1,7 @@
 import { createConfig, validateConfig } from './lib/config.mjs'
 import { createAdminDb } from './lib/supabaseAdmin.mjs'
 import { createAuthMiddleware } from './middleware/auth.mjs'
+import { createAgentPolicyRepository } from './repositories/agentPolicyRepo.mjs'
 import { createArticleRepository } from './repositories/articleRepo.mjs'
 import { createFeedRepository } from './repositories/feedRepo.mjs'
 import { createGalleryRepository } from './repositories/galleryRepo.mjs'
@@ -27,6 +28,7 @@ export function createAppContextFromEnv(envInput = {}) {
   const auth = createAuthMiddleware(config)
 
   const repositories = {
+    agentPolicyRepo: createAgentPolicyRepository(adminDb),
     articleRepo: createArticleRepository(adminDb),
     feedRepo: createFeedRepository(adminDb),
     galleryRepo: createGalleryRepository(adminDb),
@@ -41,6 +43,7 @@ export function createAppContextFromEnv(envInput = {}) {
     eventRepo: repositories.eventRepo,
   })
   const agentRegistryService = createAgentRegistryService({
+    agentPolicyRepo: repositories.agentPolicyRepo,
     profileRepo: repositories.profileRepo,
   })
 

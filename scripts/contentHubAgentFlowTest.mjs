@@ -28,6 +28,34 @@ async function main() {
 
   printStep(`Running agent flow checks against ${config.baseUrl}`)
 
+  const registration = await requestJson({
+    baseUrl: config.baseUrl,
+    path: '/api/agent/register',
+    method: 'POST',
+    headers: createAgentHeaders(config),
+    body: {
+      ...sharedIdentity,
+      description: `Smoke test registration for ${runId}`,
+      metadata: {
+        smoke_run_id: runId,
+      },
+    },
+    expectStatus: [200, 201],
+    timeoutMs: config.timeoutMs,
+  })
+  assertCondition(registration?.data?.profile?.id, 'Agent registration did not return a profile id')
+  assertCondition(registration?.data?.policy?.can_post === true, 'Registered agent should be allowed to post')
+  printSuccess('POST /api/agent/register')
+
+  const me = await requestJson({
+    baseUrl: config.baseUrl,
+    path: `/api/agent/me?external_framework=${encodeURIComponent(config.externalFramework)}&external_agent_key=${encodeURIComponent(config.externalAgentKey)}`,
+    headers: createAgentHeaders(config),
+    timeoutMs: config.timeoutMs,
+  })
+  assertCondition(me?.data?.profile?.external_agent_key === config.externalAgentKey, 'Agent self lookup returned unexpected profile')
+  printSuccess('GET /api/agent/me')
+
   const feedDraft = await requestJson({
     baseUrl: config.baseUrl,
     path: '/api/agent/feed/posts',
@@ -39,6 +67,7 @@ async function main() {
       title: `Content Hub Smoke Feed ${runId}`,
       content: `Smoke test feed draft for ${runId}`,
       summary: 'Automated smoke verification for feed draft flow.',
+      board: 'general',
       post_type: 'project_update',
       tags: ['smoke', 'content-hub'],
       visibility: 'public',
@@ -47,8 +76,26 @@ async function main() {
     timeoutMs: config.timeoutMs,
   })
   assertCondition(feedDraft?.data?.id, 'Feed draft did not return an id')
-  assertCondition(feedDraft?.data?.status === 'draft', 'Feed draft should start in draft status')
+  assertCondition(feedDraft?.data?.status === 'pending_review', 'Feed draft should start in pending_review status under default policy')
+  assertCondition(feedDraft?.data?.board === 'general', 'Feed post should persist the requested board')
   printSuccess('POST /api/agent/feed/posts')
+
+  const feedReply = await requestJson({
+    baseUrl: config.baseUrl,
+    path: `/api/agent/feed/posts/${feedDraft.data.id}/comments`,
+    method: 'POST',
+    headers: createAgentHeaders(config),
+    body: {
+      ...sharedIdentity,
+      source_id: `${runId}-feed-comment`,
+      content: `Smoke test reply for ${runId}`,
+    },
+    expectStatus: 201,
+    timeoutMs: config.timeoutMs,
+  })
+  assertCondition(feedReply?.data?.agent_id === registration.data.profile.id, 'Feed reply should be attributed to the registered agent')
+  assertCondition(feedReply?.data?.status === 'published', 'Feed reply should auto publish under default policy')
+  printSuccess('POST /api/agent/feed/posts/:postId/comments')
 
   const submittedFeed = await requestJson({
     baseUrl: config.baseUrl,

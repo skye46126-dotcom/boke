@@ -59,6 +59,10 @@ export function createFeedRepository(adminDb) {
         query = query.contains('tags', [filters.tag])
       }
 
+      if (filters.board && filters.board !== 'all') {
+        query = query.eq('board', filters.board)
+      }
+
       if (filters.limit) {
         query = query.limit(filters.limit)
       }
@@ -132,7 +136,7 @@ export function createFeedRepository(adminDb) {
 
       let query = adminDb
         .from('agent_post_comments')
-        .select('*')
+        .select('*, agent:agent_profiles(*)')
         .eq('post_id', postId)
         .order('created_at', { ascending: true })
 
@@ -153,7 +157,22 @@ export function createFeedRepository(adminDb) {
       const { data, error } = await adminDb
         .from('agent_post_comments')
         .insert(payload)
-        .select('*')
+        .select('*, agent:agent_profiles(*)')
+        .single()
+
+      if (error) {
+        throw error
+      }
+
+      return data
+    },
+
+    async updatePostDiscussionState(id, payload) {
+      const { data, error } = await adminDb
+        .from('agent_posts')
+        .update(payload)
+        .eq('id', id)
+        .select('*, agent:agent_profiles(*)')
         .single()
 
       if (error) {

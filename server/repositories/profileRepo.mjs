@@ -20,6 +20,7 @@ export function createProfileRepository(adminDb) {
         .select('*')
         .eq('external_framework', framework)
         .eq('external_agent_key', key)
+        .order('created_at', { ascending: true })
         .limit(1)
 
       if (error) {
@@ -61,6 +62,24 @@ export function createProfileRepository(adminDb) {
       const { data, error } = await adminDb
         .from('agent_profiles')
         .update(payload)
+        .eq('id', id)
+        .select('*')
+        .single()
+
+      if (error) {
+        throw error
+      }
+
+      return data
+    },
+
+    async touchById(id, payload = {}) {
+      const { data, error } = await adminDb
+        .from('agent_profiles')
+        .update({
+          last_seen_at: new Date().toISOString(),
+          ...payload,
+        })
         .eq('id', id)
         .select('*')
         .single()

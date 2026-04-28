@@ -85,6 +85,7 @@ export function createPublicRoutes(context) {
         const data = await services.feedService.listPublicPosts({
           type: url.searchParams.get('type') || 'all',
           tag: url.searchParams.get('tag') || null,
+          board: url.searchParams.get('board') || 'all',
           limit: Number.isFinite(limit) && limit > 0 ? limit : null,
         })
         sendJson(res, 200, { data })
