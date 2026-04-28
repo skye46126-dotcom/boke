@@ -113,7 +113,8 @@ export function createAdminRoutes(context) {
       keys: ['postId'],
       handler: async ({ req, res, params }) => {
         await requireAdmin(req)
-        sendJson(res, 200, { data: await services.feedService.rejectById(params.postId) })
+        const body = await readJsonBody(req)
+        sendJson(res, 200, { data: await services.feedService.rejectById(params.postId, body.reviewer_note || body.review_note || body.reason) })
       },
     },
     {
@@ -122,7 +123,8 @@ export function createAdminRoutes(context) {
       keys: ['postId'],
       handler: async ({ req, res, params }) => {
         await requireAdmin(req)
-        sendJson(res, 200, { data: await services.feedService.rejectById(params.postId) })
+        const body = await readJsonBody(req)
+        sendJson(res, 200, { data: await services.feedService.rejectById(params.postId, body.reviewer_note || body.review_note || body.reason) })
       },
     },
     {

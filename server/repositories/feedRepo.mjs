@@ -1,10 +1,12 @@
 export function createFeedRepository(adminDb) {
+  const withAgentSelect = '*, agent:agent_profiles(*)'
+
   return {
     async createPost(payload) {
       const { data, error } = await adminDb
         .from('agent_posts')
         .insert(payload)
-        .select('*, agent:agent_profiles(*)')
+        .select(withAgentSelect)
         .single()
 
       if (error) {
@@ -19,7 +21,23 @@ export function createFeedRepository(adminDb) {
         .from('agent_posts')
         .update(payload)
         .eq('id', id)
-        .select('*, agent:agent_profiles(*)')
+        .select(withAgentSelect)
+        .single()
+
+      if (error) {
+        throw error
+      }
+
+      return data
+    },
+
+    async updatePostByIdForAgent(id, agentId, payload) {
+      const { data, error } = await adminDb
+        .from('agent_posts')
+        .update(payload)
+        .eq('id', id)
+        .eq('agent_id', agentId)
+        .select(withAgentSelect)
         .single()
 
       if (error) {
@@ -32,7 +50,7 @@ export function createFeedRepository(adminDb) {
     async getPostById(id) {
       const { data, error } = await adminDb
         .from('agent_posts')
-        .select('*, agent:agent_profiles(*)')
+        .select(withAgentSelect)
         .eq('id', id)
         .single()
 
@@ -43,10 +61,68 @@ export function createFeedRepository(adminDb) {
       return data
     },
 
+    async getPostByIdForAgent(id, agentId) {
+      const { data, error } = await adminDb
+        .from('agent_posts')
+        .select(withAgentSelect)
+        .eq('id', id)
+        .eq('agent_id', agentId)
+        .single()
+
+      if (error) {
+        throw error
+      }
+
+      return data
+    },
+
+    async findPostByIdempotency(agentId, idempotencyKey) {
+      const { data, error } = await adminDb
+        .from('agent_posts')
+        .select(withAgentSelect)
+        .eq('agent_id', agentId)
+        .eq('idempotency_key', idempotencyKey)
+        .order('created_at', { ascending: true })
+        .limit(1)
+
+      if (error) {
+        throw error
+      }
+
+      return data?.[0] || null
+    },
+
+    async listPostsByAgent(agentId, filters = {}) {
+      const statuses = Array.isArray(filters.statuses) ? filters.statuses.filter(Boolean) : []
+      const limit = Number(filters.limit || 100)
+
+      let query = adminDb
+        .from('agent_posts')
+        .select(withAgentSelect)
+        .eq('agent_id', agentId)
+        .order('created_at', { ascending: false })
+
+      if (statuses.length) {
+        query = query.in('status', statuses)
+      }
+
+      if (Number.isFinite(limit) && limit > 0) {
+        query = query.limit(Math.min(limit, 200))
+      }
+
+      const { data, error } = await query
+
+      if (error) {
+        throw error
+      }
+
+      return data || []
+    },
+
     async listPublishedPosts(filters = {}) {
       let query = adminDb
         .from('agent_posts')
-        .select('*, agent:agent_profiles(*)')
+        .select(withAgentSelect)
         .eq('status', 'published')
         .eq('visibility', 'public')
         .order('published_at', { ascending: false })
@@ -79,7 +155,7 @@ export function createFeedRepository(adminDb) {
     async getPublishedPostById(id) {
       const { data, error } = await adminDb
         .from('agent_posts')
-        .select('*, agent:agent_profiles(*)')
+        .select(withAgentSelect)
         .eq('id', id)
         .eq('status', 'published')
         .eq('visibility', 'public')
@@ -107,7 +183,7 @@ export function createFeedRepository(adminDb) {
         .from('agent_posts')
         .update({ view_count: (data?.view_count || 0) + 1 })
         .eq('id', id)
-        .select('*, agent:agent_profiles(*)')
+        .select(withAgentSelect)
         .single()
 
       if (updateError) {
@@ -120,7 +196,7 @@ export function createFeedRepository(adminDb) {
     async listPendingPosts() {
       const { data, error } = await adminDb
         .from('agent_posts')
-        .select('*, agent:agent_profiles(*)')
+        .select(withAgentSelect)
         .eq('status', 'pending_review')
         .order('created_at', { ascending: false })
 
@@ -136,7 +212,7 @@ export function createFeedRepository(adminDb) {
 
       let query = adminDb
         .from('agent_post_comments')
-        .select('*, agent:agent_profiles(*)')
+        .select(withAgentSelect)
         .eq('post_id', postId)
         .order('created_at', { ascending: true })
 
@@ -157,7 +233,7 @@ export function createFeedRepository(adminDb) {
       const { data, error } = await adminDb
         .from('agent_post_comments')
         .insert(payload)
-        .select('*, agent:agent_profiles(*)')
+        .select(withAgentSelect)
         .single()
 
       if (error) {
@@ -172,7 +248,76 @@ export function createFeedRepository(adminDb) {
         .from('agent_posts')
         .update(payload)
         .eq('id', id)
-        .select('*, agent:agent_profiles(*)')
+        .select(withAgentSelect)
+        .single()
+
+      if (error) {
+        throw error
+      }
+
+      return data
+    },
+
+    async createPostAttachment(payload) {
+      const { data, error } = await adminDb
+        .from('agent_post_attachments')
+        .insert(payload)
+        .select('*')
+        .single()
+
+      if (error) {
+        throw error
+      }
+
+      return data
+    },
+
+    async listAttachmentsByPostId(postId) {
+      const { data, error } = await adminDb
+        .from('agent_post_attachments')
+        .select('*')
+        .eq('post_id', postId)
+        .order('created_at', { ascending: true })
+
+      if (error) {
+        throw error
+      }
+
+      return data || []
+    },
+
+    async listEventsSinceCursor(options = {}) {
+      const limit = Number(options.limit || 100)
+      let query = adminDb
+        .from('content_hub_events')
+        .select('*')
+        .eq('domain', 'content_hub')
+        .order('created_at', { ascending: true })
+
+      if (options.since) {
+        query = query.gt('created_at', options.since)
+      }
+
+      if (Number.isFinite(limit) && limit > 0) {
+        query = query.limit(Math.min(limit, 200))
+      }
+
+      const { data, error } = await query
+
+      if (error) {
+        throw error
+      }
+
+      return data || []
+    },
+
+    async registerCallbackSubscription(payload) {
+      const { data, error } = await adminDb
+        .from('agent_callback_subscriptions')
+        .upsert(payload, {
+          onConflict: 'agent_id,callback_type,callback_url',
+        })
+        .select('*')
         .single()
 
       if (error) {

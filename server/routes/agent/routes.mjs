@@ -7,6 +7,17 @@ export function createAgentRoutes(context) {
     auth.requireAgent(req)
   }
 
+  function readAgentIdentityFromQuery(url) {
+    return {
+      external_framework: url.searchParams.get('external_framework') || url.searchParams.get('externalFramework'),
+      external_agent_key: url.searchParams.get('external_agent_key') || url.searchParams.get('externalAgentKey'),
+      agent_id: url.searchParams.get('agent_id') || url.searchParams.get('agentId'),
+      status: url.searchParams.get('status') || null,
+      since: url.searchParams.get('since') || url.searchParams.get('cursor'),
+      limit: Number(url.searchParams.get('limit') || 100),
+    }
+  }
+
   return [
     {
       method: 'POST',
@@ -50,6 +61,42 @@ export function createAgentRoutes(context) {
       },
     },
     {
+      method: 'PATCH',
+      pattern: /^\/api\/agent\/feed\/posts\/([^/]+)$/,
+      keys: ['postId'],
+      handler: async ({ req, res, params }) => {
+        requireAgent(req)
+        const body = await readJsonBody(req)
+        sendJson(res, 200, { data: await services.feedService.updateAgentPost(params.postId, body) })
+      },
+    },
+    {
+      method: 'GET',
+      pattern: /^\/api\/agent\/feed\/posts\/mine$/,
+      handler: async ({ req, res, url }) => {
+        requireAgent(req)
+        sendJson(res, 200, { data: await services.feedService.listAgentPostsMine(readAgentIdentityFromQuery(url)) })
+      },
+    },
+    {
+      method: 'GET',
+      pattern: /^\/api\/agent\/feed\/events$/,
+      handler: async ({ req, res, url }) => {
+        requireAgent(req)
+        sendJson(res, 200, { data: await services.feedService.listAgentEvents(readAgentIdentityFromQuery(url)) })
+      },
+    },
+    {
+      method: 'POST',
+      pattern: /^\/api\/agent\/feed\/posts\/([^/]+)\/attachments$/,
+      keys: ['postId'],
+      handler: async ({ req, res, params }) => {
+        requireAgent(req)
+        const body = await readJsonBody(req)
+        sendJson(res, 201, { data: await services.feedService.addPostAttachments(params.postId, body) })
+      },
+    },
+    {
       method: 'POST',
       pattern: /^\/api\/agent\/forum\/posts$/,
       handler: async ({ req, res }) => {
@@ -84,7 +131,27 @@ export function createAgentRoutes(context) {
       keys: ['postId'],
       handler: async ({ req, res, params }) => {
         requireAgent(req)
-        sendJson(res, 200, { data: await services.feedService.submitForReview(params.postId) })
+        const body = await readJsonBody(req)
+        sendJson(res, 200, { data: await services.feedService.submitForReview(params.postId, body) })
+      },
+    },
+    {
+      method: 'POST',
+      pattern: /^\/api\/agent\/feed\/posts\/([^/]+)\/withdraw$/,
+      keys: ['postId'],
+      handler: async ({ req, res, params }) => {
+        requireAgent(req)
+        const body = await readJsonBody(req)
+        sendJson(res, 200, { data: await services.feedService.withdrawPost(params.postId, body) })
+      },
+    },
+    {
+      method: 'POST',
+      pattern: /^\/api\/agent\/callbacks\/register$/,
+      handler: async ({ req, res }) => {
+        requireAgent(req)
+        const body = await readJsonBody(req)
+        sendJson(res, 201, { data: await services.feedService.registerCallback(body) })
       },
     },
     {
