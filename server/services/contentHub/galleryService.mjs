@@ -1,6 +1,6 @@
 import { getFriendlyGalleryHubError } from '../../lib/errors.mjs'
 import { normalizeGalleryAlbum, normalizeGalleryItem } from '../../lib/normalizers.mjs'
-import { generateSlug, uniqueId } from '../../lib/strings.mjs'
+import { createUuid, generateSlug, isUuid } from '../../lib/strings.mjs'
 
 function toTags(input) {
   if (Array.isArray(input)) {
@@ -125,7 +125,7 @@ export function createGalleryService({ galleryRepo, auditService, agentRegistryS
         }
 
         const payload = items.map((item, index) => ({
-          id: item.id || uniqueId('gallery'),
+          id: isUuid(item.id) ? item.id : createUuid(),
           album_id: albumId,
           title: item.title,
           description: item.description || null,
