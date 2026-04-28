@@ -26,7 +26,7 @@
 
 <script setup>
 import { ref, watch, onMounted } from 'vue'
-import { createHighlighter } from 'shiki'
+import { getAppHighlighter, normalizeCodeLanguage } from '@/lib/shiki'
 
 const props = defineProps({
   activeTab: Object
@@ -39,10 +39,7 @@ const lineCount = ref(1)
 let highlighter = null
 
 onMounted(async () => {
-  highlighter = await createHighlighter({
-    themes: ['dark-plus'],
-    langs: ['javascript', 'json', 'markdown', 'bash']
-  })
+  highlighter = await getAppHighlighter()
   if (props.activeTab) updateHighlight()
 })
 
@@ -61,10 +58,10 @@ const updateHighlight = async () => {
   if (!props.activeTab || !highlighter) return
   
   const code = generateContent(props.activeTab)
-  const lang = props.activeTab.file?.type === 'json' ? 'json' : 'markdown'
+  const lang = normalizeCodeLanguage(props.activeTab.file?.type || 'markdown')
   
   highlightedCode.value = highlighter.codeToHtml(code, {
-    lang,
+    lang: lang === 'text' ? 'markdown' : lang,
     theme: 'dark-plus'
   })
   
